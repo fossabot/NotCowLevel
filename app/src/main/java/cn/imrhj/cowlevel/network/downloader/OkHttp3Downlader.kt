@@ -72,13 +72,13 @@ class OkHttp3Downloader : Downloader {
         val fromCache = response.cacheResponse() != null
 
         val responseBody = response.body()
-        return Downloader.Response(responseBody!!.byteStream(), fromCache, responseBody!!.contentLength())
+        return Downloader.Response(responseBody!!.byteStream(), fromCache, responseBody.contentLength())
     }
 
     override fun shutdown() {
         if (cache != null) {
             try {
-                cache!!.close()
+                cache.close()
             } catch (ignored: IOException) {
             }
 
@@ -102,7 +102,7 @@ class OkHttp3Downloader : Downloader {
             var size = MIN_DISK_CACHE_SIZE.toLong()
 
             try {
-                val statFs = StatFs(dir.getAbsolutePath())
+                val statFs = StatFs(dir.absolutePath)
                 val available = statFs.blockCountLong.toLong() * statFs.blockSizeLong
                 size = available / 50
             } catch (ignored: IllegalArgumentException) {
