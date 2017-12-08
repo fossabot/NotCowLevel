@@ -28,8 +28,8 @@ public class App extends Application {
     private void initInUIThread() {
         XLog.init(BuildConfig.DEBUG ? LogLevel.ALL : LogLevel.NONE);
         Picasso picasso = new Picasso.Builder(getApplicationContext())
-                .indicatorsEnabled(BuildConfig.DEBUG)
-                .loggingEnabled(BuildConfig.DEBUG)
+//                .indicatorsEnabled(BuildConfig.DEBUG)
+//                .loggingEnabled(BuildConfig.DEBUG)
                 .defaultBitmapConfig(Bitmap.Config.RGB_565)
                 .downloader(new OkHttp3Downloader(getApplicationContext()))
                 .build();

@@ -14,10 +14,16 @@ import android.view.ViewGroup
 abstract class BaseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(layoutId(), null)
+        val view = inflater?.inflate(layoutId(), null)
+        initView(view)
+        return view
     }
 
     @LayoutRes abstract fun layoutId(): Int
+
+    open fun initView(baseView: View?) {
+
+    }
 
     /**
      * 配置参数

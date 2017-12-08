@@ -15,5 +15,5 @@ interface CowLevel {
      * 获取feed时间线
      */
     @GET("/api/feed/timeline")
-    fun feedTimeline(@Query("last_id") id: Long = 0): Observable<ApiModel<FeedApiModel>>
+    fun feedTimeline(@Query("last_id") id: Int = 0): Observable<ApiModel<FeedApiModel>>
 }
