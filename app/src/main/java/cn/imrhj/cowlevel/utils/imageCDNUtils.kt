@@ -5,6 +5,13 @@ package cn.imrhj.cowlevel.utils
  */
 
 /**
+ * 传递参数为DP的裁图工具类
+ */
+fun cdnImageForDPSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): String? {
+    return cdnImageForDPSize(imageUrl, dp2px(width ?: 0), dp2px(height ?: 0))
+}
+
+/**
  * 针对长宽进行图片裁剪，定死宽高 居中裁剪
  */
 fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): String? {
@@ -49,6 +56,6 @@ fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): Strin
 /**
  * 裁剪一个方形图片
  */
-fun cdnImageForSquare(imageUrl: String?, size: Int? = 0) :String? {
+fun cdnImageForSquare(imageUrl: String?, size: Int? = 0): String? {
     return cdnImageForSize(imageUrl, size, size)
 }

@@ -10,5 +10,9 @@
     <color name="colorGreyText">#bcc0cc</color>
     <color name="colorTipsGrey">#5c5e6a</color>
     <color name="colorWhite3">#4Dffffff</color>
+    <color name="colorWhite1">#1AFFFFFF</color>
     <color name="colorRedAccept">#eb5263</color>
+
+
+    <color name="colorTextSub">#697597</color>
 </resources>

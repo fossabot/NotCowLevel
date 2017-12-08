@@ -16,6 +16,7 @@ import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
+import cn.imrhj.cowlevel.network.model.GameModel
 import cn.imrhj.cowlevel.ui.base.LazyLoadFragment
 import cn.imrhj.cowlevel.utils.StringUtil
 import cn.imrhj.cowlevel.utils.cdnImageForSize
@@ -31,6 +32,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_feed.*
 
 /**
+ * feed详情
  * Created by rhj on 2017/11/28.
  */
 class FeedFragment : LazyLoadFragment() {
@@ -76,21 +78,6 @@ class FeedFragment : LazyLoadFragment() {
                 }
             }
             multiTypeDelegate.registerItemTypeAutoIncrease(R.layout.item_feed_common)
-//            multiTypeDelegate.registerItemType(type_unknow.ordinal, R.layout.item_test)
-//                    .registerItemType(tag_question.ordinal, R.layout.item_feed_tag_question)
-//                    .registerItemType(tag_article.ordinal, R.layout.item_feed_editor_elite_article)
-//                    .registerItemType(vote_comment.ordinal, R.layout.item_test)
-//                    .registerItemType(sharelink_comment.ordinal, R.layout.item_test)
-//                    .registerItemType(follow_question.ordinal, R.layout.item_test)
-//                    .registerItemType(post_submit_answer.ordinal, R.layout.item_test)
-//                    .registerItemType(editor_elite_answer.ordinal, R.layout.item_feed_tag_answer)
-//                    .registerItemType(editor_elite_review.ordinal, R.layout.item_test)
-//                    .registerItemType(system_recommend_user.ordinal, R.layout.item_test)
-//                    .registerItemType(editor_elite_article.ordinal, R.layout.item_feed_editor_elite_article)
-//                    .registerItemType(post_submit_review.ordinal, R.layout.item_test)
-//                    .registerItemType(post_submit_question.ordinal, R.layout.item_test)
-//                    .registerItemType(tag_answer.ordinal, R.layout.item_feed_tag_answer)
-//                    .registerItemType(vote_answer.ordinal, R.layout.item_test)
         }
 
         override fun convert(helper: BaseViewHolder?, item: FeedModel?) {
@@ -108,6 +95,8 @@ class FeedFragment : LazyLoadFragment() {
             val vTitle = helper?.getView<TextView>(R.id.title)
             val vContent = helper?.getView<TextView>(R.id.content)
             val vThumb = helper?.getView<ImageView>(R.id.thumb)
+            val vGameLayout = helper?.getView<View>(R.id.layout_game)
+            vGameLayout?.visibility = GONE
             vPic?.visibility = GONE
             vTitle?.visibility = GONE
             vContent?.visibility = GONE
@@ -118,6 +107,8 @@ class FeedFragment : LazyLoadFragment() {
                     editor_elite_article.name -> this.renderEditorEliteArticle(helper, item)
                     editor_elite_answer.name -> this.renderTagAnswer(helper, item)
                     editor_elite_review.name -> this.renderEditorEliteReview(helper, item)
+                    post_submit_answer.name -> this.renderTagAnswer(helper, item)
+                    tag_article.name -> this.renderEditorEliteArticle(helper, item)
 
                 }
 
@@ -136,8 +127,6 @@ class FeedFragment : LazyLoadFragment() {
 
         private fun renderTagQuestion(helper: BaseViewHolder?, item: FeedModel?) {
             val question = item?.question
-            helper?.setText(R.id.title, question?.title)
-
             renderNavBar(helper, item, null, 0, question?.is_follow!!, question.answer_count)
         }
 
@@ -157,7 +146,10 @@ class FeedFragment : LazyLoadFragment() {
             renderThumb(helper, review?.neat_content?.thumb)
             renderNavBar(helper, item, review?.vote_count, review?.has_vote, null,
                     review?.comment_count)
+            renderGame(helper, item?.game)
         }
+
+
 
         private fun renderTitle(helper: BaseViewHolder?, title: String?) {
             helper?.getView<TextView>(R.id.title)?.setTextAndShow(title)
@@ -171,7 +163,7 @@ class FeedFragment : LazyLoadFragment() {
             if (StringUtil.isNotBlank(thumb)) {
                 val view = helper?.getView<ImageView>(R.id.thumb)
                 view?.visibility = VISIBLE
-                Picasso.with(App.getApplication().applicationContext)
+                Picasso.with(App.getAppContext())
                         .load(cdnImageForSquare(thumb, dp2px(100F)))
                         .into(view)
             }
@@ -186,6 +178,19 @@ class FeedFragment : LazyLoadFragment() {
                             .load(cdnImageForSize(pic, imageView.width, imageView.height))
                             .into(imageView)
                 }
+            }
+        }
+
+        private fun renderGame(helper: BaseViewHolder?, game: GameModel?) {
+            if (game != null) {
+                helper?.getView<View>(R.id.layout_game)?.visibility = VISIBLE
+                helper?.getView<TextView>(R.id.game_title)?.text = game.title
+                helper?.getView<TextView>(R.id.game_time)?.text = game.game_publish_date_show
+                helper?.getView<TextView>(R.id.game_platforms)?.text = game.platform_support_list
+                        ?.map { it.name }?.reduce { n1, n2 -> "$n1 / $n2" }
+                Picasso.with(App.getAppContext())
+                        .load(cdnImageForSize(game.pic, 130, 65))
+                        .into(helper?.getView<ImageView>(R.id.game_pic))
             }
         }
 
