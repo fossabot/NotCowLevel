@@ -8,7 +8,7 @@ data class MergedModel(
         val video_count: Int = 0,
         val voters: List<*>? = null,
         val followers: List<*>? = null,
-        val games: List<*>? = null,
+        val games: List<MergedGameModel>? = null,
         val tags: List<MergedTagModel>? = null,
         val pics: List<*>? = null,
         val videos: List<*>? = null)

@@ -1,6 +1,7 @@
 package cn.imrhj.cowlevel;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.elvishew.xlog.LogLevel;
@@ -37,5 +38,9 @@ public class App extends Application {
 
     public static App getApplication() {
         return mInstance;
+    }
+
+    public static Context getAppContext() {
+        return mInstance.getApplicationContext();
     }
 }
