@@ -64,15 +64,20 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
                 editor_elite_review.name -> this.renderEditorEliteReview(helper, item)
                 post_submit_answer.name -> this.renderTagAnswer(helper, item)
                 tag_article.name -> this.renderEditorEliteArticle(helper, item)
-
+                vote_article.name -> this.renderEditorEliteArticle(helper, item)
+                follow_question.name -> this.renderFollowQuestion(helper, item)
             }
-
         }
     }
 
-    private fun renderTagAnswer(helper: BaseViewHolder?, item: FeedModel?) {
-        val answer = item?.answer
-        val question = item?.question
+    private fun renderFollowQuestion(helper: BaseViewHolder?, item: FeedModel) {
+        this.renderTitle(helper, item.question?.title)
+        this.renderContent(helper, item.question?.content)
+    }
+
+    private fun renderTagAnswer(helper: BaseViewHolder?, item: FeedModel) {
+        val answer = item.answer
+        val question = item.question
         renderTitle(helper, question?.title)
         renderContent(helper, answer?.neat_content?.desc)
         renderThumb(helper, answer?.neat_content?.thumb)
@@ -80,13 +85,13 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
                 question?.comment_count)
     }
 
-    private fun renderTagQuestion(helper: BaseViewHolder?, item: FeedModel?) {
-        val question = item?.question
+    private fun renderTagQuestion(helper: BaseViewHolder?, item: FeedModel) {
+        val question = item.question
         renderNavBar(helper, item, null, 0, question?.is_follow!!, question.answer_count)
     }
 
-    private fun renderEditorEliteArticle(helper: BaseViewHolder?, item: FeedModel?) {
-        val article = item?.article
+    private fun renderEditorEliteArticle(helper: BaseViewHolder?, item: FeedModel) {
+        val article = item.article
         renderTitle(helper, article?.title)
         renderContent(helper, article?.neat_content?.desc)
         renderThumb(helper, article?.neat_content?.thumb)
@@ -95,19 +100,22 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
                 article?.comment_count)
     }
 
-    private fun renderEditorEliteReview(helper: BaseViewHolder?, item: FeedModel?) {
-        val review = item?.review
+    private fun renderEditorEliteReview(helper: BaseViewHolder?, item: FeedModel) {
+        val review = item.review
         renderContent(helper, review?.neat_content?.desc)
         renderThumb(helper, review?.neat_content?.thumb)
         renderNavBar(helper, item, review?.vote_count, review?.has_vote, null,
                 review?.comment_count)
-        renderGame(helper, item?.game)
+        renderGame(helper, item.game)
     }
 
 
-
-    private fun renderTitle(helper: BaseViewHolder?, title: String?) {
-        helper?.getView<TextView>(R.id.title)?.setTextAndShow(title)
+    private fun renderTitle(helper: BaseViewHolder?, title: String?, link: String? = null) {
+        val titleView = helper?.getView<TextView>(R.id.title)
+        titleView?.setTextAndShow(title)
+        if (link != null) {
+            titleView?.setOnClickListener { }
+        }
     }
 
     private fun renderContent(helper: BaseViewHolder?, content: String?) {
@@ -153,22 +161,44 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
      * 渲染顶部的tag
      */
     private fun renderHeader(helper: BaseViewHolder?, item: FeedModel?) {
-        val tags = item?.merged?.tags
+        val voters = item?.merged?.voters
+        val followers = item?.merged?.followers
         val games = item?.merged?.games
         val header = helper?.getView<View>(R.id.header)
-        val subTag = helper?.getView<TextView>(R.id.sub_tag)
-        if (tags != null && tags.isNotEmpty()) {
+        val tags = item?.merged?.tags
+
+        var frontValue = "来自"
+        var tagValue = ""
+        var subValue = "的回答"
+        when (item?.action) {
+            follow_question.name -> {
+                frontValue = ""
+                tagValue = followers?.get(0)?.name ?: ""
+                subValue = "关注了该问题"
+            }
+            vote_article.name -> {
+                frontValue = ""
+                tagValue = voters?.get(0)?.name ?: ""
+                subValue = "赞同了该文章"
+            }
+
+        }
+//        if (voters?.isNotEmpty() == true) {
+//            frontValue = ""
+//            tagValue = voters[0].name ?: ""
+//            subValue = "等赞同了该文章"
+//        } else if (tags?.isNotEmpty() == true) {
+//            tagValue = tags[0].name ?: ""
+//        } else if (games?.isNotEmpty() == true) {
+//            tagValue = games[0].title ?: ""
+//            subValue = "的评价"
+//        }
+
+        if (tagValue.isNotBlank()) {
             header?.visibility = View.VISIBLE
-            val tag = helper?.getView<TextView>(R.id.tag)
-            tag?.text = tags[0].name
-            subTag?.text = "的回答"
-            helper?.setText(R.id.time, item.publish_time_before)
-        } else if (games != null && games.isNotEmpty()) {
-            header?.visibility = View.VISIBLE
-            val tag = helper?.getView<TextView>(R.id.tag)
-            tag?.text = games[0].title
-            subTag?.text = "的评价"
-            helper?.setText(R.id.time, item.publish_time_before)
+            helper?.setText(R.id.tag, tagValue)
+            helper?.setText(R.id.sub_tag, subValue)
+            helper?.setText(R.id.front_tag, frontValue)
         } else {
             header?.visibility = GONE
         }
@@ -177,7 +207,7 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
     /**
      * 渲染底部NavBar
      */
-    private fun renderNavBar(helper: BaseViewHolder?, item: FeedModel?,
+    private fun renderNavBar(helper: BaseViewHolder?, item: FeedModel,
                              voterCount: Int?, hasVote: Int? = 0,
                              isFollow: Int? = 0,
                              commentCount: Int? = 0, commentBtnTitle: String = "评论") {
@@ -202,12 +232,17 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
      */
     private fun renderUser(helper: BaseViewHolder?, item: FeedModel?) {
         val user = item?.user
-        Picasso.with(App.getApplication().applicationContext)
-                .load(cdnImageForSize(user?.avatar, dp2px(48F)))
-                .into(helper?.getView<CircleImageView>(R.id.avatar))
-        helper?.setText(R.id.name, user?.name)
-        helper?.setText(R.id.intro, user?.intro)
-        helper?.setText(R.id.subtitle, item?.action_text)
+        if (user != null) {
+            helper?.getView<View>(R.id.layout_user)?.visibility = VISIBLE
+            Picasso.with(App.getApplication().applicationContext)
+                    .load(cdnImageForSize(user.avatar, dp2px(48F)))
+                    .into(helper?.getView<CircleImageView>(R.id.avatar))
+            helper?.setText(R.id.name, user.name)
+            helper?.setText(R.id.intro, user.intro)
+            helper?.setText(R.id.subtitle, item.action_text)
+        } else {
+            helper?.getView<View>(R.id.layout_user)?.visibility = GONE
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_user"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -20,22 +21,24 @@
 
     <TextView
         android:id="@+id/intro"
-        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="3dp"
         android:layout_toEndOf="@id/name"
-        android:layout_marginStart="6dp"
+        android:lines="1"
+        android:maxLines="1"
         android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/subtitle"
-        android:layout_marginTop="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/name"
         android:layout_marginStart="12dp"
-        android:textColor="@color/colorWhite5"
-        android:textSize="14sp"
+        android:layout_marginTop="3dp"
         android:layout_toEndOf="@+id/avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/colorWhite5"
+        android:textSize="14sp" />
 </RelativeLayout>

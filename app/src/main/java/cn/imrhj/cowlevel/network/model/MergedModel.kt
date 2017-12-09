@@ -6,8 +6,8 @@ package cn.imrhj.cowlevel.network.model
 data class MergedModel(
         val pic_count: Int = 0,
         val video_count: Int = 0,
-        val voters: List<*>? = null,
-        val followers: List<*>? = null,
+        val voters: List<UserModel>? = null,
+        val followers: List<UserModel>? = null,
         val games: List<MergedGameModel>? = null,
         val tags: List<MergedTagModel>? = null,
         val pics: List<*>? = null,

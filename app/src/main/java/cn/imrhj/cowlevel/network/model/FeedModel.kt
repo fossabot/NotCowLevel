@@ -57,6 +57,7 @@ data class FeedModel(
         post_submit_review,
         tag_answer,
         vote_answer,
+        vote_article,
         tag_article,
         post_submit_answer,         // 回答了问题
         follow_question,
