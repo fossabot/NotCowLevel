@@ -50,6 +50,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
 
         mRefresh?.setOnRefreshListener { reload() }
         mAdapter?.setOnLoadMoreListener(this::loadNextPage, mRecycler)
+        mRefresh?.isRefreshing = true
     }
 
     override fun requestData() {

@@ -199,6 +199,7 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
             helper?.setText(R.id.tag, tagValue)
             helper?.setText(R.id.sub_tag, subValue)
             helper?.setText(R.id.front_tag, frontValue)
+            helper?.setText(R.id.time, item?.publish_time_before)
         } else {
             header?.visibility = GONE
         }
