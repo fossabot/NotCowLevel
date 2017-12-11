@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">CowLevel</string>
     <string name="loading">Loading…</string>
     <string name="loading_finish">Loading Completed</string>A
 </resources>
