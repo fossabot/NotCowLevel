@@ -48,7 +48,7 @@ android {
             zipAlignEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "COW_AUTH_TOKEN", props.getProperty("COW_AUTH_TOKEN")
+            buildConfigField "String", "COW_AUTH_TOKEN", isHasFile ? props['COW_AUTH_TOKEN'] : System.getenv("COW_AUTH_TOKEN")
             signingConfig signingConfigs.defaultConfig
         }
 
@@ -57,7 +57,7 @@ android {
             zipAlignEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "COW_AUTH_TOKEN", props.getProperty("COW_AUTH_TOKEN")
+            buildConfigField "String", "COW_AUTH_TOKEN", isHasFile ? props['COW_AUTH_TOKEN'] : System.getenv("COW_AUTH_TOKEN")
             signingConfig signingConfigs.defaultConfig
         }
     }

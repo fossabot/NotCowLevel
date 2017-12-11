@@ -26,6 +26,7 @@
             android:id="@+id/game_pic"
             android:layout_width="130dp"
             android:layout_height="65dp"
+            android:background="@color/colorTipsGrey"
             android:scaleType="centerCrop" />
 
     </android.support.v7.widget.CardView>

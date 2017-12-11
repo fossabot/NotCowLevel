@@ -6,6 +6,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
+        android:src="@color/colorTipsGrey"
         android:layout_width="48dp"
         android:layout_height="48dp" />
 
