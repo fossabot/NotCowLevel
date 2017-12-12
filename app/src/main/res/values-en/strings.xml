@@ -6,5 +6,15 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading">Loading…</string>
-    <string name="loading_finish">Loading Completed</string>A
+    <string name="loading_finish">Loading Completed</string>
+
+    <!--login-->
+    <string name="slogan">CowLevel, The game enthusiasts in the world</string>
+    <string name="login_get_invite_code">Click to get invite code</string>
+    <string name="register_account">Register</string>
+    <string name="login_direct">Login</string>
+    <string name="register">Login</string>
+    <string name="login">Register</string>
+    <string name="mail">邮箱</string>
+    <string name="password">密码</string>
 </resources>

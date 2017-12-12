@@ -6,4 +6,32 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading">加载中…</string>
     <string name="loading_finish">加载完成</string>
+
+
+    <!--登录-->
+    <string name="slogan">奶牛关，游戏狂热者世界</string>
+    <string name="login_get_invite_code">点此申请邀请码</string>
+    <string name="register_account">注册帐号</string>
+    <string name="login_direct">直接登录</string>
+    <string name="mail">邮箱</string>
+    <string name="password">密码</string>
+    <string name="invite_code">邀请码</string>
+    <string name="title_activity_test_login">Sign in</string>
+    <string name="register">注册</string>
+    <string name="login">登录</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="forget_password">忘记密码?</string>
+
 </resources>

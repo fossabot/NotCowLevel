@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorRedAccept</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,5 +16,18 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar.Transparent">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat" >
+        <item name="android:textColorHighlight">@color/colorRedAccept</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:colorAccent">@color/colorRedAccept</item>
+        <item name="android:colorControlNormal">@color/colorWhite1</item>
+        <item name="android:colorControlActivated">@color/colorRedAccept</item>
+    </style>
 
 </resources>
