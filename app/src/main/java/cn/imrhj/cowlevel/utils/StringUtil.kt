@@ -5,19 +5,19 @@ package cn.imrhj.cowlevel.utils
  */
 
 object StringUtil {
-    fun isEmpty(string: String?): Boolean {
+    fun isEmpty(string: CharSequence?): Boolean {
         return string?.isEmpty() ?: true
     }
 
-    fun isBlank(string: String?): Boolean {
+    fun isBlank(string: CharSequence?): Boolean {
         return string?.isBlank() ?: true
     }
 
-    fun isNotEmpty(string: String?): Boolean {
+    fun isNotEmpty(string: CharSequence?): Boolean {
         return !isEmpty(string)
     }
 
-    fun isNotBlank(string: String?): Boolean {
+    fun isNotBlank(string: CharSequence?): Boolean {
         return !isBlank(string)
     }
 }

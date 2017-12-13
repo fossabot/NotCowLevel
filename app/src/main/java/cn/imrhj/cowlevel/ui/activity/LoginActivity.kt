@@ -1,6 +1,5 @@
 package cn.imrhj.cowlevel.ui.activity
 
-import android.animation.ValueAnimator
 import android.content.ComponentName
 import android.net.Uri
 import android.os.Bundle
@@ -9,11 +8,12 @@ import android.support.customtabs.CustomTabsIntent
 import android.support.customtabs.CustomTabsServiceConnection
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.utils.ConvertUtils
+import cn.imrhj.cowlevel.utils.RegexUtil
 import cn.imrhj.cowlevel.utils.ResourceUtil
+import cn.imrhj.cowlevel.utils.StringUtil
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {
@@ -53,13 +53,26 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun doLogin() {
+        checkMail()
 
     }
 
     private fun doRegister() {
+        checkMail()
 
     }
 
+    private fun checkMail(): Boolean {
+        if (StringUtil.isBlank(etMail.text)) {
+            etMail.error = "邮箱不能为空"
+            return false
+        }
+        if (!RegexUtil.isMail(etMail.text)) {
+            etMail.error = "邮箱格式不正确"
+            return false
+        }
+        return true
+    }
 
 
     private fun changeView(status: Boolean) {
@@ -76,7 +89,7 @@ class LoginActivity : BaseActivity() {
 
 
     private fun bindCustomTabsService() {
-        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome",
+        CustomTabsClient.bindCustomTabsService(applicationContext, "com.android.chrome",
                 object : CustomTabsServiceConnection() {
                     override fun onCustomTabsServiceConnected(name: ComponentName?,
                                                               client: CustomTabsClient?) {

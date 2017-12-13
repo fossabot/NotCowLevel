@@ -1,11 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorRedAccept</item>
+
+        <item name="colorControlNormal">@color/colorWhite1</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,12 +24,12 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="TextLabel" parent="TextAppearance.AppCompat" >
-        <item name="android:textColorHighlight">@color/colorRedAccept</item>
+    <style name="TextLabel" parent="Widget.Design.TextInputLayout" >
+        <item name="android:textColorHint">@color/colorWhite5</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:colorAccent">@color/colorRedAccept</item>
-        <item name="android:colorControlNormal">@color/colorWhite1</item>
-        <item name="android:colorControlActivated">@color/colorRedAccept</item>
+        <item name="colorAccent">@color/colorRedAccept</item>
+        <item name="android:colorControlNormal">@color/colorWhite3</item>
+        <item name="android:colorControlActivated">@color/colorRedText</item>
     </style>
 
 </resources>

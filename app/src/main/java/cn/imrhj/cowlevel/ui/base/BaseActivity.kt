@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.ui.base
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
@@ -10,11 +11,14 @@ import android.support.v7.app.AppCompatActivity
 abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutId())
+        val id = layoutId()
+        if (id != null) {
+            setContentView(id)
+        }
         initView()
     }
 
-    @LayoutRes abstract fun layoutId(): Int
+    @LayoutRes abstract fun layoutId(): Int?
 
     open fun initView() {
 
