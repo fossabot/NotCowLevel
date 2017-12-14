@@ -67,9 +67,6 @@
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 
-# picasso
--dontwarn com.squareup.okhttp.**
-
 # BaseRecyclerViewAdapterHelper
 -keep class com.chad.library.adapter.** {
 *;
@@ -87,5 +84,14 @@
 -keepattributes Signature
 -dontwarn retrofit2.Platform$Java8
 -keepattributes Exceptions
+
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
 
 

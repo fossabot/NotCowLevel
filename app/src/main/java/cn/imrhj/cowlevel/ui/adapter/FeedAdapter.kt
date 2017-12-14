@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.ui.adapter
 
+import android.graphics.Bitmap
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -12,14 +13,14 @@ import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
-import cn.imrhj.cowlevel.utils.StringUtils
-import cn.imrhj.cowlevel.utils.cdnImageForSize
-import cn.imrhj.cowlevel.utils.cdnImageForSquare
-import cn.imrhj.cowlevel.utils.dp2px
+import cn.imrhj.cowlevel.utils.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**
@@ -126,7 +127,7 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
         if (StringUtils.isNotBlank(thumb)) {
             val view = helper?.getView<ImageView>(R.id.thumb)
             view?.visibility = VISIBLE
-            Picasso.with(App.getAppContext())
+            Glide.with(App.getAppContext())
                     .load(cdnImageForSquare(thumb, dp2px(100F)))
                     .into(view)
         }
@@ -137,7 +138,7 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
             val imageView = helper?.getView<ImageView>(R.id.pic)
             imageView?.visibility = VISIBLE
             imageView?.post {
-                Picasso.with(App.getAppContext())
+                Glide.with(App.getAppContext())
                         .load(cdnImageForSize(pic, imageView.width, imageView.height))
                         .into(imageView)
             }
@@ -146,14 +147,17 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
 
     private fun renderGame(helper: BaseViewHolder?, game: GameModel?) {
         if (game != null) {
+            var platforms = game.platform_support_list
             helper?.getView<View>(R.id.layout_game)?.visibility = VISIBLE
             helper?.getView<TextView>(R.id.game_title)?.text = game.title
             helper?.getView<TextView>(R.id.game_time)?.text = game.game_publish_date_show
-            helper?.getView<TextView>(R.id.game_platforms)?.text = game.platform_support_list
-                    ?.map { it.name }?.reduce { n1, n2 -> "$n1 / $n2" }
-            Picasso.with(App.getAppContext())
+            helper?.getView<TextView>(R.id.game_platforms)?.text =
+                    if (CollectionUtils.isNotEmpty(platforms))
+                        platforms?.map { it.name }?.reduce { n1, n2 -> "$n1 / $n2" }
+                    else ""
+            Glide.with(App.getAppContext())
                     .load(cdnImageForSize(game.pic, 130, 65))
-                    .into(helper?.getView<ImageView>(R.id.game_pic))
+                    .into(helper?.getView(R.id.game_pic))
         }
     }
 
@@ -235,9 +239,11 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
         val user = item?.user
         if (user != null) {
             helper?.getView<View>(R.id.layout_user)?.visibility = VISIBLE
-            Picasso.with(App.getApplication().applicationContext)
-                    .load(cdnImageForSize(user.avatar, dp2px(48F)))
-                    .into(helper?.getView<CircleImageView>(R.id.avatar))
+            Glide.with(App.getApplication().applicationContext)
+                    .`as`(if(user.avatar != null && user.avatar.endsWith(".gif", true)) GifDrawable::class.java else Bitmap::class.java )
+                    .load(cdnImageForSquare(user.avatar, dp2px(48F)))
+                    .apply(RequestOptions().circleCrop())
+                    .into(helper?.getView(R.id.avatar))
             helper?.setText(R.id.name, user.name)
             helper?.setText(R.id.intro, user.intro)
             helper?.setText(R.id.subtitle, item.action_text)

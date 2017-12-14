@@ -1,5 +1,7 @@
 package cn.imrhj.cowlevel.utils
 
+import com.elvishew.xlog.XLog
+
 /**
  * Created by rhj on 2017/12/6.
  */
@@ -49,7 +51,11 @@ fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): Strin
         result.append("/0")
     }
 
-    result.append("/format/webp")
+    if (imageUrl.endsWith(".gif", true)) {
+        result.append("/format/gif")
+    } else {
+        result.append("/format/webp")
+    }
     return result.toString()
 }
 
