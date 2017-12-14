@@ -15,14 +15,13 @@ before_install:
 - chmod +x gradlew
 script:
 - "./gradlew assembleRelease"
-deploy:
-  provider: releases
-  api_key:
-    secure: AETuMT7l9unu4KvqcLL/z5Bo3VkXlpJiioVzom1CNIFAYnocjgFqgToGTLmIp106KmiGAgUEWu7PdJu9H/RZ7QF7j8DSgAfGiy/lMYnVFbL+I+JqiM5pPJfbUOdh2nJJTbi3tKkOx2mQCkvTMPQnSq03vEwKxm2wW5UCInnj/R1Wdm72h4K9OuyJN6OCkmDDqciXS4Im56knr2q9vBC+eUAqaTnP+2H2qe1EjWAQ4cpQKxaTjfw8UyiveOcJTngV4mPMpZYRXxGev9eRXkl3GnrO9N1T5cw0U1EEpTMWxAv+pAfSJS3u7CbopxZyirXw7ITXbnJUSVzlHJsKFR3ER5OmkJRzDHGfeqY/xo8Wj7IpPhQh71ZQvYC/He9+EcqQJTtIn2Ix1ZGUrW5F82dMxHxsyJrRAI+woCHTdH3RJKEEQ6tvyECVbGwLioNoOpYHPkimYZi3FsFt46D5JHFy2oqHysCSrIyl5vUmkqlQE1XmwUxXCvpGiaZ6wHpKhRCuum5DPoxADJvBX1Y7nzo93cg2NZKx17MGASXdKgnOQoRY1VlAjztS0TKd6HmFOK8/KjF7Ia8UdWyxwLoo8EBhrIkuy3LUDuT2G+yaqvm48rRLqhy4Kupfapp1ZDX+YvwMAu3s2QRAaQVf98Iy+BmuaV2V4AL2dumhdu97opDoCIk=
-  file: app/build/outputs/apk/release/app-release.apk
-  skip_cleanup: true
-  on:
-    tags: true
 branches:
   only:
   - master
+deploy:
+  provider: releases
+  api_key:
+    secure: P+fUI7KYrgkeW8SFJOmA0FkuM/1vN8dkA/0DVlFUZXqL5TMNCInFzqIqh/6RyWnKrsWb8A9zY+sHcd/kib7kdW4wAtUb5uE46VkypkCGbEpuFQhpkc9J4i1iqxjrRPomZBIT2GtUHs3KGuKeb3WJWJ0+s+kaUcqnnC3cuGeEF1ojkp49GRggD0Bzg7ScK+yAPM4Dg8qjvkNcGgjR3D7VNFrLGfppI2qHHq1jnUDJquH0mofdqMbrsdsl2HmoF0pC0wvoVWjzLDRRUZ83HjPVXjppiDd8eIiTXkT2gA+T5Qm0Yv15jgRY5IgEsn21jBgXmTzyk+oMT4F1fFANDSRkzrX125QOtgBKiEkP0HtrMjKLC1k8I0KsfVWcBfEGbmiNJepkzYRUjAXRcYgF7kt1GQ0GUv75Jyc+CxB6mLOiGicCUKDACo0/0XAT8ku/h7Dk6ljg/cHnpW1VKNJCwtzzGFphHWvp0NSQZoGspnvLdyeuKCzS/29N/ZiViowL26RT2irwUjQr6cDMibwK0W/0p3E6Psv28a/Pa0Z2c11k+P6J1YdA9HuyhjVZ3INigwdPjVTyUnfV0GZdQWK9SKFEB8hO350t0WoUSPxzB6JcLkErYseveIGLV6XscAKPzEaFouYKXkvkpYo9zskrG6B77Aqg10Flv0hB9eiVg2VKSB4=
+  file: app/build/outputs/apk/release/app-release.apk
+  on:
+    tags: true
