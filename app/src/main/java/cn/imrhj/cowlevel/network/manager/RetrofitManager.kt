@@ -1,11 +1,18 @@
 package cn.imrhj.cowlevel.network.manager
 
-import android.net.Uri
 import cn.imrhj.cowlevel.App
+import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.interceptor.ApiLogInterceptor
 import cn.imrhj.cowlevel.network.interceptor.HeaderInterceptor
+import cn.imrhj.cowlevel.network.model.ApiModel
+import cn.imrhj.cowlevel.network.model.BaseModel
+import cn.imrhj.cowlevel.network.model.FeedApiModel
+import cn.imrhj.cowlevel.network.model.LoginModel
 import cn.imrhj.cowlevel.network.service.CowLevel
 import com.readystatesoftware.chuck.ChuckInterceptor
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,7 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 val COW_LEVEL_URL = "https://cowlevel.net/"
 val COW_LEVEL_URI = HttpUrl.parse(COW_LEVEL_URL)
-class RetrofitManager private constructor(){
+
+class RetrofitManager private constructor() {
     private val mClient: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor())
             .addInterceptor(ChuckInterceptor(App.getApplication().applicationContext))
@@ -33,14 +41,32 @@ class RetrofitManager private constructor(){
 
     private val mCowLevel = mRetrofit.create(CowLevel::class.java)
 
-    fun request() : CowLevel {
-        return mCowLevel
+    private fun <T : BaseModel> filterStatus(observable: Observable<ApiModel<T>>): Observable<T> {
+        return observable.map {
+            if (it.ec == 200) {
+                return@map it.data
+            } else {
+                throw ApiException(it.em, it.ec)
+            }
+        }.subscribeOn(Schedulers.io())
+    }
+
+    fun feedTimeline(id: Int = 0): Observable<FeedApiModel> {
+        return filterStatus(mCowLevel.feedTimeline())
+    }
+
+    fun hotFeeds(page: Int): Observable<FeedApiModel> {
+        return filterStatus(mCowLevel.hotFeeds(page))
+    }
+
+    fun login(email: String, password: String): Observable<LoginModel> {
+        return filterStatus(mCowLevel.login(email, password))
     }
 
 
     // 单例实现
     companion object {
-        fun getInstance() : RetrofitManager {
+        fun getInstance(): RetrofitManager {
             return Inner.mSingleInstance
         }
     }

@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import cn.imrhj.cowlevel.R
-import cn.imrhj.cowlevel.utils.CollectionUtil
+import cn.imrhj.cowlevel.utils.CollectionUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
@@ -107,7 +107,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     fun updateList(lists: List<T>?, isReset: Boolean) {
-        if (CollectionUtil.isNotEmpty(lists)) {
+        if (CollectionUtils.isNotEmpty(lists)) {
             if (isReset) {
                 mAdapter?.setNewData(lists)
             } else {

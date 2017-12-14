@@ -5,7 +5,7 @@ import java.util.regex.Pattern
 /**
  * Created by rhj on 12/12/2017.
  */
-object RegexUtil {
+object RegexUtils {
 
     private val REGEX_EMAIL = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$"
 

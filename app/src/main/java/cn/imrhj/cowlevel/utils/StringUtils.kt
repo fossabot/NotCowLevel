@@ -4,7 +4,7 @@ package cn.imrhj.cowlevel.utils
  * Created by rhj on 2017/12/8.
  */
 
-object StringUtil {
+object StringUtils {
     fun isEmpty(string: CharSequence?): Boolean {
         return string?.isEmpty() ?: true
     }

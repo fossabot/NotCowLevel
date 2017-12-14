@@ -62,5 +62,18 @@ data class UserModel(
         val is_block: Int = 0,
         val is_pro: Int = 0,
         val total_voted_count: Int = 0,
-        val pro_games: List<*>? = null
-)
+        val pro_games: List<*>? = null,
+        val invite_code_count: Int = 0,
+        val draft_list_count: Int = 0,
+        val followed_question_count: Int = 0,
+        val followed_tag_count: Int = 0,
+        val followed_game_count: Int = 0,
+        val collected_game_count: Int = 0,
+        val created_game_count: Int = 0,
+        val bind_status: BindStatus? = null,
+        val is_curator: Int = 0,
+        val is_developer: Int = 0,
+        val video_count: Int = 0,
+        val inbox_count: Int = 0,
+        var token: String? = null
+):BaseModel()

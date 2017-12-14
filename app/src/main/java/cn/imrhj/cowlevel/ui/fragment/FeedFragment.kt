@@ -21,9 +21,7 @@ class FeedFragment : RecyclerFragment<FeedModel>() {
     }
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
-        RetrofitManager.getInstance().request().feedTimeline(nextCursor)
-                .map { it.data }
-                .subscribeOn(Schedulers.io())
+        RetrofitManager.getInstance().feedTimeline(nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     updateList(result.list?.filter { it.action != system_recommend_user.name }, isResetData)

@@ -4,15 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-//apply plugin: 'kotlin-kapt'
-//
-//kapt {
-//    arguments {
-//        arg("moduleName", project.getName())
-//    }
-//}
-
-
 Properties props = new Properties()
 boolean isHasFile = false
 File propFile = file('../local.properties')
@@ -48,7 +39,6 @@ android {
             zipAlignEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "COW_AUTH_TOKEN", isHasFile ? props['COW_AUTH_TOKEN'] : System.getenv("COW_AUTH_TOKEN")
             signingConfig signingConfigs.defaultConfig
         }
 
@@ -57,7 +47,6 @@ android {
             zipAlignEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "COW_AUTH_TOKEN", isHasFile ? props['COW_AUTH_TOKEN'] : System.getenv("COW_AUTH_TOKEN")
             signingConfig signingConfigs.defaultConfig
         }
     }

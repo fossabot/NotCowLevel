@@ -18,8 +18,7 @@ class HotFeedFragment : RecyclerFragment<FeedModel>() {
     }
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
-        RetrofitManager.getInstance().request().hotFeeds(nextCursor)
-                .map { it.data }
+        RetrofitManager.getInstance().hotFeeds(nextCursor)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->

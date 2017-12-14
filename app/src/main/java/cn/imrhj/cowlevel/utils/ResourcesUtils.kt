@@ -10,7 +10,7 @@ import cn.imrhj.cowlevel.App
 /**
  * Created by rhj on 12/12/2017.
  */
-object ResourceUtil {
+object ResourcesUtils {
     private val res = App.getAppContext().resources
 
     @ColorInt

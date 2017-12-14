@@ -12,7 +12,7 @@ import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
-import cn.imrhj.cowlevel.utils.StringUtil
+import cn.imrhj.cowlevel.utils.StringUtils
 import cn.imrhj.cowlevel.utils.cdnImageForSize
 import cn.imrhj.cowlevel.utils.cdnImageForSquare
 import cn.imrhj.cowlevel.utils.dp2px
@@ -123,7 +123,7 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
     }
 
     private fun renderThumb(helper: BaseViewHolder?, thumb: String?) {
-        if (StringUtil.isNotBlank(thumb)) {
+        if (StringUtils.isNotBlank(thumb)) {
             val view = helper?.getView<ImageView>(R.id.thumb)
             view?.visibility = VISIBLE
             Picasso.with(App.getAppContext())
@@ -133,7 +133,7 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
     }
 
     private fun renderPic(helper: BaseViewHolder?, pic: String?) {
-        if (StringUtil.isNotBlank(pic)) {
+        if (StringUtils.isNotBlank(pic)) {
             val imageView = helper?.getView<ImageView>(R.id.pic)
             imageView?.visibility = VISIBLE
             imageView?.post {
