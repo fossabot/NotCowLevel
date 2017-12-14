@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class HotFeedFragment : RecyclerFragment<FeedModel>() {
     override fun getAdapter(): BaseQuickAdapter<FeedModel, BaseViewHolder> {
-        return FeedAdapter(ArrayList())
+        return FeedAdapter(ArrayList(), this)
     }
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {

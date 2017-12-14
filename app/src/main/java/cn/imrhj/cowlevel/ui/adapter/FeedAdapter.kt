@@ -1,11 +1,14 @@
 package cn.imrhj.cowlevel.ui.adapter
 
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
@@ -13,20 +16,21 @@ import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
+import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
-import de.hdodenhof.circleimageview.CircleImageView
 
 /**
  * Created by rhj on 2017/12/9.
  */
-class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, BaseViewHolder>(data) {
+class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQuickAdapter<FeedModel, BaseViewHolder>(data) {
+    private val fragment = fragment
+
     init {
         multiTypeDelegate = object : MultiTypeDelegate<FeedModel>() {
             override fun getItemType(t: FeedModel): Int {
@@ -67,8 +71,20 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
                 tag_article.name -> this.renderEditorEliteArticle(helper, item)
                 vote_article.name -> this.renderEditorEliteArticle(helper, item)
                 follow_question.name -> this.renderFollowQuestion(helper, item)
+                submit_question.name -> this.renderSubmitQuestion(helper, item)
+                post.name -> this.renderPost(helper, item)
             }
         }
+    }
+
+    private fun renderPost(helper: BaseViewHolder?, item: FeedModel) {
+        renderGame(helper, item.merged?.games?.get(0), true)
+    }
+
+    private fun renderSubmitQuestion(helper: BaseViewHolder?, item: FeedModel) {
+        this.renderTitle(helper, item.question?.title)
+        this.renderContent(helper, item.question?.neat_content?.desc)
+        this.renderThumb(helper, item.question?.neat_content?.thumb)
     }
 
     private fun renderFollowQuestion(helper: BaseViewHolder?, item: FeedModel) {
@@ -145,7 +161,18 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
         }
     }
 
-    private fun renderGame(helper: BaseViewHolder?, game: GameModel?) {
+    private fun renderGame(helper: BaseViewHolder?, game: GameModel?, hideOuter: Boolean = false) {
+        val layout = helper?.getView<RelativeLayout>(R.id.layout_game)
+        layout?.isClickable = !hideOuter
+        if (hideOuter) {
+            layout?.background = null
+            layout?.foreground
+            layout?.setPadding(0, 0, 0, 0)
+        } else {
+            layout?.background = ColorDrawable(ResourcesUtils.getColor(R.color.colorWhite1))
+            layout?.setPadding(dp2px(12), dp2px(20), dp2px(12), dp2px(20))
+        }
+
         if (game != null) {
             var platforms = game.platform_support_list
             helper?.getView<View>(R.id.layout_game)?.visibility = VISIBLE
@@ -187,16 +214,6 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
             }
 
         }
-//        if (voters?.isNotEmpty() == true) {
-//            frontValue = ""
-//            tagValue = voters[0].name ?: ""
-//            subValue = "等赞同了该文章"
-//        } else if (tags?.isNotEmpty() == true) {
-//            tagValue = tags[0].name ?: ""
-//        } else if (games?.isNotEmpty() == true) {
-//            tagValue = games[0].title ?: ""
-//            subValue = "的评价"
-//        }
 
         if (tagValue.isNotBlank()) {
             header?.visibility = View.VISIBLE
@@ -239,10 +256,10 @@ class FeedAdapter(data: MutableList<FeedModel>?) : BaseQuickAdapter<FeedModel, B
         val user = item?.user
         if (user != null) {
             helper?.getView<View>(R.id.layout_user)?.visibility = VISIBLE
-            Glide.with(App.getApplication().applicationContext)
-                    .`as`(if(user.avatar != null && user.avatar.endsWith(".gif", true)) GifDrawable::class.java else Bitmap::class.java )
+            Glide.with(fragment)
+                    .`as`(if (user.avatar != null && user.avatar.endsWith(".gif", true)) GifDrawable::class.java else Bitmap::class.java)
                     .load(cdnImageForSquare(user.avatar, dp2px(48F)))
-                    .apply(RequestOptions().circleCrop())
+                    .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))
                     .into(helper?.getView(R.id.avatar))
             helper?.setText(R.id.name, user.name)
             helper?.setText(R.id.intro, user.intro)

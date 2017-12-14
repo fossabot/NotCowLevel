@@ -63,6 +63,8 @@ data class FeedModel(
         follow_question,
         sharelink_comment,
         vote_comment,
+        submit_question,
+        post,
         post_submit_question;
 
         fun getName(): String {
