@@ -3,7 +3,7 @@
     package="cn.imrhj.cowlevel">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".App"
@@ -25,6 +25,7 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar.Transparent" />
+        <activity android:name=".ui.activity.WebviewActivity"></activity>
     </application>
 
 </manifest>

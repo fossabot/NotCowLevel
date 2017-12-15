@@ -1,8 +1,8 @@
 package cn.imrhj.cowlevel.ui.adapter
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -13,6 +13,7 @@ import android.widget.TextView
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.extensions.setTextAndShow
+import cn.imrhj.cowlevel.manager.SchameUtils
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
@@ -115,6 +116,13 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
         renderPic(helper, article?.pic)
         renderNavBar(helper, item, article?.vote_count, article?.has_vote, null,
                 article?.comment_count)
+        setUrl(helper, "https://cowlevel.net/article/${article?.id}")
+    }
+
+    private fun setUrl(helper: BaseViewHolder?, url: String) {
+        helper?.getView<View>(R.id.feed_card)?.setOnClickListener {
+            SchameUtils.openLink(url)
+        }
     }
 
     private fun renderEditorEliteReview(helper: BaseViewHolder?, item: FeedModel) {
@@ -164,9 +172,11 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
     private fun renderGame(helper: BaseViewHolder?, game: GameModel?, hideOuter: Boolean = false) {
         val layout = helper?.getView<RelativeLayout>(R.id.layout_game)
         layout?.isClickable = !hideOuter
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            layout?.foreground = if (hideOuter) null else ResourcesUtils.getDrawable(R.drawable.card_foreground)
+        }
         if (hideOuter) {
             layout?.background = null
-            layout?.foreground
             layout?.setPadding(0, 0, 0, 0)
         } else {
             layout?.background = ColorDrawable(ResourcesUtils.getColor(R.color.colorWhite1))
@@ -255,7 +265,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
     private fun renderUser(helper: BaseViewHolder?, item: FeedModel?) {
         val user = item?.user
         if (user != null) {
-            helper?.getView<View>(R.id.layout_user)?.visibility = VISIBLE
+            helper?.getView<View>(R.id.user)?.visibility = VISIBLE
             Glide.with(fragment)
                     .`as`(if (user.avatar != null && user.avatar.endsWith(".gif", true)) GifDrawable::class.java else Bitmap::class.java)
                     .load(cdnImageForSquare(user.avatar, dp2px(48F)))
@@ -265,7 +275,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
             helper?.setText(R.id.intro, user.intro)
             helper?.setText(R.id.subtitle, item.action_text)
         } else {
-            helper?.getView<View>(R.id.layout_user)?.visibility = GONE
+            helper?.getView<View>(R.id.user)?.visibility = GONE
         }
     }
 

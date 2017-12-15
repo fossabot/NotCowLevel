@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.customtabs.CustomTabsClient
 import android.support.customtabs.CustomTabsIntent
 import android.support.customtabs.CustomTabsServiceConnection
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import cn.imrhj.cowlevel.R
@@ -67,6 +68,7 @@ class LoginActivity : BaseActivity() {
                             btnLogin.doneLoadingAnimation(Color.GREEN, ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(R.drawable.ic_done_white_48dp)!!))
                             UserManager.setToken(loginModel.authToken!!)
                             startActivity(Intent(this, MainActivity::class.java))
+                            finish()
                         }
                     }, { error ->
                         etMail.error = error.message
@@ -153,6 +155,7 @@ class LoginActivity : BaseActivity() {
                     .build()
                     .launchUrl(this, Uri.parse(url))
         } else {
+            Log.d(Thread.currentThread().name, "class = LoginActivity rhjlog openUrl: todo")
 
         }
     }
