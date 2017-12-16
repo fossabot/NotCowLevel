@@ -15,6 +15,7 @@ import io.reactivex.schedulers.Schedulers
  * Created by rhj on 2017/11/28.
  */
 class FeedFragment : RecyclerFragment<FeedModel>() {
+    private var mFirstId = 0
 
     override fun getAdapter(): BaseQuickAdapter<FeedModel, BaseViewHolder> {
         return FeedAdapter(ArrayList(), this)
@@ -24,6 +25,10 @@ class FeedFragment : RecyclerFragment<FeedModel>() {
         RetrofitManager.getInstance().feedTimeline(nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
+                    if (result.first_id == mFirstId) {
+                        return@subscribe
+                    }
+                    mFirstId = result.first_id
                     updateList(result.list?.filter { it.action != system_recommend_user.name }, isResetData)
                     setHasMore(result.has_more == 1)
                     setNextCursor(result.last_id)

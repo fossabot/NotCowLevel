@@ -52,7 +52,7 @@ class RetrofitManager private constructor() {
     }
 
     fun feedTimeline(id: Int = 0): Observable<FeedApiModel> {
-        return filterStatus(mCowLevel.feedTimeline())
+        return filterStatus(mCowLevel.feedTimeline(id))
     }
 
     fun hotFeeds(page: Int): Observable<FeedApiModel> {

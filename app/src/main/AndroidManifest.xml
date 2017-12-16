@@ -19,13 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.MainActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar.Transparent" />
-        <activity android:name=".ui.activity.WebviewActivity"></activity>
+            android:theme="@style/AppTheme.Transparent" />
+        <activity android:name=".ui.activity.WebviewActivity" />
     </application>
 
 </manifest>

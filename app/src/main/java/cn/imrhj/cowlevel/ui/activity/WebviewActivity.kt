@@ -1,7 +1,7 @@
 package cn.imrhj.cowlevel.ui.activity
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -10,7 +10,6 @@ import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.manager.COW_LEVEL_URL
 import cn.imrhj.cowlevel.ui.base.BaseActivity
-import cn.imrhj.cowlevel.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_webview.*
 
 class WebviewActivity : BaseActivity() {
@@ -21,12 +20,11 @@ class WebviewActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun initView() {
+//        setSupportActionBar(toolbar)
         url = intent.getStringExtra("url")
-        refresh.setOnRefreshListener { webview.loadUrl(url) }
         webview.settings.javaScriptEnabled = true
         webview.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
-                refresh.isRefreshing = false
             }
         }
         webview.webChromeClient = object : WebChromeClient() {
@@ -34,7 +32,32 @@ class WebviewActivity : BaseActivity() {
             }
         }
         CookieManager.getInstance().setCookie(COW_LEVEL_URL, "auth_token=${UserManager.getUserModel().token}")
-        Log.d(Thread.currentThread().name, "class = WebviewActivity rhjlog initView: " + CookieManager.getInstance().getCookie(COW_LEVEL_URL))
         webview.loadUrl(url)
+    }
+
+    override fun onBackPressed() {
+        if (webview.canGoBack()) {
+            webview.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        webview.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        webview.onResume()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        webview.visibility = View.GONE
+        refresh.removeAllViews()
+        webview.destroy()
     }
 }
