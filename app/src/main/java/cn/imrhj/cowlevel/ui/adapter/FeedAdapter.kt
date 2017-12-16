@@ -17,6 +17,7 @@ import cn.imrhj.cowlevel.manager.SchameUtils
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
+import cn.imrhj.cowlevel.network.model.ShareLinkModel
 import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.*
 import com.bumptech.glide.Glide
@@ -29,6 +30,9 @@ import com.chad.library.adapter.base.util.MultiTypeDelegate
 /**
  * Created by rhj on 2017/12/9.
  */
+val DP130_2PX = dp2px(130)
+val DP65_2PX = dp2px(65)
+
 class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQuickAdapter<FeedModel, BaseViewHolder>(data) {
     private val fragment = fragment
 
@@ -57,6 +61,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
         val vContent = helper?.getView<TextView>(R.id.content)
         val vThumb = helper?.getView<ImageView>(R.id.thumb)
         val vGameLayout = helper?.getView<View>(R.id.layout_game)
+        helper?.getView<View>(R.id.layout_link)?.visibility = GONE
         vGameLayout?.visibility = GONE
         vPic?.visibility = GONE
         vTitle?.visibility = GONE
@@ -70,12 +75,28 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
                 editor_elite_review.name -> this.renderEditorEliteReview(helper, item)
                 post_submit_answer.name -> this.renderTagAnswer(helper, item)
                 tag_article.name -> this.renderEditorEliteArticle(helper, item)
+                tag_sharelink.name -> this.renderTagShareLink(helper, item)
                 vote_article.name -> this.renderEditorEliteArticle(helper, item)
                 follow_question.name -> this.renderFollowQuestion(helper, item)
                 submit_question.name -> this.renderSubmitQuestion(helper, item)
+                post_submit_review.name -> this.renderPostSubmitReview(helper, item)
                 post.name -> this.renderPost(helper, item)
             }
         }
+    }
+
+    private fun renderTagShareLink(helper: BaseViewHolder?, item: FeedModel) {
+        renderContent(helper, item.comment?.content)
+        renderLink(helper, item.sharelink)
+        helper?.getView<View>(R.id.nav_voter_bar)?.visibility = GONE
+    }
+
+    private fun renderPostSubmitReview(helper: BaseViewHolder?, item: FeedModel) {
+        renderGame(helper, item.game)
+        renderTitle(helper, item.review?.title)
+        renderContent(helper, item.review?.neat_content?.desc)
+        renderThumb(helper, item.review?.neat_content?.thumb)
+        renderNavBar(helper, item, item.review?.vote_count, item.review?.has_vote, null, item.review?.comment_count)
     }
 
     private fun renderPost(helper: BaseViewHolder?, item: FeedModel) {
@@ -192,9 +213,19 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
                     if (CollectionUtils.isNotEmpty(platforms))
                         platforms?.map { it.name }?.reduce { n1, n2 -> "$n1 / $n2" }
                     else ""
-            Glide.with(App.getAppContext())
-                    .load(cdnImageForSize(game.pic, 130, 65))
+            Glide.with(fragment)
+                    .load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
                     .into(helper?.getView(R.id.game_pic))
+        }
+    }
+
+    private fun renderLink(helper: BaseViewHolder?, shareLink: ShareLinkModel?) {
+        if (shareLink != null) {
+            helper?.getView<View>(R.id.layout_link)?.visibility = View.VISIBLE
+            helper?.getView<TextView>(R.id.tv_link_title)?.text = shareLink.title
+            Glide.with(fragment)
+                    .load(cdnImageForSize(shareLink.pic, DP130_2PX, DP65_2PX))
+                    .into(helper?.getView(R.id.iv_link_pic))
         }
     }
 
@@ -221,6 +252,14 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
                 frontValue = ""
                 tagValue = voters?.get(0)?.name ?: ""
                 subValue = "赞同了该文章"
+            }
+            tag_article.name -> {
+                tagValue = tags?.get(0)?.name ?: ""
+                subValue = "的文章"
+            }
+            post_submit_review.name -> {
+                tagValue = games?.get(0)?.chinese_title ?: ""
+                subValue = "的评价"
             }
 
         }

@@ -42,6 +42,8 @@ data class FeedModel(
         val review: ReviewModel? = null,
         val game: GameModel? = null,
         val answer: AnswerModel? = null,
+        val sharelink: ShareLinkModel? = null,
+        val comment: CommentModel? = null,
         val question: QuestionModel? = null,
         val has_more: Int = 0,
         val voters: List<VotersModel>? = null,
@@ -59,6 +61,7 @@ data class FeedModel(
         vote_answer,
         vote_article,
         tag_article,
+        tag_sharelink,
         post_submit_answer,         // 回答了问题
         follow_question,
         sharelink_comment,
