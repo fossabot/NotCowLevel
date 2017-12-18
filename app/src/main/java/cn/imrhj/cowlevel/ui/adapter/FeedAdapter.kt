@@ -76,6 +76,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
                 post_submit_answer.name -> this.renderTagAnswer(helper, item)
                 tag_article.name -> this.renderEditorEliteArticle(helper, item)
                 tag_sharelink.name -> this.renderTagShareLink(helper, item)
+                tag_question.name -> this.renderTagQuestion(helper, item)
                 vote_article.name -> this.renderEditorEliteArticle(helper, item)
                 follow_question.name -> this.renderFollowQuestion(helper, item)
                 submit_question.name -> this.renderSubmitQuestion(helper, item)
@@ -127,6 +128,9 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
     private fun renderTagQuestion(helper: BaseViewHolder?, item: FeedModel) {
         val question = item.question
         renderNavBar(helper, item, null, 0, question?.is_follow!!, question.answer_count)
+        renderTitle(helper, question.title)
+        renderContent(helper, question.neat_content?.desc)
+        renderThumb(helper, question.neat_content?.thumb)
     }
 
     private fun renderEditorEliteArticle(helper: BaseViewHolder?, item: FeedModel) {
@@ -260,6 +264,10 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
             post_submit_review.name -> {
                 tagValue = games?.get(0)?.chinese_title ?: ""
                 subValue = "的评价"
+            }
+            tag_question.name -> {
+                tagValue = tags?.get(0)?.name ?: ""
+                subValue = "的问题"
             }
 
         }

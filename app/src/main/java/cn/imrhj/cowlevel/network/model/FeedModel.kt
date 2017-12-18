@@ -51,16 +51,16 @@ data class FeedModel(
 ) {
     enum class Type {
         type_unknow,
-        tag_question,
         editor_elite_answer,        // 回答了问题
         editor_elite_review,        // 评价了游戏
         system_recommend_user,
-        editor_elite_article,      // 发布了文章
+        editor_elite_article,       // 发布了文章
         post_submit_review,
         tag_answer,
         vote_answer,
         vote_article,
         tag_article,
+        tag_question,               // 提交了问题
         tag_sharelink,
         post_submit_answer,         // 回答了问题
         follow_question,
