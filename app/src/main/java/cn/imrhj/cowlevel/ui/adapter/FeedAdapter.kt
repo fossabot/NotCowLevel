@@ -82,6 +82,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
                 submit_question.name -> this.renderSubmitQuestion(helper, item)
                 post_submit_review.name -> this.renderPostSubmitReview(helper, item)
                 post.name -> this.renderPost(helper, item)
+                sharelink_add.name -> this.renderTagShareLink(helper, item)
             }
         }
     }

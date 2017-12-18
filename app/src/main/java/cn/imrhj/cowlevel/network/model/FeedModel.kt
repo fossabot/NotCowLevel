@@ -65,6 +65,7 @@ data class FeedModel(
         post_submit_answer,         // 回答了问题
         follow_question,
         sharelink_comment,
+        sharelink_add,              // 分享了链接
         vote_comment,
         submit_question,
         post,

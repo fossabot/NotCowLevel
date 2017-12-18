@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="@drawable/card_foreground"
-    android:paddingBottom="20dp"
+    android:paddingBottom="10dp"
     android:paddingLeft="12dp"
     android:paddingRight="12dp"
     android:paddingTop="20dp">
