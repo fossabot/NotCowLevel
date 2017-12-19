@@ -62,6 +62,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
         val vThumb = helper?.getView<ImageView>(R.id.thumb)
         val vGameLayout = helper?.getView<View>(R.id.layout_game)
         helper?.getView<View>(R.id.layout_link)?.visibility = GONE
+        helper?.getView<View>(R.id.feed_card)?.setOnClickListener(null)
         vGameLayout?.visibility = GONE
         vPic?.visibility = GONE
         vTitle?.visibility = GONE
