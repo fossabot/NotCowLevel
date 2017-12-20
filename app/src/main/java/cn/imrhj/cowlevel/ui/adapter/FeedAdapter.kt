@@ -14,7 +14,7 @@ import android.widget.TextView
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.extensions.setTextAndShow
-import cn.imrhj.cowlevel.manager.SchameUtils
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.COW_LEVEL_URL
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
@@ -152,7 +152,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
 
     private fun setUrl(helper: BaseViewHolder?, url: String) {
         helper?.getView<View>(R.id.feed_card)?.setOnClickListener {
-            SchameUtils.openLink(url)
+            SchemeUtils.openLink(url)
         }
     }
 
@@ -224,7 +224,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
                     .load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
                     .into(gameView.findViewById(R.id.game_pic))
 
-            gameView.setOnClickListener { SchameUtils.openLink(COW_LEVEL_URL + "game/" + game.url_slug) }
+            gameView.setOnClickListener { SchemeUtils.openLink(COW_LEVEL_URL + "game/" + game.url_slug) }
 
             layout?.addView(gameView)
             (gameView.layoutParams as LinearLayout.LayoutParams).topMargin = dp2px(12)

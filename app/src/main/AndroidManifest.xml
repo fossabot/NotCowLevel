@@ -23,7 +23,9 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:theme="@style/AppTheme.Transparent" />
-        <activity android:name=".ui.activity.WebviewActivity" />
+        <activity
+            android:name=".ui.activity.WebviewActivity"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".ui.activity.PersonActivity"
             android:theme="@style/AppTheme.Transition" />

@@ -3,15 +3,14 @@ package cn.imrhj.cowlevel.ui.activity
 import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsClient
-import android.support.customtabs.CustomTabsIntent
 import android.support.customtabs.CustomTabsServiceConnection
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.ui.base.BaseActivity
@@ -24,13 +23,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {
     private val INVITE_URL = "https://cowlevel.net/apply"
-    private var customTabsReady = false
     private var isRegister = true
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        bindCustomTabsService()
-    }
 
     override fun layoutId(): Int {
         return R.layout.activity_login
@@ -132,32 +125,22 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    private fun bindCustomTabsService() {
-        CustomTabsClient.bindCustomTabsService(applicationContext, "com.android.chrome",
-                object : CustomTabsServiceConnection() {
-                    override fun onCustomTabsServiceConnected(name: ComponentName?,
-                                                              client: CustomTabsClient?) {
-                        customTabsReady = true
-                    }
-
-                    override fun onServiceDisconnected(name: ComponentName?) {
-                    }
-                })
-
-    }
+//    private fun bindCustomTabsService() {
+//        CustomTabsClient.bindCustomTabsService(applicationContext, "com.android.chrome",
+//                object : CustomTabsServiceConnection() {
+//                    override fun onCustomTabsServiceConnected(name: ComponentName?,
+//                                                              client: CustomTabsClient?) {
+//                        customTabsReady = true
+//                    }
+//
+//                    override fun onServiceDisconnected(name: ComponentName?) {
+//                    }
+//                })
+//
+//    }
 
     private fun openUrl(url: String) {
-        if (customTabsReady) {
-            CustomTabsIntent.Builder()
-                    .setToolbarColor(ResourcesUtils.getColor(R.color.colorPrimary))
-                    .setSecondaryToolbarColor(ResourcesUtils.getColor(R.color.colorPrimaryDark))
-                    .setCloseButtonIcon(ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(R.drawable.ic_arrow_back_white)!!))
-                    .build()
-                    .launchUrl(this, Uri.parse(url))
-        } else {
-            Log.d(Thread.currentThread().name, "class = LoginActivity rhjlog openUrl: todo")
-
-        }
+        SchemeUtils.openWithChromeTabs(url)
     }
 
 }
