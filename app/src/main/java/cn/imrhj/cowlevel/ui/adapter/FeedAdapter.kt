@@ -2,13 +2,13 @@ package cn.imrhj.cowlevel.ui.adapter
 
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
@@ -63,6 +63,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
         val vGameLayout = helper?.getView<View>(R.id.layout_game)
         helper?.getView<View>(R.id.layout_link)?.visibility = GONE
         helper?.getView<View>(R.id.feed_card)?.setOnClickListener(null)
+        helper?.getView<ViewGroup>(R.id.ll_dynamic)?.removeAllViews()
         vGameLayout?.visibility = GONE
         vPic?.visibility = GONE
         vTitle?.visibility = GONE
@@ -103,7 +104,7 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
     }
 
     private fun renderPost(helper: BaseViewHolder?, item: FeedModel) {
-        renderGame(helper, item.merged?.games?.get(0), true)
+        renderGame(helper, item.merged?.games)
     }
 
     private fun renderSubmitQuestion(helper: BaseViewHolder?, item: FeedModel) {
@@ -197,32 +198,35 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
     }
 
     private fun renderGame(helper: BaseViewHolder?, game: GameModel?, hideOuter: Boolean = false) {
-        val layout = helper?.getView<RelativeLayout>(R.id.layout_game)
-        layout?.isClickable = !hideOuter
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            layout?.foreground = if (hideOuter) null else ResourcesUtils.getDrawable(R.drawable.card_foreground)
-        }
+        val layout = helper?.getView<LinearLayout>(R.id.ll_dynamic)
+        val gameView = LayoutInflater.from(fragment.context).inflate(R.layout.item_game_layout, null)
+//        val layout = helper?.getView<RelativeLayout>(R.id.layout_game)
         if (hideOuter) {
-            layout?.background = null
-            layout?.setPadding(0, 0, 0, 0)
+            gameView?.background = null
+            gameView?.setPadding(0, 0, 0, 0)
         } else {
-            layout?.background = ColorDrawable(ResourcesUtils.getColor(R.color.colorWhite1))
-            layout?.setPadding(dp2px(12), dp2px(20), dp2px(12), dp2px(20))
+            gameView?.background = ColorDrawable(ResourcesUtils.getColor(R.color.colorWhite1))
+            gameView?.setPadding(dp2px(12), dp2px(20), dp2px(12), dp2px(20))
         }
-
+//
         if (game != null) {
             var platforms = game.platform_support_list
-            helper?.getView<View>(R.id.layout_game)?.visibility = VISIBLE
-            helper?.getView<TextView>(R.id.game_title)?.text = game.title
-            helper?.getView<TextView>(R.id.game_time)?.text = game.game_publish_date_show
-            helper?.getView<TextView>(R.id.game_platforms)?.text =
+            gameView.findViewById<TextView>(R.id.game_title)?.text = game.title
+            gameView.findViewById<TextView>(R.id.game_time)?.text = game.game_publish_date_show
+            gameView.findViewById<TextView>(R.id.game_platforms)?.text =
                     if (CollectionUtils.isNotEmpty(platforms))
                         platforms?.map { it.name }?.reduce { n1, n2 -> "$n1 / $n2" }
                     else ""
             Glide.with(fragment)
                     .load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
-                    .into(helper?.getView(R.id.game_pic))
+                    .into(gameView.findViewById(R.id.game_pic))
+            layout?.addView(gameView)
+            (gameView.layoutParams as LinearLayout.LayoutParams).topMargin = dp2px(12)
         }
+    }
+
+    private fun renderGame(helper: BaseViewHolder?, games: List<GameModel>?) {
+        games?.forEach { renderGame(helper, it, true) }
     }
 
     private fun renderLink(helper: BaseViewHolder?, shareLink: ShareLinkModel?) {
