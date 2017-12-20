@@ -15,10 +15,15 @@ abstract class BaseActivity : AppCompatActivity() {
         if (id != null) {
             setContentView(id)
         }
+        initData()
         initView()
     }
 
     @LayoutRes abstract fun layoutId(): Int?
+
+    open fun initData() {
+
+    }
 
     open fun initView() {
 

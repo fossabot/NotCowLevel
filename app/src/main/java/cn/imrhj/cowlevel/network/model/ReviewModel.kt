@@ -36,4 +36,4 @@ data class ReviewModel(
         val hide_comment: Int = 0,
         val lock_comment: Int = 0,
         val is_wildrose: Int = 0
-)
+) : BaseModel()

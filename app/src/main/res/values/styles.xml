@@ -29,4 +29,12 @@
         <item name="android:colorControlActivated">@color/colorRedText</item>
     </style>
 
+    <style name="AppTheme.Transition">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+        <item name="android:windowExitTransition">@android:transition/explode</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/change_image_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/change_image_transition</item>
+    </style>
+
 </resources>

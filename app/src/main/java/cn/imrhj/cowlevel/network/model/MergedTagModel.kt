@@ -10,4 +10,4 @@ data class MergedTagModel(
         val content: String? = null,
         val is_follow: Int? = 0,
         val has_collect: Int? = 0
-)
+) : BaseModel()

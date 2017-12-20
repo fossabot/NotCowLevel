@@ -2,36 +2,63 @@ package cn.imrhj.cowlevel.network.model
 
 /**
  * Created by rhj on 2017/12/4.
- * name : 南瓜
- * url_slug : blogprofile
- * avatar : https://pic1.cdncl.net/user/blogprofile/common_pic/6b0bcb9d94f87b87ec942e34f95c9e2f.jpg
- * cover : https://pic1.cdncl.net/user/blogprofile/common_pic/b4771fa8932fbace458c336dcd198d77.jpg
- * intro : 励志学好英语
- * level : 1
- * following_count : 171
- * follower_count : 37
- * recommend_count : 1
- * played_count : 12
- * comment_count : 12
- * vote_count : 1
- * comment_voted_count : 15
- * answer_voted_count : 18
- * photo_voted_count : 0
- * article_voted_count : 0
- * question_count : 4
- * answer_count : 23
- * article_count : 0
- * user_bio :
- *
- *近期想要自己做一款游戏试试看，开始策划！
- * invite_code_total : 1
- * invite_code_remain : 0
- * is_follow : 0
- * is_follow_by : 0
- * is_follow_both : 0
- * pro_games : []
- * is_pro : 0
- * total_voted_count : 33
+ * {
+"name": "乌拉拉",
+"url_slug": "wulala",
+"avatar": "https:\/\/pic1.cdncl.net\/user\/avatar\/7e2e69e111ee99a1c2c25acd851d1c5b.jpeg",
+"cover": "https:\/\/pic1.cdncl.net\/user\/wulala\/cover\/fee00dde747bf48b5100c85dbc73e5ff.jpeg",
+"intro": "奶牛关运营，很高兴认识你",
+"level": 100,
+"following_count": 6248,
+"follower_count": 6116,
+"recommend_count": 1009,
+"played_count": 151,
+"comment_count": 5,
+"vote_count": 24,
+"comment_voted_count": 13,
+"answer_voted_count": 0,
+"photo_voted_count": 0,
+"article_voted_count": 0,
+"question_count": 9,
+"answer_count": 1,
+"article_count": 0,
+"user_bio": "有什么不明白的欢迎私信我哦~",
+"invite_code_total": 21,
+"invite_code_remain": 0,
+"total_voted_count": 13,
+"feed_count": 2837,
+"tag_count": 33,
+"image_count": 9477,
+"video_count": 562,
+"is_follow": 1,
+"is_follow_by": 1,
+"is_follow_both": 1,
+"is_block": 0,
+"user_site": {
+"nintendo_3ds": "",
+"nintendo_ns": "",
+"nintendo_wiiu": "",
+"blizzard": "",
+"gog": "",
+"origin": "",
+"uplay": "",
+"steam": "",
+"psn": "",
+"xbox": "",
+"zhihu": "https:\/\/www.zhihu.com\/people\/ellioseee?utm_source=cowlevel",
+"weibo": "",
+"douban": "",
+"github": "",
+"bilibili": "",
+"douyu": "",
+"acfun": "",
+"twitch": "",
+"user_link": ""
+},
+"pro_games": [],
+"is_pro": 0,
+"collection_count": 1
+}
  */
 data class UserModel(
         val name: String? = null,
@@ -75,5 +102,10 @@ data class UserModel(
         val is_developer: Int = 0,
         val video_count: Int = 0,
         val inbox_count: Int = 0,
-        var token: String? = null
-):BaseModel()
+        var token: String? = null,
+        val collection_count: Int = 0,
+        val user_site: UserSiteModel? = null,
+        val image_count: Int = 0,
+        val tag_count: Int = 0,
+        val feed_count: Int = 0
+) : BaseModel()

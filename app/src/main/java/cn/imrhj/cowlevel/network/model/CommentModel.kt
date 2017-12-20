@@ -18,4 +18,4 @@ data class CommentModel(
 
         @field:SerializedName("content")
         val content: String? = null
-)
+) : BaseModel()

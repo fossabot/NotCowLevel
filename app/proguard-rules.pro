@@ -53,6 +53,9 @@
 -keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Fragment
 
+#保持所有的model
+-keep class cn.imrhj.cowlevel.network.model.**{*;}
+
 # 保持测试相关的代码
 -dontnote junit.framework.**
 -dontnote junit.runner.**
@@ -79,11 +82,30 @@
 
 # retrofit2
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
--dontnote retrofit2.Platform
+-dontwarn retrofit2.**
+-dontwarn org.codehaus.mojo.**
+-keep class retrofit2.** { *; }
 # Retain generic type information for use by reflection by converters and adapters.
 -keepattributes Signature
--dontwarn retrofit2.Platform$Java8
 -keepattributes Exceptions
+-keepattributes *Annotation*
+
+-keepattributes RuntimeVisibleAnnotations
+-keepattributes RuntimeInvisibleAnnotations
+-keepattributes RuntimeVisibleParameterAnnotations
+-keepattributes RuntimeInvisibleParameterAnnotations
+
+-keepattributes EnclosingMethod
+
+-keepclasseswithmembers class * {
+    @retrofit2.* <methods>;
+}
+-keepclasseswithmembers interface * {
+    @retrofit2.* <methods>;
+}
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
 
 #Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule

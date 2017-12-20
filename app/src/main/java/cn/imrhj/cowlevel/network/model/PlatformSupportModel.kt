@@ -8,4 +8,4 @@ package cn.imrhj.cowlevel.network.model
 data class PlatformSupportModel(
         val id: Int = 0,
         val name: String? = null
-)
+) : BaseModel()

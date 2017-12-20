@@ -25,4 +25,4 @@ data class QuestionModel(
         val brief_content: ContentModel? = null,
         val neat_content: ContentModel? = null,
         val my_answer: List<*>? = null
-)
+) : BaseModel()

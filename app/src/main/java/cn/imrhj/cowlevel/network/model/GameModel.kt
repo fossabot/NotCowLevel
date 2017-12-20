@@ -36,4 +36,4 @@ data class GameModel(
         val chinese_title: String? = null,
         val platform_support_list: List<PlatformSupportModel>? = null,
         val tags: List<TagModel>? = null
-)
+) : BaseModel()

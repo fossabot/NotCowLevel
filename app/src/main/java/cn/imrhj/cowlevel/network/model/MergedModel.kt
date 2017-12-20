@@ -11,4 +11,5 @@ data class MergedModel(
         val games: List<GameModel>? = null,
         val tags: List<MergedTagModel>? = null,
         val pics: List<*>? = null,
-        val videos: List<*>? = null)
+        val videos: List<*>? = null
+) : BaseModel()

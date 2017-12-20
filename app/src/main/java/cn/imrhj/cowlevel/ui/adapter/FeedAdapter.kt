@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.ui.adapter
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
 import cn.imrhj.cowlevel.network.model.ShareLinkModel
+import cn.imrhj.cowlevel.ui.activity.PersonActivity
 import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.*
 import com.bumptech.glide.Glide
@@ -331,6 +333,13 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
             helper?.setText(R.id.name, user.name)
             helper?.setText(R.id.intro, user.intro)
             helper?.setText(R.id.subtitle, item.action_text)
+            helper?.getView<View>(R.id.user)?.setOnClickListener {
+                val intent = Intent(fragment.context, PersonActivity::class.java)
+                intent.putExtra("avatar", user.avatar)
+                intent.putExtra("name", user.name)
+                fragment.startActivity(intent)
+                fragment.activity?.overridePendingTransition(0, 0)
+            }
         } else {
             helper?.getView<View>(R.id.user)?.visibility = GONE
         }

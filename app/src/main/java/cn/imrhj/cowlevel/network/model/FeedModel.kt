@@ -48,7 +48,7 @@ data class FeedModel(
         val has_more: Int = 0,
         val voters: List<VotersModel>? = null,
         val users: List<UserModel>? = null
-) {
+) : BaseModel() {
     enum class Type {
         type_unknow,
         editor_elite_answer,        // 回答了问题

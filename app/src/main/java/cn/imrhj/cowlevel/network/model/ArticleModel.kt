@@ -26,4 +26,4 @@ data class ArticleModel(
         val neat_content: ContentModel? = null,
         val hide_comment: Int = 0,
         val lock_comment: Int = 0
-)
+) : BaseModel()

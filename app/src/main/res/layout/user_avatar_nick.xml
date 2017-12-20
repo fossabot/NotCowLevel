@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_user"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/card_foreground"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/avatar"
-        android:src="@drawable/round_place_holder"
         android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:layout_height="48dp"
+        android:src="@drawable/round_place_holder"
+        android:transitionName="avatar" />
 
     <TextView
         android:id="@+id/name"

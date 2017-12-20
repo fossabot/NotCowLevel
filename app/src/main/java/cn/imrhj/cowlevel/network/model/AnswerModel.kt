@@ -20,4 +20,4 @@ data class AnswerModel(
         val neat_content: ContentModel? = null,
         val lock_comment: Int = 0,
         val hide_comment: Int = 0
-)
+) : BaseModel()

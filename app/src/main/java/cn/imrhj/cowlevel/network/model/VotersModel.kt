@@ -20,4 +20,4 @@ data class VotersModel(
         val is_follow_by: Int = 0,
         val is_follow_both: Int = 0,
         val is_block: Int = 0
-)
+) : BaseModel()
