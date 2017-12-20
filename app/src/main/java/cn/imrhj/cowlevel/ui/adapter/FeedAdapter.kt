@@ -14,6 +14,7 @@ import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.manager.SchameUtils
+import cn.imrhj.cowlevel.network.manager.COW_LEVEL_URL
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
@@ -220,6 +221,9 @@ class FeedAdapter(data: MutableList<FeedModel>?, fragment: BaseFragment) : BaseQ
             Glide.with(fragment)
                     .load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
                     .into(gameView.findViewById(R.id.game_pic))
+
+            gameView.setOnClickListener { SchameUtils.openLink(COW_LEVEL_URL + "game/" + game.url_slug) }
+
             layout?.addView(gameView)
             (gameView.layoutParams as LinearLayout.LayoutParams).topMargin = dp2px(12)
         }
