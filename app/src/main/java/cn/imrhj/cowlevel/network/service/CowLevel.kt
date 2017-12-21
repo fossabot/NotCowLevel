@@ -1,8 +1,6 @@
 package cn.imrhj.cowlevel.network.service
 
-import cn.imrhj.cowlevel.network.model.ApiModel
-import cn.imrhj.cowlevel.network.model.FeedApiModel
-import cn.imrhj.cowlevel.network.model.LoginModel
+import cn.imrhj.cowlevel.network.model.*
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -23,7 +21,13 @@ interface CowLevel {
     @GET("/discover/hot-feeds")
     fun hotFeeds(@Query("page") id: Int = 0): Observable<ApiModel<FeedApiModel>>
 
+    /**
+     * 用户登录
+     */
     @FormUrlEncoded
     @POST("/api/passport/login")
     fun login(@Field("email") email: String, @Field("password") password: String): Observable<ApiModel<LoginModel>>
+
+    @GET("/people/{name}/card")
+    fun getPeople(@Path("name") name: String): Observable<ApiModel<OuterUserModel>>
 }

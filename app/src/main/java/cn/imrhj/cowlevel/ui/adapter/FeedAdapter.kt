@@ -6,7 +6,7 @@ import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.TYPE_FEED
 import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
-import cn.imrhj.cowlevel.utils.dp2px
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate

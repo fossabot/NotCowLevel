@@ -28,7 +28,7 @@
             android:hardwareAccelerated="true" />
         <activity
             android:name=".ui.activity.PersonActivity"
-            android:theme="@style/AppTheme.Transition" />
+            android:theme="@style/AppTheme.Transition.Person" />
     </application>
 
 </manifest>

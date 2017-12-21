@@ -28,6 +28,7 @@ import cn.imrhj.cowlevel.ui.activity.PersonActivity
 import cn.imrhj.cowlevel.ui.adapter.DP130_2PX
 import cn.imrhj.cowlevel.ui.adapter.DP65_2PX
 import cn.imrhj.cowlevel.utils.*
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestOptions
@@ -58,21 +59,22 @@ class FeedHolder(fragment: Fragment) {
         vThumb?.visibility = GONE
         if (item != null) {
             when (item.action) {
-                tag_answer.name -> this.renderTagAnswer(helper, item)
                 editor_elite_article.name -> this.renderEditorEliteArticle(helper, item)
                 editor_elite_answer.name -> this.renderTagAnswer(helper, item)
                 editor_elite_review.name -> this.renderEditorEliteReview(helper, item)
-                post_submit_answer.name -> this.renderTagAnswer(helper, item)
+                tag_answer.name -> this.renderTagAnswer(helper, item)
                 tag_article.name -> this.renderEditorEliteArticle(helper, item)
                 tag_sharelink.name -> this.renderTagShareLink(helper, item)
                 tag_question.name -> this.renderTagQuestion(helper, item)
                 vote_article.name -> this.renderEditorEliteArticle(helper, item)
                 follow_question.name -> this.renderFollowQuestion(helper, item)
                 submit_question.name -> this.renderSubmitQuestion(helper, item)
-                post_submit_review.name -> this.renderPostSubmitReview(helper, item)
-                post.name -> this.renderPost(helper, item)
                 sharelink_add.name -> this.renderTagShareLink(helper, item)
+                post.name -> this.renderPost(helper, item)
+                post_submit_answer.name -> this.renderTagAnswer(helper, item)
+                post_submit_review.name -> this.renderPostSubmitReview(helper, item)
                 post_submit_sharelink.name -> this.renderTagShareLink(helper, item)
+                post_submit_question.name -> this.renderSubmitQuestion(helper, item)
             }
         }
     }
@@ -269,6 +271,10 @@ class FeedHolder(fragment: Fragment) {
                 tagValue = tags?.get(0)?.name ?: ""
                 subValue = "的问题"
             }
+            post_submit_question.name -> {
+                tagValue = games?.get(0)?.chinese_title ?: ""
+                subValue = "的问题"
+            }
 
         }
 
@@ -328,6 +334,7 @@ class FeedHolder(fragment: Fragment) {
                 val intent = Intent(App.getApplication().lastResumeActivity, PersonActivity::class.java)
                 intent.putExtra("avatar", user.avatar)
                 intent.putExtra("name", user.name)
+                intent.putExtra("url_slug", user.url_slug)
                 val options = ActivityOptions.makeSceneTransitionAnimation(mFragment.activity,
                         Pair.create(avatarView, "avatar"))
                 mFragment.startActivity(intent, options.toBundle())

@@ -4,14 +4,10 @@ import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.interceptor.ApiLogInterceptor
 import cn.imrhj.cowlevel.network.interceptor.HeaderInterceptor
-import cn.imrhj.cowlevel.network.model.ApiModel
-import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.FeedApiModel
-import cn.imrhj.cowlevel.network.model.LoginModel
+import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.service.CowLevel
 import com.readystatesoftware.chuck.ChuckInterceptor
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -61,6 +57,11 @@ class RetrofitManager private constructor() {
 
     fun login(email: String, password: String): Observable<LoginModel> {
         return filterStatus(mCowLevel.login(email, password))
+    }
+
+    fun getUser(name: String): Observable<UserModel> {
+        return filterStatus(mCowLevel.getPeople(name))
+                .map { it.user }
     }
 
 

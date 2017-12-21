@@ -1,5 +1,7 @@
 package cn.imrhj.cowlevel.utils
 
+import android.util.Log
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import com.elvishew.xlog.XLog
 
 /**
@@ -56,6 +58,7 @@ fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): Strin
     } else {
         result.append("/format/webp")
     }
+    XLog.d("class =  rhjlog cdnImageForSize: $result")
     return result.toString()
 }
 

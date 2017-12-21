@@ -9,6 +9,7 @@
         <item name="colorControlNormal">@color/colorWhite1</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
 
     </style>
 
@@ -31,10 +32,16 @@
 
     <style name="AppTheme.Transition">
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowEnterTransition">@android:transition/fade</item>
-        <item name="android:windowReturnTransition">@android:transition/fade</item>
+    </style>
+
+    <style name="AppTheme.Transition.Person">
+        <!--<item name="android:windowEnterTransition">@android:transition/fade</item>-->
+        <!--<item name="android:windowReturnTransition">@android:transition/fade</item>-->
         <item name="android:windowSharedElementEnterTransition">@transition/change_image_transition</item>
         <item name="android:windowSharedElementReturnTransition">@transition/change_image_transition</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>
