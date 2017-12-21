@@ -35,8 +35,10 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cardAvatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginStart="20dp"
         app:cardCornerRadius="40dp"
         app:cardElevation="4dp"
         app:layout_anchor="@id/recycler"

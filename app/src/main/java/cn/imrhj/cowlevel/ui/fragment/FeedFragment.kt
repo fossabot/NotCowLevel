@@ -1,23 +1,22 @@
 package cn.imrhj.cowlevel.ui.fragment
 
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
-import cn.imrhj.cowlevel.network.model.FeedModel
+import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.system_recommend_user
 import cn.imrhj.cowlevel.ui.adapter.FeedAdapter
 import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * feed详情
  * Created by rhj on 2017/11/28.
  */
-class FeedFragment : RecyclerFragment<FeedModel>() {
+class FeedFragment : RecyclerFragment<BaseModel>() {
     private var mFirstId = 0
 
-    override fun getAdapter(): BaseQuickAdapter<FeedModel, BaseViewHolder> {
+    override fun getAdapter(): BaseQuickAdapter<BaseModel, BaseViewHolder> {
         return FeedAdapter(ArrayList(), this)
     }
 

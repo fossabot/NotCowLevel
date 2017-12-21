@@ -60,6 +60,8 @@ package cn.imrhj.cowlevel.network.model
 "collection_count": 1
 }
  */
+val TYPE_USER = 2
+
 data class UserModel(
         val name: String? = null,
         val url_slug: String? = null,
@@ -108,4 +110,8 @@ data class UserModel(
         val image_count: Int = 0,
         val tag_count: Int = 0,
         val feed_count: Int = 0
-) : BaseModel()
+) : BaseModel() {
+    override fun getType(): Int {
+        return TYPE_USER
+    }
+}

@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         // initViewPager
-        viewpager.adapter = FragmentAdapter(supportFragmentManager)
+        viewpager.adapter = FragmentAdapter(fragmentManager)
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewpager, true)
     }

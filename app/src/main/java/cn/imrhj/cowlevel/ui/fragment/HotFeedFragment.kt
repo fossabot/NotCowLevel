@@ -1,7 +1,7 @@
 package cn.imrhj.cowlevel.ui.fragment
 
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
-import cn.imrhj.cowlevel.network.model.FeedModel
+import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.ui.adapter.FeedAdapter
 import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -12,8 +12,8 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by rhj on 10/12/2017.
  */
-class HotFeedFragment : RecyclerFragment<FeedModel>() {
-    override fun getAdapter(): BaseQuickAdapter<FeedModel, BaseViewHolder> {
+class HotFeedFragment : RecyclerFragment<BaseModel>() {
+    override fun getAdapter(): BaseQuickAdapter<BaseModel, BaseViewHolder> {
         return FeedAdapter(ArrayList(), this)
     }
 

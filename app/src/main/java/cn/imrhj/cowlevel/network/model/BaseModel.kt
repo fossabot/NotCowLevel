@@ -9,4 +9,8 @@ open class BaseModel {
     fun toJsonString(): String {
         return Gson().toJson(this)
     }
+
+    open fun getType(): Int {
+        return 0
+    }
 }

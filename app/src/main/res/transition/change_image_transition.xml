@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="350"
+    android:transitionOrdering="together">
+
+    <!-- can't use a pathMotion here as it causes the frame and the shot
+         to separate while moving which looks bad :( -->
+    <fade />
+    <explode />
     <changeImageTransform />
+    <changeBounds />
+    <changeClipBounds />
+    <slide />
+
 </transitionSet>
