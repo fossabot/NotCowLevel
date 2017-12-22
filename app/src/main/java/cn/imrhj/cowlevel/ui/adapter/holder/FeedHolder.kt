@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.ui.adapter.holder
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Fragment
 import android.content.Intent
@@ -30,28 +31,51 @@ import cn.imrhj.cowlevel.ui.adapter.DP65_2PX
 import cn.imrhj.cowlevel.utils.*
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseViewHolder
+import java.lang.ref.WeakReference
 
 /**
  * Created by rhj on 20/12/2017.
  */
 
-class FeedHolder(fragment: Fragment) {
-    private val mFragment: Fragment = fragment
+class FeedHolder() {
+    constructor(fragment: Fragment) : this() {
+        mFragment = WeakReference(fragment)
+    }
 
-    fun renderCommon(helper: BaseViewHolder?, item: FeedModel?) {
+    constructor(activity: Activity) : this() {
+        mActivity = WeakReference(activity)
+    }
+
+    private var mFragment: WeakReference<Fragment>? = null
+    private var mActivity: WeakReference<Activity>? = null
+
+    private fun getActivity(): Activity {
+        return mActivity?.get() ?: App.getApplication().lastResumeActivity
+    }
+
+    private fun getFragment(): Fragment? {
+        return mFragment?.get()
+    }
+
+    private fun getGlide(): RequestManager {
+        return if (mFragment != null) Glide.with(getFragment()) else Glide.with(getActivity())
+    }
+
+    fun renderCommon(helper: BaseViewHolder, item: FeedModel?) {
         renderHeader(helper, item)
         renderUser(helper, item)
-        val vPic = helper?.getView<ImageView>(R.id.pic)
-        val vTitle = helper?.getView<TextView>(R.id.title)
-        val vContent = helper?.getView<TextView>(R.id.content)
-        val vThumb = helper?.getView<ImageView>(R.id.thumb)
-        val vGameLayout = helper?.getView<View>(R.id.layout_game)
-        helper?.getView<View>(R.id.layout_link)?.visibility = GONE
-        helper?.getView<View>(R.id.feed_card)?.setOnClickListener(null)
-        helper?.getView<ViewGroup>(R.id.ll_dynamic)?.removeAllViews()
+        val vPic = helper.getView<ImageView>(R.id.pic)
+        val vTitle = helper.getView<TextView>(R.id.title)
+        val vContent = helper.getView<TextView>(R.id.content)
+        val vThumb = helper.getView<ImageView>(R.id.thumb)
+        val vGameLayout = helper.getView<View>(R.id.layout_game)
+        helper.getView<View>(R.id.layout_link)?.visibility = GONE
+        helper.getView<View>(R.id.feed_card)?.setOnClickListener(null)
+        helper.getView<ViewGroup>(R.id.ll_dynamic)?.removeAllViews()
         vGameLayout?.visibility = GONE
         vPic?.visibility = GONE
         vTitle?.visibility = GONE
@@ -207,8 +231,7 @@ class FeedHolder(fragment: Fragment) {
                     if (CollectionUtils.isNotEmpty(platforms))
                         platforms?.map { it.name }?.reduce { n1, n2 -> "$n1 / $n2" }
                     else ""
-            Glide.with(mFragment)
-                    .load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
+            getGlide().load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
                     .into(gameView.findViewById(R.id.game_pic))
 
             gameView.setOnClickListener { SchemeUtils.openLink(COW_LEVEL_URL + "game/" + game.url_slug) }
@@ -226,8 +249,7 @@ class FeedHolder(fragment: Fragment) {
         if (shareLink != null) {
             helper?.getView<View>(R.id.layout_link)?.visibility = View.VISIBLE
             helper?.getView<TextView>(R.id.tv_link_title)?.text = shareLink.title
-            Glide.with(mFragment)
-                    .load(cdnImageForSize(shareLink.pic, DP130_2PX, DP65_2PX))
+            getGlide().load(cdnImageForSize(shareLink.pic, DP130_2PX, DP65_2PX))
                     .into(helper?.getView(R.id.iv_link_pic))
             helper?.getView<View>(R.id.layout_link)?.setOnClickListener {
                 SchemeUtils.openLink(CowLinks.getShareLink(shareLink.id))
@@ -320,8 +342,8 @@ class FeedHolder(fragment: Fragment) {
         if (user != null) {
             val avatarView = helper?.getView<ImageView>(R.id.avatar)
             helper?.getView<View>(R.id.user)?.visibility = VISIBLE
-            Glide.with(mFragment)
-                    .`as`(if (user.avatar != null && user.avatar.endsWith(".gif", true)) GifDrawable::class.java else Bitmap::class.java)
+
+            getGlide().`as`(if (user.avatar != null && user.avatar.endsWith(".gif", true)) GifDrawable::class.java else Bitmap::class.java)
                     .load(cdnImageForSquare(user.avatar, dp2px(48F)))
                     .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))
                     .into(avatarView)
@@ -331,14 +353,15 @@ class FeedHolder(fragment: Fragment) {
             helper?.setText(R.id.subtitle, item.action_text)
 
             helper?.getView<View>(R.id.user)?.setOnClickListener {
-                val intent = Intent(App.getApplication().lastResumeActivity, PersonActivity::class.java)
+                val activity = App.getApplication().lastResumeActivity
+                val intent = Intent(activity, PersonActivity::class.java)
                 intent.putExtra("avatar", user.avatar)
                 intent.putExtra("name", user.name)
                 intent.putExtra("url_slug", user.url_slug)
-                val options = ActivityOptions.makeSceneTransitionAnimation(mFragment.activity,
+                val options = ActivityOptions.makeSceneTransitionAnimation(activity,
                         Pair.create(avatarView, "avatar"))
-                mFragment.startActivity(intent, options.toBundle())
-                mFragment.activity?.overridePendingTransition(0, 0)
+                activity.startActivity(intent, options.toBundle())
+                activity?.overridePendingTransition(0, 0)
             }
         } else {
             helper?.getView<View>(R.id.user)?.visibility = GONE

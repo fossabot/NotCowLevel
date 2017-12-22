@@ -33,5 +33,7 @@
         completions."
     </string>
     <string name="forget_password">忘记密码?</string>
+    <string name="msg">私信</string>
+    <string name="share">分享</string>
 
 </resources>

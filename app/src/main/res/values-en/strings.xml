@@ -33,4 +33,6 @@
         completions."
     </string>
     <string name="forget_password">Forget password?</string>
+    <string name="msg">Message</string>
+    <string name="share">Share</string>
 </resources>
