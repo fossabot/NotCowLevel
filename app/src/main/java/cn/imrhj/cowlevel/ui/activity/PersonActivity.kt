@@ -49,6 +49,8 @@ class PersonActivity : BaseActivity() {
     }
 
     override fun initView() {
+        setSupportActionBar(toolbar)
+
         Glide.with(this)
                 .load(cdnImageForDPSquare(mAvatar, 80))
                 .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))

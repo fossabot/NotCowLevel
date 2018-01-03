@@ -4,6 +4,8 @@ import android.text.Html
 import android.view.View
 import android.widget.TextView
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.manager.SchemeUtils
+import cn.imrhj.cowlevel.network.manager.COW_LEVEL_URL
 import cn.imrhj.cowlevel.network.model.UserModel
 import cn.imrhj.cowlevel.utils.StringUtils
 import com.chad.library.adapter.base.BaseViewHolder
@@ -11,7 +13,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 /**
  * Created by rhj on 22/12/2017.
  */
-class UserHolder() {
+class UserHolder {
     fun renderHeader(helper: BaseViewHolder, userModel: UserModel) {
         helper.setText(R.id.tv_name, userModel.name)
         setOrHideText(helper.getView(R.id.tv_intro), userModel.intro)
@@ -24,6 +26,11 @@ class UserHolder() {
         helper.setText(R.id.tv_question, userModel.question_count.toString())
         helper.setText(R.id.tv_article, userModel.article_count.toString())
         helper.setText(R.id.tv_collection, userModel.collection_count.toString())
+
+        helper.getView<View>(R.id.ll_msg).setOnClickListener {
+            SchemeUtils.openLink(COW_LEVEL_URL + "inbox/${userModel.url_slug}")
+        }
+
     }
 
     private fun setOrHideText(view: TextView, text: String?) {
