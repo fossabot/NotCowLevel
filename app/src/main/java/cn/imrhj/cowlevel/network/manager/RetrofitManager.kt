@@ -24,7 +24,7 @@ val COW_LEVEL_URI = HttpUrl.parse(COW_LEVEL_URL)
 class RetrofitManager private constructor() {
     private val mClient: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor())
-            .addInterceptor(ChuckInterceptor(App.getApplication().applicationContext))
+            .addInterceptor(ChuckInterceptor(App.app.applicationContext))
             .addInterceptor(ApiLogInterceptor())
             .build()
 

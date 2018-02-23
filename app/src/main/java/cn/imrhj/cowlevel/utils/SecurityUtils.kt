@@ -9,7 +9,7 @@ import com.elvishew.xlog.XLog
  * Created by rhj on 13/12/2017.
  */
 object SecurityUtils {
-    private val mACache = ACache.get(App.getApplication().filesDir)
+    private val mACache = ACache.get(App.app.filesDir)
     private val SEED = "urcrknBpyGfcY8XnLHqkuYBx7oxBYhVv"
 
     fun getValue(key: String): String? {

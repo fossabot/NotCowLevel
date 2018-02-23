@@ -6,7 +6,7 @@ import cn.imrhj.cowlevel.App
  * Created by rhj on 2017/12/6.
  */
 object ScreenSizeUtil {
-    private val mDisplayMetrics = App.getAppContext().resources.displayMetrics
+    private val mDisplayMetrics = App.app.resources.displayMetrics
     fun dp2px(dpValue: Int): Int {
         val scale = mDisplayMetrics.density
         return (dpValue * scale + 0.5f).toInt()

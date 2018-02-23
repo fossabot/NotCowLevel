@@ -54,7 +54,7 @@ class FeedHolder() {
     private var mActivity: WeakReference<Activity>? = null
 
     private fun getActivity(): Activity {
-        return mActivity?.get() ?: App.getApplication().lastResumeActivity
+        return mActivity?.get() ?: App.app.getLastActivity()
     }
 
     private fun getFragment(): Fragment? {
@@ -193,7 +193,7 @@ class FeedHolder() {
         if (StringUtils.isNotBlank(thumb)) {
             val view = helper?.getView<ImageView>(R.id.thumb)
             view?.visibility = VISIBLE
-            Glide.with(App.getAppContext())
+            Glide.with(App.app)
                     .load(cdnImageForSquare(thumb, dp2px(100F)))
                     .into(view)
         }
@@ -204,7 +204,7 @@ class FeedHolder() {
             val imageView = helper?.getView<ImageView>(R.id.pic)
             imageView?.visibility = VISIBLE
             imageView?.post {
-                Glide.with(App.getAppContext())
+                Glide.with(App.app)
                         .load(cdnImageForSize(pic, imageView.width, imageView.height))
                         .into(imageView)
             }
@@ -213,7 +213,7 @@ class FeedHolder() {
 
     private fun renderGame(helper: BaseViewHolder?, game: GameModel?, hideOuter: Boolean = false) {
         val layout = helper?.getView<LinearLayout>(R.id.ll_dynamic)
-        val gameView = LayoutInflater.from(App.getAppContext()).inflate(R.layout.item_game_layout, null)
+        val gameView = LayoutInflater.from(App.app).inflate(R.layout.item_game_layout, null)
 //        val layout = helper?.getView<RelativeLayout>(R.id.layout_game)
         if (hideOuter) {
             gameView?.background = null
@@ -353,7 +353,7 @@ class FeedHolder() {
             helper?.setText(R.id.subtitle, item.action_text)
 
             helper?.getView<View>(R.id.user)?.setOnClickListener {
-                val activity = App.getApplication().lastResumeActivity
+                val activity = App.app.getLastActivity()
                 val intent = Intent(activity, PersonActivity::class.java)
                 intent.putExtra("avatar", user.avatar)
                 intent.putExtra("name", user.name)

@@ -16,13 +16,13 @@ import cn.imrhj.cowlevel.utils.ResourcesUtils
 class SchemeUtils {
     companion object {
         fun openLink(url: String) {
-            val intent = Intent(App.getApplication().lastResumeActivity, WebviewActivity::class.java)
+            val intent = Intent(App.app.getLastActivity(), WebviewActivity::class.java)
             intent.putExtra("url", url)
-            App.getAppContext().startActivity(intent)
+            App.app.startActivity(intent)
         }
 
         fun openWithChromeTabs(url: String) {
-           openWithChromeTabs(Uri.parse(url))
+            openWithChromeTabs(Uri.parse(url))
         }
 
         fun openWithChromeTabs(uri: Uri) {
@@ -35,13 +35,13 @@ class SchemeUtils {
             tabsIntent.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
 
-            tabsIntent.launchUrl(App.getAppContext(), uri)
+            tabsIntent.launchUrl(App.app, uri)
         }
 
         fun <T> startActivity(clazz: Class<T>, bundle: Bundle) {
-            val intent = Intent(App.getApplication().lastResumeActivity, clazz)
+            val intent = Intent(App.app.getLastActivity(), clazz)
 
-            App.getAppContext().startActivity(intent)
+            App.app.startActivity(intent)
         }
     }
 }
