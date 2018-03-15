@@ -44,4 +44,7 @@
     <string name="played">玩过</string>
     <string name="comment">评价</string>
 
+    <!--shortcuts-->
+    <string name="test">test</string>
+
 </resources>

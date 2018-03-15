@@ -1,12 +1,7 @@
 package cn.imrhj.cowlevel.ui.activity
 
-import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
-import android.support.customtabs.CustomTabsClient
-import android.support.customtabs.CustomTabsServiceConnection
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import cn.imrhj.cowlevel.R
@@ -30,7 +25,6 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun initView() {
-        tvInvite.setOnClickListener { openUrl(INVITE_URL) }
         llRegister.setOnClickListener {
             if (!isRegister) {
                 isRegister = true
@@ -74,7 +68,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun doRegister() {
-        if (checkMail() && checkPassword() && checkInv()) {
+        if (checkMail() && checkPassword()) {
 
         }
     }
@@ -99,19 +93,9 @@ class LoginActivity : BaseActivity() {
         return true
     }
 
-    private fun checkInv(): Boolean {
-        if (StringUtils.isBlank(etInviteCode.text)) {
-            etInviteCode.error = "邀请码不能为空"
-            return false
-        }
-        return true
-    }
-
-
     private fun changeView(status: Boolean) {
         etMail.error = null
         etPassword.error = null
-        etInviteCode.error = null
 
         llRegister.isClickable = !status
         llLogin.isClickable = status
@@ -119,7 +103,6 @@ class LoginActivity : BaseActivity() {
         tvLogin.setTextColor(ResourcesUtils.getColor(if (status) R.color.colorWhite5 else R.color.white))
         viewRegister.visibility = if (status) View.VISIBLE else View.GONE
         viewLogin.visibility = if (status) View.GONE else View.VISIBLE
-        tilInviteCode.visibility = if (status) View.VISIBLE else View.GONE
         btnLogin.text = resources.getString(if (status) R.string.register else R.string.login)
         etPassword.imeOptions = if (status) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
     }
@@ -141,6 +124,10 @@ class LoginActivity : BaseActivity() {
 
     private fun openUrl(url: String) {
         SchemeUtils.openWithChromeTabs(url)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }
