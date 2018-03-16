@@ -1,6 +1,9 @@
 package cn.imrhj.cowlevel.network.service
 
-import cn.imrhj.cowlevel.network.model.*
+import cn.imrhj.cowlevel.network.model.ApiModel
+import cn.imrhj.cowlevel.network.model.FeedApiModel
+import cn.imrhj.cowlevel.network.model.LoginModel
+import cn.imrhj.cowlevel.network.model.OuterUserModel
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -27,6 +30,10 @@ interface CowLevel {
     @FormUrlEncoded
     @POST("/api/passport/login")
     fun login(@Field("email") email: String, @Field("password") password: String): Observable<ApiModel<LoginModel>>
+
+    @FormUrlEncoded
+    @POST("/passport/signup/send-verify-code")
+    fun register(@Field("email") email: String, @Field("password") password: String): Observable<ApiModel<LoginModel>>
 
     @GET("/people/{name}/card")
     fun getPeople(@Path("name") name: String): Observable<ApiModel<OuterUserModel>>

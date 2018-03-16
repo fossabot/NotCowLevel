@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/register_account"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorWhite5"
                     android:textSize="16sp" />
 
                 <View
@@ -71,7 +71,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_marginTop="6dp"
-                    android:background="@android:color/white" />
+                    android:background="@android:color/white"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -89,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/login_direct"
-                    android:textColor="@color/colorWhite5"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
                 <View
@@ -97,8 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_marginTop="6dp"
-                    android:background="@android:color/white"
-                    android:visibility="gone" />
+                    android:background="@android:color/white" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -107,8 +107,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
             android:layout_marginStart="50dp"
-            android:theme="@style/TextLabel"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:theme="@style/TextLabel">
+
             <EditText
                 android:id="@+id/etMail"
                 android:layout_width="match_parent"
@@ -142,19 +143,23 @@
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="注册即代表同意"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text="《奶牛关使用协议与条款》"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="注册即代表同意" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="《奶牛关使用协议与条款》" />-->
+
+        <!--</LinearLayout>-->
 
         <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
             android:id="@+id/btnLogin"
@@ -162,15 +167,15 @@
             android:layout_height="40dp"
             android:layout_marginEnd="50dp"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/background_button_red"
             android:foreground="@drawable/card_foreground"
-            android:text="@string/register"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_forget_password"
+            android:id="@+id/tvForget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"

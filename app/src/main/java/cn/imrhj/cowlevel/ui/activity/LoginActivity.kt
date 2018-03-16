@@ -2,8 +2,7 @@ package cn.imrhj.cowlevel.ui.activity
 
 import android.content.Intent
 import android.graphics.Color
-import android.view.View
-import android.view.inputmethod.EditorInfo
+import android.support.design.widget.Snackbar
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.manager.UserManager
@@ -17,8 +16,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {
-    private val INVITE_URL = "https://cowlevel.net/apply"
-    private var isRegister = true
+    private val INVITE_URL = "https://cowlevel.net/reg"
+    private val FORGOT_URL = "https://cowlevel.net/forgot"
+//    private var isRegister = true
 
     override fun layoutId(): Int {
         return R.layout.activity_login
@@ -26,21 +26,21 @@ class LoginActivity : BaseActivity() {
 
     override fun initView() {
         llRegister.setOnClickListener {
-            if (!isRegister) {
-                isRegister = true
-                changeView(isRegister)
-            }
+            Snackbar.make(llRegister, "请前往打开的网页注册新帐号", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("前往", { openUrl(INVITE_URL) })
+                    .show()
         }
 
         llLogin.setOnClickListener {
-            if (isRegister) {
-                isRegister = false
-                changeView(isRegister)
-            }
+            Snackbar.make(llLogin, "点我干啥？", Snackbar.LENGTH_SHORT).show()
         }
 
         btnLogin.setOnClickListener {
-            if (isRegister) doRegister() else doLogin()
+            doLogin()
+        }
+
+        tvForget.setOnClickListener {
+            openUrl(FORGOT_URL)
         }
 
     }
@@ -52,7 +52,9 @@ class LoginActivity : BaseActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ loginModel ->
                         if (StringUtils.isNotBlank(loginModel.authToken)) {
-                            btnLogin.doneLoadingAnimation(Color.GREEN, ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(R.drawable.ic_done_white_48dp)!!))
+                            btnLogin.doneLoadingAnimation(Color.GREEN,
+                                    ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(
+                                            R.drawable.ic_done_white_48dp)!!))
                             UserManager.setToken(loginModel.authToken!!)
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
@@ -67,11 +69,11 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun doRegister() {
-        if (checkMail() && checkPassword()) {
-
-        }
-    }
+//    private fun doRegister() {
+//        if (checkMail() && checkPassword()) {
+//
+//        }
+//    }
 
     private fun checkMail(): Boolean {
         if (StringUtils.isBlank(etMail.text)) {
@@ -93,41 +95,21 @@ class LoginActivity : BaseActivity() {
         return true
     }
 
-    private fun changeView(status: Boolean) {
-        etMail.error = null
-        etPassword.error = null
-
-        llRegister.isClickable = !status
-        llLogin.isClickable = status
-        tvRegister.setTextColor(ResourcesUtils.getColor(if (status) R.color.white else R.color.colorWhite5))
-        tvLogin.setTextColor(ResourcesUtils.getColor(if (status) R.color.colorWhite5 else R.color.white))
-        viewRegister.visibility = if (status) View.VISIBLE else View.GONE
-        viewLogin.visibility = if (status) View.GONE else View.VISIBLE
-        btnLogin.text = resources.getString(if (status) R.string.register else R.string.login)
-        etPassword.imeOptions = if (status) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
-    }
-
-
-//    private fun bindCustomTabsService() {
-//        CustomTabsClient.bindCustomTabsService(applicationContext, "com.android.chrome",
-//                object : CustomTabsServiceConnection() {
-//                    override fun onCustomTabsServiceConnected(name: ComponentName?,
-//                                                              client: CustomTabsClient?) {
-//                        customTabsReady = true
-//                    }
+//    private fun changeView(status: Boolean) {
+//        etMail.error = null
+//        etPassword.error = null
 //
-//                    override fun onServiceDisconnected(name: ComponentName?) {
-//                    }
-//                })
-//
+//        llRegister.isClickable = !status
+//        llLogin.isClickable = status
+//        tvRegister.setTextColor(ResourcesUtils.getColor(if (status) R.color.white else R.color.colorWhite5))
+//        tvLogin.setTextColor(ResourcesUtils.getColor(if (status) R.color.colorWhite5 else R.color.white))
+//        viewRegister.visibility = if (status) View.VISIBLE else View.GONE
+//        viewLogin.visibility = if (status) View.GONE else View.VISIBLE
+//        btnLogin.text = resources.getString(if (status) R.string.register else R.string.login)
+//        etPassword.imeOptions = if (status) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
 //    }
 
     private fun openUrl(url: String) {
         SchemeUtils.openWithChromeTabs(url)
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 }

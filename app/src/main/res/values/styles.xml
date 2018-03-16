@@ -13,6 +13,12 @@
 
     </style>
 
+    <style name="AppTheme.Start" >
+        <item name="android:windowBackground">@drawable/background_start_screen</item>
+        <!--<item name="android:windowBackground">@color/colorPrimary</item>-->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

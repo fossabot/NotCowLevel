@@ -15,7 +15,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         lateinit var app: App
     }
 
-    lateinit var mLastResumeActivity: WeakReference<Activity>
+    private lateinit var mLastResumeActivity: WeakReference<Activity>
 
     override fun onCreate() {
         super.onCreate()
@@ -25,6 +25,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
 
     private fun initOnUiThread() {
         XLog.init(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)
+        registerActivityLifecycleCallbacks(this)
     }
 
     fun getLastActivity(): Activity {

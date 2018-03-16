@@ -35,7 +35,9 @@ class WebviewActivity : BaseActivity() {
             override fun onPageFinished(view: WebView?, url: String?) {
             }
 
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?): Boolean {
                 if (COW_LEVEL_URI?.host() == request?.url?.host) {
                     return super.shouldOverrideUrlLoading(view, request)
                 }
@@ -50,7 +52,8 @@ class WebviewActivity : BaseActivity() {
             }
         }
         if (StringUtils.isNotBlank(UserManager.getUserModel().token)) {
-            CookieManager.getInstance().setCookie(COW_LEVEL_URL, "auth_token=${UserManager.getUserModel().token}")
+            CookieManager.getInstance().setCookie(COW_LEVEL_URL,
+                    "auth_token=${UserManager.getUserModel().token}")
         }
         webview.loadUrl(url)
     }
