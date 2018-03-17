@@ -3,6 +3,8 @@ package cn.imrhj.cowlevel.ui.activity
 import android.content.Intent
 import android.graphics.Color
 import android.support.design.widget.Snackbar
+import android.text.Editable
+import android.text.TextWatcher
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.manager.UserManager
@@ -43,6 +45,16 @@ class LoginActivity : BaseActivity() {
             openUrl(FORGOT_URL)
         }
 
+        val textWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                clearError()
+            }
+        }
+
+        etMail.addTextChangedListener(textWatcher)
+        etPassword.addTextChangedListener(textWatcher)
     }
 
     private fun doLogin() {
@@ -69,12 +81,6 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-//    private fun doRegister() {
-//        if (checkMail() && checkPassword()) {
-//
-//        }
-//    }
-
     private fun checkMail(): Boolean {
         if (StringUtils.isBlank(etMail.text)) {
             etMail.error = "你还没有填写邮箱"
@@ -93,6 +99,15 @@ class LoginActivity : BaseActivity() {
             return false
         }
         return true
+    }
+
+    private fun clearError() {
+        if (etMail.error != null) {
+            etMail.error = null
+        }
+        if (etPassword.error != null) {
+            etPassword.error = null
+        }
     }
 
 //    private fun changeView(status: Boolean) {

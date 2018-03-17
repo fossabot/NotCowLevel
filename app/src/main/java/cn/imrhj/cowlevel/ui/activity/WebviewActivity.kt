@@ -1,6 +1,7 @@
 package cn.imrhj.cowlevel.ui.activity
 
 import android.annotation.SuppressLint
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.webkit.*
 import cn.imrhj.cowlevel.R
@@ -30,6 +31,7 @@ class WebviewActivity : BaseActivity() {
         webview.settings.useWideViewPort = true
         webview.settings.defaultTextEncodingName = "utf-8"
         webview.settings.loadsImagesAutomatically = true
+        webview.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
 
         webview.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
