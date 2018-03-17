@@ -137,11 +137,12 @@ class FeedHolder() {
     private fun renderTagAnswer(helper: BaseViewHolder?, item: FeedModel) {
         val answer = item.answer
         val question = item.question
-        renderTitle(helper, question?.title)
+        renderTitle(helper, question?.title, "https://cowlevel.net/question/${question?.id}")
         renderContent(helper, answer?.neat_content?.desc)
         renderThumb(helper, answer?.neat_content?.thumb)
         renderNavBar(helper, item, answer?.vote_count, answer?.has_vote, question?.is_follow,
                 question?.comment_count)
+        setUrl(helper, "https://cowlevel.net/question/${question?.id}/answer/${answer?.id}")
     }
 
     private fun renderTagQuestion(helper: BaseViewHolder?, item: FeedModel) {
@@ -151,6 +152,7 @@ class FeedHolder() {
         renderTitle(helper, question.title)
         renderContent(helper, question.neat_content?.desc)
         renderThumb(helper, question.neat_content?.thumb)
+        setUrl(helper, "https://cowlevel.net/question/${question.id}")
     }
 
     private fun renderEditorEliteArticle(helper: BaseViewHolder?, item: FeedModel) {
@@ -165,9 +167,7 @@ class FeedHolder() {
     }
 
     private fun setUrl(helper: BaseViewHolder?, url: String) {
-        helper?.getView<View>(R.id.feed_card)?.setOnClickListener {
-            SchemeUtils.openLink(url)
-        }
+        helper?.getView<View>(R.id.feed_card)?.setOnClickListener { SchemeUtils.openLink(url) }
     }
 
     private fun renderEditorEliteReview(helper: BaseViewHolder?, item: FeedModel) {
@@ -177,6 +177,7 @@ class FeedHolder() {
         renderNavBar(helper, item, review?.vote_count, review?.has_vote, null,
                 review?.comment_count)
         renderGame(helper, item.game)
+        setUrl(helper, "https://cowlevel.net/game/${item.game?.url_slug}/review/${review?.id}")
     }
 
 
@@ -184,7 +185,7 @@ class FeedHolder() {
         val titleView = helper?.getView<TextView>(R.id.title)
         titleView?.setTextAndShow(title)
         if (link != null) {
-            titleView?.setOnClickListener { }
+            titleView?.setOnClickListener { SchemeUtils.openLink(link) }
         }
     }
 
