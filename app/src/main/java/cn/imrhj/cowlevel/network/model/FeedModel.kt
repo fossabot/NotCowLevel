@@ -72,7 +72,8 @@ data class FeedModel(
         submit_question,
         post,
         post_submit_question,
-        post_submit_sharelink;      // 分享了链接
+        post_submit_sharelink,      // 分享了链接
+        post_submit_article;        // 发布了文章
 
         fun getName(): String {
             return name

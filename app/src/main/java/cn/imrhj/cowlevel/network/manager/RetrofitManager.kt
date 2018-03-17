@@ -16,6 +16,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
+ * 网络请求管理类
  * Created by rhj on 2017/11/29.
  */
 val COW_LEVEL_URL = "https://cowlevel.net/"
@@ -62,6 +63,14 @@ class RetrofitManager private constructor() {
     fun getUser(name: String): Observable<UserModel> {
         return filterStatus(mCowLevel.getPeople(name))
                 .map { it.user }
+    }
+
+    fun voteReview(id: Int): Observable<BaseModel> {
+        return filterStatus(mCowLevel.voteReview(id))
+    }
+
+    fun unvoteReview(id: Int): Observable<BaseModel> {
+        return filterStatus(mCowLevel.voteReview(id))
     }
 
 

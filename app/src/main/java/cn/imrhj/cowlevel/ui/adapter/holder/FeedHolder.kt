@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import cn.imrhj.cowlevel.consts.CowLinks
 import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.COW_LEVEL_URL
+import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.FeedModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
 import cn.imrhj.cowlevel.network.model.GameModel
@@ -86,7 +88,7 @@ class FeedHolder() {
             when (item.action) {
                 editor_elite_article.name -> this.renderEditorEliteArticle(helper, item)
                 editor_elite_answer.name -> this.renderTagAnswer(helper, item)
-                editor_elite_review.name -> this.renderEditorEliteReview(helper, item)
+                editor_elite_review.name -> this.renderEditorEliteReview(helper, item)          //评价了游戏
                 tag_answer.name -> this.renderTagAnswer(helper, item)
                 tag_article.name -> this.renderEditorEliteArticle(helper, item)
                 tag_sharelink.name -> this.renderTagShareLink(helper, item)
@@ -100,6 +102,7 @@ class FeedHolder() {
                 post_submit_review.name -> this.renderPostSubmitReview(helper, item)
                 post_submit_sharelink.name -> this.renderTagShareLink(helper, item)
                 post_submit_question.name -> this.renderSubmitQuestion(helper, item)
+                post_submit_article.name -> this.renderEditorEliteArticle(helper, item)         //发布了文章
             }
         }
     }
@@ -171,13 +174,14 @@ class FeedHolder() {
     }
 
     private fun renderEditorEliteReview(helper: BaseViewHolder?, item: FeedModel) {
-        val review = item.review
-        renderContent(helper, review?.neat_content?.desc)
-        renderThumb(helper, review?.neat_content?.thumb)
-        renderNavBar(helper, item, review?.vote_count, review?.has_vote, null,
-                review?.comment_count)
+        val review = item.review ?: return
+        renderContent(helper, review.neat_content?.desc)
+        renderThumb(helper, review.neat_content?.thumb)
+        renderNavBar(helper, item, review.vote_count, review.has_vote, null,
+                review.comment_count, "评论",
+                { this.voteReview(review.has_vote, review.id) })
         renderGame(helper, item.game)
-        setUrl(helper, "https://cowlevel.net/game/${item.game?.url_slug}/review/${review?.id}")
+        setUrl(helper, "https://cowlevel.net/game/${item.game?.url_slug}/review/${review.id}")
     }
 
 
@@ -304,6 +308,10 @@ class FeedHolder() {
                 tagValue = games?.get(0)?.chinese_title ?: ""
                 subValue = "的问题"
             }
+            post_submit_article.name -> {
+                tagValue = games?.get(0)?.chinese_title ?: ""
+                subValue = "的文章"
+            }
 
         }
 
@@ -321,18 +329,16 @@ class FeedHolder() {
     /**
      * 渲染底部NavBar
      */
-    private fun renderNavBar(helper: BaseViewHolder?, item: FeedModel,
-                             voterCount: Int?, hasVote: Int? = 0,
-                             isFollow: Int? = 0,
-                             commentCount: Int? = 0, commentBtnTitle: String = "评论") {
+    private fun renderNavBar(helper: BaseViewHolder?, item: FeedModel, voterCount: Int?,
+                             hasVote: Int? = 0, isFollow: Int? = 0, commentCount: Int? = 0,
+                             commentBtnTitle: String = "评论", voteCallback: (() -> Unit)? = null) {
         helper?.getView<View>(R.id.nav_voter_bar)?.visibility = VISIBLE
         val voteView = helper?.getView<LinearLayout>(R.id.btn_vote)
         voteView?.visibility = if (voterCount == null) GONE else VISIBLE
-        //todo 添加赞同按钮事件
+        voteView?.setOnClickListener { voteCallback?.invoke() }
         if (voterCount != null) {
             helper?.setText(R.id.tv_vote, "${if (hasVote == 0) "赞同" else "已赞"} $voterCount")
         }
-
         val followView = helper?.getView<LinearLayout>(R.id.btn_follower)
         followView?.visibility = if (isFollow == null) GONE else VISIBLE
         if (isFollow != null) {
@@ -377,5 +383,19 @@ class FeedHolder() {
         }
     }
 
+    /**
+     * 对游戏评价进行点赞/取消点赞
+     * @param has_vote 是否点过赞了
+     */
+    private fun voteReview(hasVote: Int, id: Int) {
+        val observable = if (hasVote == 0)
+            RetrofitManager.getInstance().voteReview(id) else
+            RetrofitManager.getInstance().unvoteReview(id)
+        observable.subscribe({
+            Log.d(Thread.currentThread().name, "class = FeedHolder rhjlog voteReview: onNext")
+        }, {
+            Log.d(Thread.currentThread().name, "class = FeedHolder rhjlog voteReview: onError +$it")
+        })
+    }
 
 }
