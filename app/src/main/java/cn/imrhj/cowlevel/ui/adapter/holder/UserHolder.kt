@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.ui.adapter.holder
 
+import android.os.Build
 import android.text.Html
 import android.view.View
 import android.widget.TextView
@@ -37,7 +38,7 @@ class UserHolder {
         if (StringUtils.isBlank(text)) {
             view.visibility = View.GONE
         } else {
-            view.text = Html.fromHtml(text)
+            view.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) Html.fromHtml(text, 0) else Html.fromHtml(text)
         }
     }
 }

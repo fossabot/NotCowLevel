@@ -1,6 +1,6 @@
 package cn.imrhj.cowlevel.ui.adapter
 
-import android.app.Fragment
+import android.support.v4.app.Fragment
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.FeedModel
