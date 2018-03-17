@@ -38,6 +38,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import java.lang.ref.WeakReference
 
 /**
+ * FeedHolder 处理一些界面绑定逻辑信息
  * Created by rhj on 20/12/2017.
  */
 
@@ -114,7 +115,8 @@ class FeedHolder() {
         renderTitle(helper, item.review?.title)
         renderContent(helper, item.review?.neat_content?.desc)
         renderThumb(helper, item.review?.neat_content?.thumb)
-        renderNavBar(helper, item, item.review?.vote_count, item.review?.has_vote, null, item.review?.comment_count)
+        renderNavBar(helper, item, item.review?.vote_count, item.review?.has_vote, null,
+                item.review?.comment_count)
     }
 
     private fun renderPost(helper: BaseViewHolder?, item: FeedModel) {
@@ -144,7 +146,8 @@ class FeedHolder() {
 
     private fun renderTagQuestion(helper: BaseViewHolder?, item: FeedModel) {
         val question = item.question
-        renderNavBar(helper, item, null, 0, question?.is_follow!!, question.answer_count)
+        renderNavBar(helper, item, null, 0, question?.is_follow!!,
+                question.answer_count)
         renderTitle(helper, question.title)
         renderContent(helper, question.neat_content?.desc)
         renderThumb(helper, question.neat_content?.thumb)
@@ -213,18 +216,19 @@ class FeedHolder() {
 
     private fun renderGame(helper: BaseViewHolder?, game: GameModel?, hideOuter: Boolean = false) {
         val layout = helper?.getView<LinearLayout>(R.id.ll_dynamic)
-        val gameView = LayoutInflater.from(App.app).inflate(R.layout.item_game_layout, null)
-//        val layout = helper?.getView<RelativeLayout>(R.id.layout_game)
+        val gameView = LayoutInflater.from(App.app)
+                .inflate(R.layout.item_game_layout, layout, false)
         if (hideOuter) {
             gameView?.background = null
             gameView?.setPadding(0, 0, 0, 0)
         } else {
             gameView?.background = ColorDrawable(ResourcesUtils.getColor(R.color.colorWhite1))
-            gameView?.setPadding(dp2px(12), dp2px(20), dp2px(12), dp2px(20))
+            gameView?.setPadding(dp2px(12), dp2px(20), dp2px(12),
+                    dp2px(20))
         }
 //
         if (game != null) {
-            var platforms = game.platform_support_list
+            val platforms = game.platform_support_list
             gameView.findViewById<TextView>(R.id.game_title)?.text = game.title
             gameView.findViewById<TextView>(R.id.game_time)?.text = game.game_publish_date_show
             gameView.findViewById<TextView>(R.id.game_platforms)?.text =
@@ -234,7 +238,9 @@ class FeedHolder() {
             getGlide().load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
                     .into(gameView.findViewById(R.id.game_pic))
 
-            gameView.setOnClickListener { SchemeUtils.openLink(COW_LEVEL_URL + "game/" + game.url_slug) }
+            gameView.setOnClickListener {
+                SchemeUtils.openLink(COW_LEVEL_URL + "game/" + game.url_slug)
+            }
 
             layout?.addView(gameView)
             (gameView.layoutParams as LinearLayout.LayoutParams).topMargin = dp2px(12)
@@ -343,7 +349,8 @@ class FeedHolder() {
             val avatarView = helper?.getView<ImageView>(R.id.avatar)
             helper?.getView<View>(R.id.user)?.visibility = VISIBLE
 
-            getGlide().`as`(if (user.avatar != null && user.avatar.endsWith(".gif", true)) GifDrawable::class.java else Bitmap::class.java)
+            getGlide().`as`(if (user.avatar?.endsWith(".gif") != false)
+                GifDrawable::class.java else Bitmap::class.java)
                     .load(cdnImageForSquare(user.avatar, dp2px(48F)))
                     .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))
                     .into(avatarView)
@@ -361,7 +368,7 @@ class FeedHolder() {
                 val options = ActivityOptions.makeSceneTransitionAnimation(activity,
                         Pair.create(avatarView, "avatar"))
                 activity.startActivity(intent, options.toBundle())
-                activity?.overridePendingTransition(0, 0)
+                activity.overridePendingTransition(0, 0)
             }
         } else {
             helper?.getView<View>(R.id.user)?.visibility = GONE
