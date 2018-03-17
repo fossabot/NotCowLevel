@@ -325,15 +325,16 @@ class FeedHolder() {
                              voterCount: Int?, hasVote: Int? = 0,
                              isFollow: Int? = 0,
                              commentCount: Int? = 0, commentBtnTitle: String = "评论") {
+        helper?.getView<View>(R.id.nav_voter_bar)?.visibility = VISIBLE
         val voteView = helper?.getView<LinearLayout>(R.id.btn_vote)
-        voteView?.visibility = if (voterCount == null) GONE else View.VISIBLE
+        voteView?.visibility = if (voterCount == null) GONE else VISIBLE
         //todo 添加赞同按钮事件
         if (voterCount != null) {
             helper?.setText(R.id.tv_vote, "${if (hasVote == 0) "赞同" else "已赞"} $voterCount")
         }
 
         val followView = helper?.getView<LinearLayout>(R.id.btn_follower)
-        followView?.visibility = if (isFollow == null) GONE else View.VISIBLE
+        followView?.visibility = if (isFollow == null) GONE else VISIBLE
         if (isFollow != null) {
             helper?.setText(R.id.tv_follow, if (isFollow == 0) "关注" else "已关注")
         }
