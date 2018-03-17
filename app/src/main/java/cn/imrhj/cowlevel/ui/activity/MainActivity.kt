@@ -30,6 +30,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewpager.adapter = FragmentAdapter(supportFragmentManager)
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewpager, true)
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                (viewpager.adapter as FragmentAdapter).scrollToTop(tab?.position ?: 0)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+            }
+
+        })
     }
 
     override fun onBackPressed() {

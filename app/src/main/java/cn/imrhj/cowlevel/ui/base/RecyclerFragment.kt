@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.ui.view.SmoothLinearLayoutManager
 import cn.imrhj.cowlevel.utils.CollectionUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
@@ -62,7 +63,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     open fun getLayoutManager(): RecyclerView.LayoutManager {
-        return LinearLayoutManager(mRecycler?.context)
+        return SmoothLinearLayoutManager(mRecycler?.context)
     }
 
     open fun getDivider(): RecyclerView.ItemDecoration {
@@ -154,5 +155,11 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     override fun onConfigFragment(bundle: Bundle) {}
+
+    fun scrollToTop() {
+//        mRecycler?.layoutManager?.scrollToPosition(0)
+        mRecycler?.smoothScrollToPosition(0)
+    }
+
 
 }

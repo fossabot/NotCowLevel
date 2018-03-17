@@ -3,6 +3,7 @@ package cn.imrhj.cowlevel.ui.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 import cn.imrhj.cowlevel.ui.fragment.FeedFragment
 import cn.imrhj.cowlevel.ui.fragment.HotFeedFragment
 
@@ -29,4 +30,12 @@ class FragmentAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
         return mFragmentList.size
     }
+
+    fun scrollToTop(position: Int) {
+        val fragment = mFragmentList[position]
+        if (fragment is RecyclerFragment<*>) {
+            fragment.scrollToTop()
+        }
+    }
+
 }
