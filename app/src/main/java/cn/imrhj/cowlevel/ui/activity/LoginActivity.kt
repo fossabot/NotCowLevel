@@ -1,10 +1,13 @@
 package cn.imrhj.cowlevel.ui.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.support.design.widget.Snackbar
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.manager.UserManager
@@ -55,6 +58,17 @@ class LoginActivity : BaseActivity() {
 
         etMail.addTextChangedListener(textWatcher)
         etPassword.addTextChangedListener(textWatcher)
+
+        // 添加actionDone按键回调
+        etPassword.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(v.windowToken, 0)
+                doLogin()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
     }
 
     private fun doLogin() {
