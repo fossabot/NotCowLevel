@@ -1,7 +1,9 @@
 package cn.imrhj.cowlevel.ui.activity
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import cn.imrhj.cowlevel.R
@@ -21,6 +23,8 @@ class WebviewActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun initView() {
+        loading.setHandColor(ContextCompat.getColor(applicationContext, R.color.colorRedAccept))
+        loading.startAnim()
 //        setSupportActionBar(toolbar)
         url = intent.getStringExtra("url")
         //支持获取手势焦点，输入用户名、密码或其他
@@ -34,7 +38,9 @@ class WebviewActivity : BaseActivity() {
         webview.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
 
         webview.webViewClient = object : WebViewClient() {
+
             override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d(Thread.currentThread().name, "class = WebviewActivity rhjlog onPageFinished: ")
             }
 
             override fun shouldOverrideUrlLoading(
@@ -51,6 +57,15 @@ class WebviewActivity : BaseActivity() {
         }
         webview.webChromeClient = object : WebChromeClient() {
             override fun onReceivedTitle(view: WebView?, title: String?) {
+            }
+
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                Log.d(Thread.currentThread().name, "class = WebviewActivity rhjlog onProgressChanged: $newProgress")
+                if (newProgress >= 80) {
+                    loading.stopAnim()
+                    loading.visibility = View.GONE
+
+                }
             }
         }
         if (StringUtils.isNotBlank(UserManager.getUserModel().token)) {

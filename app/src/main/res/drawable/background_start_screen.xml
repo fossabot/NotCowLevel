@@ -6,5 +6,11 @@
             android:src="@mipmap/bg_welcome" />
     </item>
     <item android:drawable="@color/colorLoginBackground" />
+    <!--<item android:drawable="@color/colorPrimary" />-->
+    <!--<item android:bottom="40dp">-->
+    <!--<bitmap-->
+    <!--android:gravity="bottom|center"-->
+    <!--android:src="@mipmap/ic_launcher_foreground" />-->
+    <!--</item>-->
 
 </layer-list>
