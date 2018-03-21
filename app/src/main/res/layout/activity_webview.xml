@@ -27,8 +27,7 @@
     <cn.imrhj.cowlevel.ui.view.loading.LVGhost
         android:id="@+id/loading"
         android:layout_gravity="center"
-        android:layout_width="200dp"
-
-        android:layout_height="120dp" />
+        android:layout_width="140dp"
+        android:layout_height="80dp" />
 
 </android.support.design.widget.CoordinatorLayout>
