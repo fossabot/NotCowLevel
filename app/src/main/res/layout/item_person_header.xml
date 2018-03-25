@@ -28,7 +28,7 @@
         <ImageView
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:src="@drawable/icon_add" />
+            android:src="@drawable/icon_add_active" />
 
         <TextView
             android:id="@+id/tv_follow"

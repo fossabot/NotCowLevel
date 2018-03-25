@@ -338,11 +338,19 @@ class FeedHolder() {
         voteView?.setOnClickListener { voteCallback?.invoke() }
         if (voterCount != null) {
             helper?.setText(R.id.tv_vote, "${if (hasVote == 0) "赞同" else "已赞"} $voterCount")
+            voteView?.setBackgroundResource(if (hasVote == 0) R.drawable.background_button_unactive
+            else R.drawable.background_button_red)
+//            DrawableHelper.withDrawable(R.drawable.icon_triangle_up)
+//                    .setColor(if (hasVote == 0) R.color.white else R.color.colorRedAccept)
+//                    .applyTo(helper?.getView(R.id.iv_vote)!!)
+
         }
         val followView = helper?.getView<LinearLayout>(R.id.btn_follower)
         followView?.visibility = if (isFollow == null) GONE else VISIBLE
         if (isFollow != null) {
             helper?.setText(R.id.tv_follow, if (isFollow == 0) "关注" else "已关注")
+            followView?.setBackgroundResource(if (isFollow == 0) R.drawable.background_button_unactive
+            else R.drawable.background_button_red)
         }
 
         helper?.setText(R.id.tv_commit, "$commentBtnTitle $commentCount")
@@ -385,7 +393,7 @@ class FeedHolder() {
 
     /**
      * 对游戏评价进行点赞/取消点赞
-     * @param has_vote 是否点过赞了
+     * @param hasVote 是否点过赞了
      */
     private fun voteReview(hasVote: Int, id: Int) {
         val observable = if (hasVote == 0)

@@ -54,6 +54,7 @@
         android:paddingTop="8dp">
 
         <ImageView
+            android:id="@+id/iv_follow"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:src="@drawable/icon_add" />
