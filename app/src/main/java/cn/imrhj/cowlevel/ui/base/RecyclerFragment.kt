@@ -14,6 +14,7 @@ import cn.imrhj.cowlevel.utils.CollectionUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.loadmore.LoadMoreView
 
 
 /**
@@ -51,6 +52,24 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
 
         mRefresh?.setOnRefreshListener { reload() }
         mAdapter?.setOnLoadMoreListener(this::loadNextPage, mRecycler)
+        mAdapter?.setLoadMoreView(object : LoadMoreView() {
+            override fun getLayoutId(): Int {
+                return R.layout.recycler_load_more
+            }
+
+            override fun getLoadingViewId(): Int {
+                return R.id.load_more_loading_view
+            }
+
+            override fun getLoadEndViewId(): Int {
+                return R.id.load_more_load_fail_view
+            }
+
+            override fun getLoadFailViewId(): Int {
+                return R.id.load_more_load_end_view
+            }
+
+        })
         mRefresh?.isRefreshing = true
     }
 

@@ -24,7 +24,7 @@ class FeedFragment : RecyclerFragment<BaseModel>() {
         RetrofitManager.getInstance().feedTimeline(nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    if (result.first_id == mFirstId) {
+                    if (result.first_id == mFirstId && !isResetData) {
                         return@subscribe
                     }
                     mFirstId = result.first_id

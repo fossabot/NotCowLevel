@@ -30,8 +30,11 @@ import cn.imrhj.cowlevel.network.model.ShareLinkModel
 import cn.imrhj.cowlevel.ui.activity.PersonActivity
 import cn.imrhj.cowlevel.ui.adapter.DP130_2PX
 import cn.imrhj.cowlevel.ui.adapter.DP65_2PX
-import cn.imrhj.cowlevel.utils.*
+import cn.imrhj.cowlevel.utils.ResourcesUtils
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
+import cn.imrhj.cowlevel.utils.StringUtils
+import cn.imrhj.cowlevel.utils.cdnImageForSize
+import cn.imrhj.cowlevel.utils.cdnImageForSquare
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.gif.GifDrawable
@@ -237,8 +240,8 @@ class FeedHolder() {
             gameView.findViewById<TextView>(R.id.game_title)?.text = game.title
             gameView.findViewById<TextView>(R.id.game_time)?.text = game.game_publish_date_show
             gameView.findViewById<TextView>(R.id.game_platforms)?.text =
-                    if (CollectionUtils.isNotEmpty(platforms))
-                        platforms?.map { it.name }?.reduce { n1, n2 -> "$n1 / $n2" }
+                    if (platforms?.isNotEmpty() == true)
+                        platforms.map { it.name }.reduce { n1, n2 -> "$n1 / $n2" }
                     else ""
             getGlide().load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
                     .into(gameView.findViewById(R.id.game_pic))
