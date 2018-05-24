@@ -86,8 +86,8 @@ class LoginActivity : BaseActivity() {
                             finish()
                         }
                     }, { error ->
-                        etMail.error = error.message
-                        etPassword.error = error.message
+                        tilMail.error = error.message
+                        tilPassword.error = error.message
                         btnLogin.revertAnimation()
                     })
 
@@ -97,11 +97,11 @@ class LoginActivity : BaseActivity() {
 
     private fun checkMail(): Boolean {
         if (StringUtils.isBlank(etMail.text)) {
-            etMail.error = "你还没有填写邮箱"
+            tilMail.error = "你还没有填写邮箱"
             return false
         }
         if (!RegexUtils.isMail(etMail.text)) {
-            etMail.error = "邮箱格式不正确"
+            tilMail.error = "邮箱格式不正确"
             return false
         }
         return true
@@ -109,24 +109,24 @@ class LoginActivity : BaseActivity() {
 
     private fun checkPassword(): Boolean {
         if (StringUtils.isBlank(etPassword.text)) {
-            etPassword.error = "你还没有填写密码"
+            tilPassword.error = "你还没有填写密码"
             return false
         }
         return true
     }
 
     private fun clearError() {
-        if (etMail.error != null) {
-            etMail.error = null
+        if (tilMail.error != null) {
+            tilMail.error = null
         }
-        if (etPassword.error != null) {
-            etPassword.error = null
+        if (tilPassword.error != null) {
+            tilPassword.error = null
         }
     }
 
 //    private fun changeView(status: Boolean) {
-//        etMail.error = null
-//        etPassword.error = null
+//        tilMail.error = null
+//        tilPassword.error = null
 //
 //        llRegister.isClickable = !status
 //        llLogin.isClickable = status

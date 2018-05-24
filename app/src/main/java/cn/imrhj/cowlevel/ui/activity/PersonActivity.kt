@@ -3,11 +3,14 @@ package cn.imrhj.cowlevel.ui.activity
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import android.view.ViewAnimationUtils
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
 import cn.imrhj.cowlevel.ui.adapter.holder.UserHolder
+import cn.imrhj.cowlevel.ui.animate.listener.callEndAnimatorListener
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil
 import cn.imrhj.cowlevel.utils.StringUtils
@@ -29,6 +32,7 @@ class PersonActivity : BaseActivity() {
     private var mName = ""
     private var mAvatar = ""
     private val mAdapter = PersonAdapter(ArrayList())
+    private var mIsAnimateRunning = false
 
 
     override fun layoutId(): Int? {
@@ -50,6 +54,24 @@ class PersonActivity : BaseActivity() {
 
     override fun initView() {
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar?.setNavigationOnClickListener { this.onBackPressed() }
+        appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange - cardAvatar.measuredWidth / 2) {
+                // 折叠
+                if (cardAvatar.visibility == View.VISIBLE && !mIsAnimateRunning) {
+                    mIsAnimateRunning = true
+                    startAvatarAnimate(false)
+                }
+            } else {
+                if (cardAvatar.visibility == View.INVISIBLE && !mIsAnimateRunning) {
+                    mIsAnimateRunning = true
+                    startAvatarAnimate(true)
+                }
+            }
+        }
 
         Glide.with(this)
                 .load(cdnImageForDPSquare(mAvatar, 80))
@@ -74,6 +96,25 @@ class PersonActivity : BaseActivity() {
                 .load(cdnImageForSize(cover, ScreenSizeUtil.getScreenWidth(), (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt()))
                 .into(imageview)
         mAdapter.addData(user)
+    }
+
+    private fun startAvatarAnimate(show: Boolean) {
+        val centerX = cardAvatar.measuredWidth / 2
+        val centerY = cardAvatar.measuredHeight / 2
+        val startRadius = if (show) 0f else (cardAvatar.measuredWidth / 2).toFloat()
+        val endRadius = if (show) (cardAvatar.measuredWidth / 2).toFloat() else 0f
+        val animator = ViewAnimationUtils.createCircularReveal(cardAvatar, centerX, centerY, startRadius, endRadius)
+        animator.duration = 300
+        animator.addListener(callEndAnimatorListener {
+            if (!show) {
+                cardAvatar.visibility = View.INVISIBLE
+            }
+            mIsAnimateRunning = false
+        })
+        if (show) {
+            cardAvatar.visibility = View.VISIBLE
+        }
+        animator.start()
     }
 
     inner class PersonAdapter(data: MutableList<BaseModel>) : BaseQuickAdapter<BaseModel, BaseViewHolder>(data) {

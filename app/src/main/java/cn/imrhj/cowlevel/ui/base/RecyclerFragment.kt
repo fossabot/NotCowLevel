@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.loadmore.LoadMoreView
+import com.elvishew.xlog.XLog
 
 
 /**
@@ -156,7 +157,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     fun onError(t: Throwable) {
-        Log.e(Thread.currentThread().name, "class = RecyclerFragment rhjlog onError: " + t.message)
+        XLog.e("class = RecyclerFragment rhjlog onError: " + t.message)
         //todo 错误提示
         if (mRefresh?.isRefreshing == true) {
             mRefresh?.isRefreshing = false

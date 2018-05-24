@@ -12,6 +12,10 @@
     <color name="colorWhite3">#4Dffffff</color>
     <color name="colorWhite1">#1AFFFFFF</color>
 
+    <color name="colorBlack1">#1A000000</color>
+    <color name="colorBlack3">#4D000000</color>
+    <color name="colorBlack5">#80000000</color>
+
     <color name="colorRedAccept">#eb5263</color>
     <color name="colorLoginBackground">#B31F2233</color>
 

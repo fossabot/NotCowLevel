@@ -3,9 +3,16 @@ package cn.imrhj.cowlevel
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import cn.imrhj.cowlevel.utils.CacheUtils
+import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
+import com.elvishew.xlog.printer.AndroidPrinter
+import com.elvishew.xlog.printer.file.FilePrinter
+import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
+import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
 import java.lang.ref.WeakReference
+
 
 /**
  * Created by rhj on 23/02/2018.
@@ -24,12 +31,22 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     private fun initOnUiThread() {
-        XLog.init(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)
+        val config = LogConfiguration.Builder()
+                .logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.WARN)
+                .tag("rhjlog")
+                .build()
+        val androidPrinter = AndroidPrinter()
+        val filePrinter = FilePrinter.Builder(CacheUtils.logFilePath)
+                .fileNameGenerator(DateFileNameGenerator())
+                .backupStrategy(NeverBackupStrategy())
+                .build()
+        XLog.init(config, androidPrinter, filePrinter)
+
         registerActivityLifecycleCallbacks(this)
     }
 
     fun getLastActivity(): Activity {
-        return mLastResumeActivity.get()!!
+        return requireNotNull(mLastResumeActivity.get(), { "App activity shouldn't bee null" })
     }
 
 
@@ -37,9 +54,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityResumed(activity: Activity?) {
-        if (activity != null) {
-            mLastResumeActivity = WeakReference(activity)
-        }
+        activity?.let { mLastResumeActivity = WeakReference(it) }
     }
 
     override fun onActivityStarted(activity: Activity?) {

@@ -282,7 +282,14 @@ class FeedHolder() {
         val tags = item?.merged?.tags
 
         var frontValue = "来自"
-        var tagValue = ""
+        var tagValue = when {
+            voters?.isNotEmpty() == true && voters[0].name?.isNotBlank() == true -> voters[0].name
+            followers?.isNotEmpty() == true && followers[0].name?.isNotBlank() == true -> followers[0].name
+            games?.isNotEmpty() == true && games[0].chinese_title?.isNotBlank() == true -> games[0].chinese_title
+            tags?.isNotEmpty() == true && tags[0].name?.isNotBlank() == true -> tags[0].name
+            else -> ""
+        }
+
         var subValue = "的回答"
         when (item?.action) {
             follow_question.name -> {
@@ -293,7 +300,7 @@ class FeedHolder() {
             vote_article.name -> {
                 frontValue = ""
                 tagValue = voters?.get(0)?.name ?: ""
-                subValue = "赞同了该文章"
+                subValue = "等赞同了该文章"
             }
             tag_article.name -> {
                 tagValue = tags?.get(0)?.name ?: ""
@@ -315,10 +322,13 @@ class FeedHolder() {
                 tagValue = games?.get(0)?.chinese_title ?: ""
                 subValue = "的文章"
             }
+            tag_answer.name -> {
+//                tagValue = tags?.get(0)?.name ?: ""
+            }
 
         }
 
-        if (tagValue.isNotBlank()) {
+        if (tagValue!!.isNotBlank()) {
             header?.visibility = View.VISIBLE
             helper?.setText(R.id.tag, tagValue)
             helper?.setText(R.id.sub_tag, subValue)
