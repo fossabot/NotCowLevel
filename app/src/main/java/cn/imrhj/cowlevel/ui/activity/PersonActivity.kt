@@ -3,6 +3,7 @@ package cn.imrhj.cowlevel.ui.activity
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import cn.imrhj.cowlevel.R
@@ -22,17 +23,19 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
-import com.elvishew.xlog.XLog
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_person.*
 
 class PersonActivity : BaseActivity() {
-    private val DEFAULT_COVER = "https://pic1.cdncl.net/user/hexer/common_pic/b35960f11f45262807f0e081a4f90a99.jpg"
+    private val DEFAULT_COVER = "https://pic1.cdncl.net/user/hexer/common_pic/534334eabc451d1c5a017020be6e4a76.jpg"
 
     private var mName = ""
     private var mAvatar = ""
     private val mAdapter = PersonAdapter(ArrayList())
     private var mIsAnimateRunning = false
+    private var lastId = 0
+    private var hasMore = true
 
 
     override fun layoutId(): Int? {
@@ -44,12 +47,26 @@ class PersonActivity : BaseActivity() {
         mAvatar = intent.getStringExtra("avatar")
         val urlSlug = intent.getStringExtra("url_slug")
 
-        RetrofitManager.getInstance().getUser(urlSlug)
+        val personObservable = RetrofitManager.getInstance().getUser(urlSlug)
+        val personTimeline = RetrofitManager.getInstance().getUserTimeLine(urlSlug)
+                .doOnNext {
+                    lastId = it.last_id
+                    hasMore = it.has_more == 1
+                }
+                .flatMap { Observable.fromIterable(it.list) }
+        Observable.merge(personObservable, personTimeline)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result -> processResult(result) },
-                        { t -> XLog.e("class = PersonActivity rhjlog initData: $t") }
-                )
+                .subscribe({
+                    if (it is UserModel) {
+                        processHeaderResult(it)
+                    } else {
+                        mAdapter.addData(it as FeedModel)
+                    }
+                }, {
+                    Log.e(Thread.currentThread().name, "class = PersonActivity rhjlog initData: error $it")
+                }, {
+//                    mAdapter.notifyDataSetChanged()
+                })
     }
 
     override fun initView() {
@@ -90,7 +107,7 @@ class PersonActivity : BaseActivity() {
         finishAfterTransition()
     }
 
-    private fun processResult(user: UserModel) {
+    private fun processHeaderResult(user: UserModel) {
         val cover = if (StringUtils.isNotBlank(user.cover)) user.cover else DEFAULT_COVER
         Glide.with(this)
                 .load(cdnImageForSize(cover, ScreenSizeUtil.getScreenWidth(), (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt()))

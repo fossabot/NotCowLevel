@@ -3,7 +3,7 @@ package cn.imrhj.cowlevel.network.model
 /**
  * Created by rhj on 2017/12/4.
  */
-val TYPE_USER = 2
+const val TYPE_USER = 2
 
 data class UserModel(
         val name: String? = null,

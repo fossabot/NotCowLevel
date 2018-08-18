@@ -396,6 +396,7 @@ class FeedHolder() {
                 intent.putExtra("url_slug", user.url_slug)
                 val options = ActivityOptions.makeSceneTransitionAnimation(activity,
                         Pair.create(avatarView, "avatar"))
+                avatarView?.transitionName = "avatar"
                 activity.startActivity(intent, options.toBundle())
                 activity.overridePendingTransition(0, 0)
             }

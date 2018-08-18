@@ -26,7 +26,7 @@ package cn.imrhj.cowlevel.network.model
  *近期想要自己做一款游戏试试看，开始策划！<\/p>","invite_code_total":1,"invite_code_remain":0,"is_follow":0,"is_follow_by":0,"is_follow_both":0,"pro_games":[],"is_pro":0,"total_voted_count":33},{"name":"五十万","url_slug":"gojuuman","avatar":"https://pic1.cdncl.net/user/avatar/999f5a70d2468f968a62e4485204f3ac.jpg","cover":"https://pic1.cdncl.net/user/gojuuman/common_pic/86d2945202918de856b187d29a905aa8.jpeg","intro":"在空中飞行程度的能力","level":1,"following_count":175,"follower_count":192,"recommend_count":9,"played_count":185,"comment_count":41,"vote_count":51,"comment_voted_count":224,"answer_voted_count":201,"photo_voted_count":0,"article_voted_count":244,"question_count":5,"answer_count":49,"article_count":11,"user_bio":"<div><div>心系美雪  身在岭(min)南<\/div><\/div>","invite_code_total":12,"invite_code_remain":0,"is_follow":0,"is_follow_by":0,"is_follow_both":0,"pro_games":[{"url_slug":"DIABLO_3","title":"暗黑破坏神3 DIABLO Ⅲ"}],"is_pro":1,"total_voted_count":669}]
  * has_more : 1
 </div></div> */
-val TYPE_FEED = 1
+const val TYPE_FEED = 1
 
 data class FeedModel(
         val merge_type: String? = null,

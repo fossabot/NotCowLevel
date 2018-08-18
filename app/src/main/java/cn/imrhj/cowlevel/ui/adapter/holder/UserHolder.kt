@@ -18,7 +18,7 @@ class UserHolder {
     fun renderHeader(helper: BaseViewHolder, userModel: UserModel) {
         helper.setText(R.id.tv_name, userModel.name)
         setOrHideText(helper.getView(R.id.tv_intro), userModel.intro)
-        helper.setText(R.id.tv_vote, "获得 ${userModel.vote_count} 赞")
+        helper.setText(R.id.tv_vote, "获得 ${userModel.total_voted_count} 赞")
         helper.setText(R.id.tv_follower, "关注者 ${userModel.follower_count}")
         setOrHideText(helper.getView(R.id.tv_bio), userModel.user_bio)
         helper.setText(R.id.tv_played, userModel.played_count.toString())

@@ -44,6 +44,14 @@ interface CowLevel {
     fun getPeople(@Path("name") name: String): Observable<ApiModel<OuterUserModel>>
 
     /**
+     * 获取用户的时间线
+     * @param name 用户url_slug
+     * @return Observable
+     */
+    @GET("/people/{name}/timeline")
+    fun getPeopleTimeline(@Path("name") name: String, @Query("last_id") id: Int = 0): Observable<ApiModel<FeedApiModel>>
+
+    /**
      * 点赞评价
      * @param id 评价id
      * @return Observable

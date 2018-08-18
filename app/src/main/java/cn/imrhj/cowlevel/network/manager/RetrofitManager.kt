@@ -65,6 +65,10 @@ class RetrofitManager private constructor() {
                 .map { it.user }
     }
 
+    fun getUserTimeLine(name: String, id: Int = 0): Observable<FeedApiModel> {
+        return filterStatus(mCowLevel.getPeopleTimeline(name, id))
+    }
+
     fun voteReview(id: Int): Observable<BaseModel> {
         return filterStatus(mCowLevel.voteReview(id))
     }
