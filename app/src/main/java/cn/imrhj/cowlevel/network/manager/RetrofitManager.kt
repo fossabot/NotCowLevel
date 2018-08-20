@@ -1,11 +1,13 @@
 package cn.imrhj.cowlevel.network.manager
 
 import cn.imrhj.cowlevel.App
+import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.interceptor.ApiLogInterceptor
 import cn.imrhj.cowlevel.network.interceptor.HeaderInterceptor
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.service.CowLevel
+import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * 网络请求管理类
  * Created by rhj on 2017/11/29.
  */
-val COW_LEVEL_URL = "https://cowlevel.net/"
+const val COW_LEVEL_URL = "https://cowlevel.net/"
 val COW_LEVEL_URI = HttpUrl.parse(COW_LEVEL_URL)
 
 class RetrofitManager private constructor() {
@@ -29,10 +31,15 @@ class RetrofitManager private constructor() {
             .addInterceptor(ApiLogInterceptor())
             .build()
 
+    private val mGson = GsonBuilder()
+            .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
+            .registerTypeAdapter(OuterUserModel::class.java, OuterUserAdapter())
+            .create()
+
     private val mRetrofit = Retrofit.Builder()
             .baseUrl(COW_LEVEL_URL)
             .client(mClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(mGson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 

@@ -16,8 +16,10 @@
 
     <style name="AppTheme.Start" >
         <item name="android:windowBackground">@drawable/background_start_screen</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <!--<item name="android:windowBackground">@color/colorPrimary</item>-->
-        <item name="android:windowFullscreen">true</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

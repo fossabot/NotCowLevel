@@ -30,9 +30,10 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun initView() {
-        llRegister.setOnClickListener {
+        llRegister.setOnClickListener { _ ->
+            this.hideKeyboard()
             Snackbar.make(llRegister, "请前往打开的网页注册新帐号", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("前往", { openUrl(INVITE_URL) })
+                    .setAction("前往") { openUrl(INVITE_URL) }
                     .show()
         }
 
@@ -68,6 +69,13 @@ class LoginActivity : BaseActivity() {
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isActive) {
+            imm.hideSoftInputFromWindow(etMail.windowToken, 0)
         }
     }
 
