@@ -1,9 +1,11 @@
 package cn.imrhj.cowlevel.network.parse
 
-import cn.imrhj.cowlevel.network.model.ElementModel
 import cn.imrhj.cowlevel.network.model.FeedApiModel
 import cn.imrhj.cowlevel.network.model.FollowedPostNewModel
 import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
+import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
+import cn.imrhj.cowlevel.network.model.element.ElementModel
+import cn.imrhj.cowlevel.network.model.element.ElementRelatedModel
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.model.list.FollowedPostNewListModel
 import cn.imrhj.cowlevel.network.model.list.FollowedTagNewListModel
@@ -30,12 +32,16 @@ val parseHomeJSString: (String) -> FeedHomeModel = {
     data
 }
 
-val parseElementJSString: (String) -> ElementModel? = {
+val parseElementJSString: (String) -> ElementHomeModel? = {
     val gson = Gson()
+    val elementHomeModel = ElementHomeModel()
     val elementListResult = Regex("element:(.+),").find(it)?.groups
-    var element: ElementModel? = null
     if (elementListResult?.size ?: 0 > 1) {
-        element = gson.fromJson(elementListResult?.get(1)?.value, ElementModel::class.java)
+        elementHomeModel.element = gson.fromJson(elementListResult?.get(1)?.value, ElementModel::class.java)
     }
-    element
+    val relatedResult = Regex("related:(.+),").find(it)?.groups
+    if (relatedResult?.size ?: 0 > 1) {
+        elementHomeModel.related = gson.fromJson(relatedResult?.get(1)?.value, ElementRelatedModel::class.java)
+    }
+    elementHomeModel
 }

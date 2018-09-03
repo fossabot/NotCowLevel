@@ -7,7 +7,8 @@ import android.transition.Transition
 import android.util.Log
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
-import cn.imrhj.cowlevel.network.model.ElementModel
+import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
+import cn.imrhj.cowlevel.network.model.element.ElementModel
 import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.fragment.ElementFeedFragment
@@ -21,6 +22,8 @@ class ElementActivity : BaseActivity() {
     private lateinit var mName: String
     private lateinit var mCover: String
     private lateinit var mElementData: ElementModel
+
+    private val mFeedFragment by lazy { ElementFeedFragment() }
 
     override fun layoutId(): Int? {
         return R.layout.activity_element
@@ -39,7 +42,7 @@ class ElementActivity : BaseActivity() {
         tabLayout.setupWithViewPager(viewpager)
         window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition?) {
-                waitForAminationEnd()
+                waitForAnimationEnd()
             }
 
             override fun onTransitionResume(transition: Transition?) {
@@ -57,7 +60,7 @@ class ElementActivity : BaseActivity() {
 
     }
 
-    fun waitForAminationEnd() {
+    fun waitForAnimationEnd() {
         val feedFragment = ElementFeedFragment()
         feedFragment.mId = mId
         viewpager.adapter = FragmentAdapter(supportFragmentManager,
@@ -91,11 +94,13 @@ class ElementActivity : BaseActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun processHeaderData(element: ElementModel) {
-        subtitle.text = "${element.followerCount} 人关注"
+    private fun processHeaderData(data: ElementHomeModel) {
+        val element = data.element
+        val relatedModel = data.related
+        subtitle.text = "${element?.followerCount} 人关注"
         desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            Html.fromHtml(element.content, 0) else
-            Html.fromHtml(element.content)
+            Html.fromHtml(element?.content, 0) else
+            Html.fromHtml(element?.content)
 
     }
 }

@@ -10,8 +10,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 
 class ElementFeedFragment : RecyclerFragment<BaseModel>() {
     var mId: Int = -1
+
+//    fun setData()
+
     override fun getAdapter(): BaseQuickAdapter<BaseModel, BaseViewHolder> {
-        return FeedAdapter(ArrayList(), this)
+        return object : FeedAdapter(ArrayList(), this) {
+            override fun convert(helper: BaseViewHolder?, item: BaseModel?) {
+//                if (helper?.itemViewType == )
+                super.convert(helper, item)
+            }
+        }
     }
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
@@ -23,4 +31,5 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
                     setNextCursor(nextCursor + 1)
                 }, mOnError, mOnComplete)
     }
+
 }

@@ -22,7 +22,7 @@ import com.chad.library.adapter.base.util.MultiTypeDelegate
 val DP130_2PX = dp2px(130)
 val DP65_2PX = dp2px(65)
 
-class FeedAdapter(data: MutableList<BaseModel>?, fragment: Fragment) : BaseQuickAdapter<BaseModel, BaseViewHolder>(data) {
+open class FeedAdapter(data: MutableList<BaseModel>?, fragment: Fragment) : BaseQuickAdapter<BaseModel, BaseViewHolder>(data) {
     private val feedHolder = FeedHolder(fragment)
     private val homeHeaderHolder = HomeHeaderHolder(fragment)
 

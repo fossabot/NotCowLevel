@@ -1,6 +1,6 @@
 package cn.imrhj.cowlevel.network.manager
 
-import cn.imrhj.cowlevel.network.model.ElementModel
+import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.parse.parseElementJSString
 import cn.imrhj.cowlevel.network.parse.parseHomeJSString
@@ -42,7 +42,7 @@ object HtmlParseManager {
         return getJSData("feed", 1).map(parseHomeJSString)
     }
 
-    fun getElement(id: Int): Observable<ElementModel> {
+    fun getElement(id: Int): Observable<ElementHomeModel> {
         return getJSData("element/$id", 2).map(parseElementJSString)
     }
 }
