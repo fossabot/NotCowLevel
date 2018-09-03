@@ -17,7 +17,6 @@
             android:minHeight="?attr/actionBarSize"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title=""
             app:titleEnabled="false">
 
             <ImageView

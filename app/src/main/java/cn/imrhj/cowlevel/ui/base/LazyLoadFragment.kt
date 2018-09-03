@@ -3,12 +3,11 @@ package cn.imrhj.cowlevel.ui.base
 import android.os.Bundle
 
 
-
 /**
  * 支持懒加载的Fragment
  * Created by rhj on 2017/11/28.
  */
-abstract class LazyLoadFragment: BaseFragment() {
+abstract class LazyLoadFragment : BaseFragment() {
     private var isViewInitiated: Boolean = false
     private var isDataLoaded: Boolean = false
 

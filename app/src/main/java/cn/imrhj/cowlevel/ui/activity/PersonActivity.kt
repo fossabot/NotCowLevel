@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.loadmore.LoadMoreView
 import com.chad.library.adapter.base.util.MultiTypeDelegate
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,8 +35,10 @@ class PersonActivity : BaseActivity() {
     private var mAvatar = ""
     private val mAdapter = PersonAdapter(ArrayList())
     private var mIsAnimateRunning = false
-    private var lastId = 0
-    private var hasMore = true
+    private var mNextCursor = 0
+    private var mHasMore = true
+    private var mIsShowNext = false
+    private lateinit var mUrlSlug: String
 
 
     override fun layoutId(): Int? {
@@ -45,16 +48,11 @@ class PersonActivity : BaseActivity() {
     override fun initData() {
         mName = intent.getStringExtra("name")
         mAvatar = intent.getStringExtra("avatar")
-        val urlSlug = intent.getStringExtra("url_slug")
+        mUrlSlug = intent.getStringExtra("url_slug")
 
-        val personObservable = RetrofitManager.getInstance().getUser(urlSlug)
-        val personTimeline = RetrofitManager.getInstance().getUserTimeLine(urlSlug)
-                .doOnNext {
-                    lastId = it.last_id
-                    hasMore = it.has_more == 1
-                }
-                .flatMap { Observable.fromIterable(it.list) }
-        Observable.merge(personObservable, personTimeline)
+        val personObservable = RetrofitManager.getInstance().getUser(mUrlSlug)
+        val personTimelineObservable = getFeedObservable(mUrlSlug)
+        Observable.merge(personObservable, personTimelineObservable)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (it is UserModel) {
@@ -65,8 +63,18 @@ class PersonActivity : BaseActivity() {
                 }, {
                     Log.e(Thread.currentThread().name, "class = PersonActivity rhjlog initData: error $it")
                 }, {
-//                    mAdapter.notifyDataSetChanged()
+                    //                    mAdapter.notifyDataSetChanged()
                 })
+    }
+
+    private fun getFeedObservable(urlSlug: String, nextCursor: Int = 0): Observable<FeedModel> {
+        return RetrofitManager.getInstance().getUserTimeLine(urlSlug, nextCursor)
+                .doOnNext {
+                    mNextCursor = it.last_id
+                    mHasMore = it.has_more == 1
+                }
+                .flatMap { Observable.fromIterable(it.list) }
+
     }
 
     override fun initView() {
@@ -100,7 +108,56 @@ class PersonActivity : BaseActivity() {
         divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
         recycler.addItemDecoration(divider)
         mAdapter.openLoadAnimation(SLIDEIN_BOTTOM)
+        mAdapter.setOnLoadMoreListener(this::loadNextPage, recycler)
+        mAdapter.setLoadMoreView(object : LoadMoreView() {
+            override fun getLayoutId(): Int {
+                return R.layout.recycler_load_more
+            }
+
+            override fun getLoadingViewId(): Int {
+                return R.id.load_more_loading_view
+            }
+
+            override fun getLoadEndViewId(): Int {
+                return R.id.load_more_load_fail_view
+            }
+
+            override fun getLoadFailViewId(): Int {
+                return R.id.load_more_load_end_view
+            }
+
+        })
         recycler.adapter = mAdapter
+    }
+
+    private fun loadNextPage() {
+        if (!mHasMore) {
+            mAdapter.loadMoreEnd()
+            return
+        }
+        this.loadFeed(this.mNextCursor)
+        mIsShowNext = true
+    }
+
+    private fun loadFeed(nextCursor: Int) {
+        getFeedObservable(mUrlSlug, nextCursor)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ mAdapter.addData(it) }, {
+                    //todo show error
+                    if (mIsShowNext) {
+                        mAdapter.loadMoreFail()
+                        mIsShowNext = false
+                    }
+                }, {
+                    if (mIsShowNext) {
+                        if (mHasMore) {
+                            mAdapter.loadMoreComplete()
+                        } else {
+                            mAdapter.loadMoreEnd()
+                        }
+                        mIsShowNext = false
+                    }
+                })
     }
 
     override fun onBackPressed() {

@@ -41,6 +41,7 @@
         <activity
             android:name=".ui.activity.PersonActivity"
             android:theme="@style/AppTheme.Transition.Person" />
+        <activity android:name=".ui.activity.ElementActivity" />
     </application>
 
 </manifest>

@@ -68,4 +68,13 @@ interface CowLevel {
     @FormUrlEncoded
     @POST("/api/review/vote")
     fun unvoteReview(@Field("id") id: Int): Observable<ApiModel<BaseModel>>
+
+    /**
+     * 获取 element 的 feed
+     * @param id element id
+     * @param lastId 分页
+     * @return Observable
+     */
+    @GET("/element/{id}/feed")
+    fun getElementFeed(@Path("id") id: Int, @Query("last_id") lastId: Int = 0): Observable<ApiModel<FeedApiModel>>
 }

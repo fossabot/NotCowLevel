@@ -10,6 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
+import cn.imrhj.cowlevel.ui.fragment.HomeFeedFragment
+import cn.imrhj.cowlevel.ui.fragment.HotFeedFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -27,7 +29,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         // initViewPager
-        viewpager.adapter = FragmentAdapter(supportFragmentManager)
+        viewpager.adapter = FragmentAdapter(supportFragmentManager,
+                arrayOf(HomeFeedFragment(), HotFeedFragment()),
+                arrayOf("动态", "推荐", "BLANK")
+        )
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewpager, true)
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

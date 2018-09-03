@@ -7,7 +7,6 @@ import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by rhj on 10/12/2017.
@@ -19,7 +18,6 @@ class HotFeedFragment : RecyclerFragment<BaseModel>() {
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
         RetrofitManager.getInstance().hotFeeds(nextCursor)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     updateList(result.list, isResetData)

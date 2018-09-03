@@ -1,10 +1,9 @@
 package cn.imrhj.cowlevel.ui.adapter.holder
 
 import android.app.Activity
-import android.app.ActivityOptions
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.util.Pair
@@ -271,6 +270,13 @@ class FeedHolder() {
         }
     }
 
+    private fun <E> getListItemFirst(list: List<E>?): E? {
+        if (list?.size ?: 0 > 0) {
+            return list?.get(0)
+        }
+        return null
+    }
+
     /**
      * 渲染顶部的tag
      */
@@ -291,39 +297,40 @@ class FeedHolder() {
         }
 
         var subValue = "的回答"
+
         when (item?.action) {
             follow_question.name -> {
                 frontValue = ""
-                tagValue = followers?.get(0)?.name ?: ""
+                tagValue = getListItemFirst(followers)?.name ?: ""
                 subValue = "关注了该问题"
             }
             vote_article.name -> {
                 frontValue = ""
-                tagValue = voters?.get(0)?.name ?: ""
+                tagValue = getListItemFirst(voters)?.name ?: ""
                 subValue = "等赞同了该文章"
             }
             tag_article.name -> {
-                tagValue = tags?.get(0)?.name ?: ""
+                tagValue = getListItemFirst(tags)?.name ?: ""
                 subValue = "的文章"
             }
             post_submit_review.name -> {
-                tagValue = games?.get(0)?.chinese_title ?: ""
+                tagValue = getListItemFirst(games)?.chinese_title ?: ""
                 subValue = "的评价"
             }
             tag_question.name -> {
-                tagValue = tags?.get(0)?.name ?: ""
+                tagValue = getListItemFirst(tags)?.name ?: ""
                 subValue = "的问题"
             }
             post_submit_question.name -> {
-                tagValue = games?.get(0)?.chinese_title ?: ""
+                tagValue = getListItemFirst(games)?.chinese_title ?: ""
                 subValue = "的问题"
             }
             post_submit_article.name -> {
-                tagValue = games?.get(0)?.chinese_title ?: ""
+                tagValue = getListItemFirst(games)?.chinese_title ?: ""
                 subValue = "的文章"
             }
             tag_answer.name -> {
-//                tagValue = tags?.get(0)?.name ?: ""
+//                tagValue = getListItemFirst(tags)?.name ?: ""
             }
 
         }
@@ -389,16 +396,12 @@ class FeedHolder() {
             helper?.setText(R.id.subtitle, item.action_text)
 
             helper?.getView<View>(R.id.user)?.setOnClickListener {
-                val activity = App.app.getLastActivity()
-                val intent = Intent(activity, PersonActivity::class.java)
-                intent.putExtra("avatar", user.avatar)
-                intent.putExtra("name", user.name)
-                intent.putExtra("url_slug", user.url_slug)
-                val options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                        Pair.create(avatarView, "avatar"))
-                avatarView?.transitionName = "avatar"
-                activity.startActivity(intent, options.toBundle())
-                activity.overridePendingTransition(0, 0)
+                val bundle = Bundle()
+                bundle.putString("avatar", user.avatar)
+                bundle.putString("name", user.name)
+                bundle.putString("url_slug", user.url_slug)
+                val pair = Pair.create(avatarView as View, "avatar")
+                SchemeUtils.startActivityTransition(PersonActivity::class.java, bundle, pair)
             }
         } else {
             helper?.getView<View>(R.id.user)?.visibility = GONE

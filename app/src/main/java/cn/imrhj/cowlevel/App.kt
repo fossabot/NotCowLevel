@@ -46,7 +46,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     fun getLastActivity(): Activity {
-        return requireNotNull(mLastResumeActivity.get(), { "App activity shouldn't bee null" })
+        return requireNotNull(mLastResumeActivity.get()) { "App activity shouldn't bee null" }
     }
 
 

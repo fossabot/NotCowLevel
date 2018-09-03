@@ -1,9 +1,12 @@
 package cn.imrhj.cowlevel.manager
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
+import android.util.Pair
+import android.view.View
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.ui.activity.WebviewActivity
@@ -18,7 +21,7 @@ class SchemeUtils {
         fun openLink(url: String) {
             val intent = Intent(App.app.getLastActivity(), WebviewActivity::class.java)
             intent.putExtra("url", url)
-            App.app.startActivity(intent)
+            App.app.getLastActivity().startActivity(intent)
         }
 
         fun openWithChromeTabs(url: String) {
@@ -38,10 +41,19 @@ class SchemeUtils {
             tabsIntent.launchUrl(App.app, uri)
         }
 
-        fun <T> startActivity(clazz: Class<T>, bundle: Bundle) {
+        fun <T> startActivity(clazz: Class<T>, bundle: Bundle? = null) {
             val intent = Intent(App.app.getLastActivity(), clazz)
-
-            App.app.startActivity(intent)
+            App.app.getLastActivity().startActivity(intent)
         }
+
+        fun <T> startActivityTransition(clazz: Class<T>, bundle: Bundle, vararg sharedElements: Pair<View?, String>) {
+            val activity = App.app.getLastActivity()
+            val intent = Intent(activity, clazz)
+            intent.putExtras(bundle)
+            val options = ActivityOptions.makeSceneTransitionAnimation(activity, *sharedElements)
+            activity.startActivity(intent, options.toBundle())
+            activity.overridePendingTransition(0, 0)
+        }
+
     }
 }

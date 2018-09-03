@@ -9,17 +9,21 @@
         <item name="colorControlNormal">@color/colorWhite1</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
         <item name="android:windowBackground">@color/colorPrimary</item>
 
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="android:colorForeground">@color/white</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimaryInverse">@android:color/black</item>
+        <item name="android:textColorSecondary">@color/colorWhite5</item>
+        <item name="android:textColorSecondaryInverse">@color/colorBlack5</item>
     </style>
 
-    <style name="AppTheme.Start" >
+    <style name="AppTheme.Start">
         <item name="android:windowBackground">@drawable/background_start_screen</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!--<item name="android:windowBackground">@color/colorPrimary</item>-->
-        <!--<item name="android:windowFullscreen">true</item>-->
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -31,7 +35,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="TextLabel" parent="Widget.Design.TextInputLayout" >
+    <style name="TextLabel" parent="Widget.Design.TextInputLayout">
         <item name="android:textColorHint">@color/colorWhite5</item>
         <item name="android:textSize">14sp</item>
         <item name="colorAccent">@color/colorRedAccept</item>
@@ -46,8 +50,12 @@
     <style name="AppTheme.Transition.Person">
         <!--<item name="android:windowEnterTransition">@android:transition/fade</item>-->
         <!--<item name="android:windowReturnTransition">@android:transition/fade</item>-->
-        <item name="android:windowSharedElementEnterTransition">@transition/change_image_transition</item>
-        <item name="android:windowSharedElementReturnTransition">@transition/change_image_transition</item>
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transition
+        </item>
+        <item name="android:windowSharedElementReturnTransition">
+            @transition/change_image_transition
+        </item>
 
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

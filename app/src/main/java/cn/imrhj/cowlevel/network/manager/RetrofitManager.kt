@@ -1,21 +1,18 @@
 package cn.imrhj.cowlevel.network.manager
 
-import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
-import cn.imrhj.cowlevel.network.interceptor.ApiLogInterceptor
-import cn.imrhj.cowlevel.network.interceptor.HeaderInterceptor
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.service.CowLevel
+import cn.imrhj.cowlevel.network.service.CowLevelRaw
 import com.google.gson.GsonBuilder
-import com.readystatesoftware.chuck.ChuckInterceptor
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 /**
  * 网络请求管理类
@@ -25,12 +22,6 @@ const val COW_LEVEL_URL = "https://cowlevel.net/"
 val COW_LEVEL_URI = HttpUrl.parse(COW_LEVEL_URL)
 
 class RetrofitManager private constructor() {
-    private val mClient: OkHttpClient = OkHttpClient.Builder()
-            .addInterceptor(HeaderInterceptor())
-            .addInterceptor(ChuckInterceptor(App.app.applicationContext))
-            .addInterceptor(ApiLogInterceptor())
-            .build()
-
     private val mGson = GsonBuilder()
             .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
             .registerTypeAdapter(OuterUserModel::class.java, OuterUserAdapter())
@@ -38,12 +29,15 @@ class RetrofitManager private constructor() {
 
     private val mRetrofit = Retrofit.Builder()
             .baseUrl(COW_LEVEL_URL)
-            .client(mClient)
+            .client(OkHttpManager.getClient())
             .addConverterFactory(GsonConverterFactory.create(mGson))
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
+
     private val mCowLevel = mRetrofit.create(CowLevel::class.java)
+    private val mCowLevelRaw = mRetrofit.create(CowLevelRaw::class.java)
 
     private fun <T : BaseModel> filterStatus(observable: Observable<ApiModel<T>>): Observable<T> {
         return observable.map {
@@ -84,6 +78,13 @@ class RetrofitManager private constructor() {
         return filterStatus(mCowLevel.voteReview(id))
     }
 
+    fun getFeedHome(): Observable<String> {
+        return mCowLevelRaw.feedHomeRaw()
+    }
+
+    fun getElementFeed(id: Int, lastId: Int): Observable<FeedApiModel> {
+        return filterStatus(mCowLevel.getElementFeed(id, lastId))
+    }
 
     // 单例实现
     companion object {

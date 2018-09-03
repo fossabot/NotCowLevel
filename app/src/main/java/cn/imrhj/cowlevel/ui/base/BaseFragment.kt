@@ -12,6 +12,7 @@ import android.view.ViewGroup
  * Created by rhj on 2017/11/28.
  */
 abstract class BaseFragment : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(layoutId(), null)
         initView(view)
@@ -30,6 +31,7 @@ abstract class BaseFragment : Fragment() {
      * 配置参数
      */
     abstract fun onConfigFragment(bundle: Bundle)
+
 
 }
 

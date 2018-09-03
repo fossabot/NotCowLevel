@@ -2,10 +2,10 @@
 
 buildscript {
     ext.versions = [
-            'kotlin'        : '1.2.60',
-            'compileSdk'    : 27,
-            'targetSdk'     : 27,
-            'buildTools'    : '27.0.3',
+            'kotlin'        : '1.2.61',
+            'compileSdk'    : 28,
+            'targetSdk'     : 28,
+            'buildTools'    : '28.0.2',
             'glide'         : '4.4.0',
             'retrofit'      : '2.3.0',
             'supportLibrary': '27.1.1',

@@ -47,5 +47,6 @@
     <!--shortcuts-->
     <string name="test">test</string>
     <string name="title_activity_login2">Sign in</string>
+    <string name="see_more">查看更多</string>
 
 </resources>
