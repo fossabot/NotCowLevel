@@ -27,9 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:padding="12dp"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="1.5">
+                android:padding="12dp" >
 
                 <ImageView
                     android:id="@+id/avatar"
