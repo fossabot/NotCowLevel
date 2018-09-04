@@ -3,7 +3,6 @@ package cn.imrhj.cowlevel.ui.activity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.text.Html
-import android.transition.Transition
 import android.util.Log
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
@@ -34,7 +33,7 @@ class ElementActivity : BaseActivity() {
     }
 
     override fun initView() {
-        name.text = mName
+//        name.text = mName
         Glide.with(this)
                 .load(cdnImageForDPSquare(mCover, 80))
                 .into(avatar)
@@ -44,23 +43,8 @@ class ElementActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar?.setNavigationOnClickListener { this.onBackPressed() }
         tabLayout.setupWithViewPager(viewpager)
-        window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionEnd(transition: Transition?) {
-                waitForAnimationEnd()
-            }
-
-            override fun onTransitionResume(transition: Transition?) {
-            }
-
-            override fun onTransitionPause(transition: Transition?) {
-            }
-
-            override fun onTransitionCancel(transition: Transition?) {
-            }
-
-            override fun onTransitionStart(transition: Transition?) {
-            }
-        })
+        window.sharedElementEnterTransition.addListener(callEndTransitionListener(this::waitForAnimationEnd))
+        toolbarLayout.title = mName
 
     }
 
@@ -69,7 +53,6 @@ class ElementActivity : BaseActivity() {
                 arrayOf(mFeedFragment),
                 arrayOf("动态", "问题", "文章", "视频")
         )
-
     }
 
     override fun initData() {
@@ -104,6 +87,5 @@ class ElementActivity : BaseActivity() {
         desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             Html.fromHtml(element?.content, 0) else
             Html.fromHtml(element?.content)
-
     }
 }

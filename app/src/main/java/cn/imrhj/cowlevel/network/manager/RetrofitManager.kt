@@ -31,7 +31,6 @@ class RetrofitManager private constructor() {
             .baseUrl(COW_LEVEL_URL)
             .client(OkHttpManager.getClient())
             .addConverterFactory(GsonConverterFactory.create(mGson))
-            .addConverterFactory(ScalarsConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 

@@ -16,14 +16,20 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:contentScrim="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:titleEnabled="false">
+            app:expandedTitleGravity="top"
+            app:expandedTitleMarginEnd="80dp"
+            app:expandedTitleMarginStart="108dp"
+            app:expandedTitleMarginTop="70dp"
+            app:expandedTitleTextAppearance="@style/BarTheme"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:padding="12dp">
+                android:padding="12dp"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="1.5">
 
                 <ImageView
                     android:id="@+id/avatar"

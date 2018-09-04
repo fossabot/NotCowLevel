@@ -21,17 +21,18 @@ class UserManager {
             return Inner.mUserModel
         }
 
-        fun saveUserModel() {
+        private fun saveUserModel() {
             SecurityUtils.putValue(Inner.KEY, Inner.mUserModel.toJsonString())
         }
 
-        fun clearUserModel() {
+        private fun clearUserModel() {
             SecurityUtils.putValue(Inner.KEY, "")
         }
 
         fun logout() {
             Inner.mUserModel = UserModel()
             clearUserModel()
+            LinkUtils.openLogin()
         }
 
         fun setToken(token: String) {

@@ -174,7 +174,7 @@ class PersonActivity : BaseActivity() {
         Glide.with(this)
                 .load(cdnImageForSize(cover, ScreenSizeUtil.getScreenWidth(), (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt()))
                 .into(imageview)
-        mAdapter.addData(user)
+        mAdapter.addData(0, user)
     }
 
     private fun startAvatarAnimate(show: Boolean) {

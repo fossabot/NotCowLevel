@@ -46,6 +46,15 @@ class SchemeUtils {
             App.app.getLastActivity().startActivity(intent)
         }
 
+        fun <T> presentActivity(clazz: Class<T>, bundle: Bundle? = null) {
+            val activity = App.app.getLastActivity()
+            val intent = Intent(activity, clazz)
+            if (bundle != null) {
+                intent.putExtras(bundle)
+            }
+            activity.startActivity(intent)
+        }
+
         fun <T> startActivityTransition(clazz: Class<T>, bundle: Bundle, vararg sharedElements: Pair<View?, String>) {
             val activity = App.app.getLastActivity()
             val intent = Intent(activity, clazz)
