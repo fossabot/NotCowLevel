@@ -23,7 +23,11 @@ class ElementActivity : BaseActivity() {
     private lateinit var mCover: String
     private lateinit var mElementData: ElementModel
 
-    private val mFeedFragment by lazy { ElementFeedFragment() }
+    private val mFeedFragment by lazy {
+        val fragment = ElementFeedFragment()
+        fragment.mId = mId
+        fragment
+    }
 
     override fun layoutId(): Int? {
         return R.layout.activity_element
@@ -61,10 +65,8 @@ class ElementActivity : BaseActivity() {
     }
 
     fun waitForAnimationEnd() {
-        val feedFragment = ElementFeedFragment()
-        feedFragment.mId = mId
         viewpager.adapter = FragmentAdapter(supportFragmentManager,
-                arrayOf(feedFragment),
+                arrayOf(mFeedFragment),
                 arrayOf("动态", "问题", "文章", "视频")
         )
 
@@ -97,6 +99,7 @@ class ElementActivity : BaseActivity() {
     private fun processHeaderData(data: ElementHomeModel) {
         val element = data.element
         val relatedModel = data.related
+        mFeedFragment.setRelatedData(relatedModel)
         subtitle.text = "${element?.followerCount} 人关注"
         desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             Html.fromHtml(element?.content, 0) else

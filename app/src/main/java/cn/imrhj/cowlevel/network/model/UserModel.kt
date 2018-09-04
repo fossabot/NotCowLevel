@@ -1,9 +1,10 @@
 package cn.imrhj.cowlevel.network.model
 
+import cn.imrhj.cowlevel.consts.ItemTypeEnum
+
 /**
  * Created by rhj on 2017/12/4.
  */
-const val TYPE_USER = 2
 
 data class UserModel(
         val name: String? = null,
@@ -57,7 +58,7 @@ data class UserModel(
         val tag_count: Int = 0,
         val feed_count: Int = 0
 ) : BaseModel() {
-    override fun getType(): Int {
-        return TYPE_USER
+    override fun getType(): ItemTypeEnum {
+        return ItemTypeEnum.TYPE_USER
     }
 }

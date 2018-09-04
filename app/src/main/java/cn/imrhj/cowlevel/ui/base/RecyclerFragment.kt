@@ -26,7 +26,6 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     private var mRecycler: RecyclerView? = null
     private var mRefresh: SwipeRefreshLayout? = null
     private var mAdapter: BaseQuickAdapter<T, BaseViewHolder>? = null
-
     open var mOnComplete: () -> Unit = { this.onComplete() }
     open var mOnError: (t: Throwable) -> Unit = { this.onError(it) }
 
@@ -40,6 +39,8 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     private var mIsShowNext: Boolean = false
 
     private var mNextCursor: Int = 0
+
+    open var mFirstLoaded = false
 
     override fun initView(baseView: View?) {
         mRecycler = baseView?.findViewById(R.id.recycler)
@@ -130,11 +131,13 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     fun updateList(lists: List<T>?, isReset: Boolean) {
         if (CollectionUtils.isNotEmpty(lists)) {
             if (isReset) {
+                mFirstLoaded = true
                 mAdapter?.setNewData(lists)
             } else {
                 mAdapter?.addData(lists!!)
             }
         } else if (isReset) {
+            mFirstLoaded = true
             mAdapter?.setNewData(lists)
         }
     }

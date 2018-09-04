@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.network.model
 
+import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import com.google.gson.Gson
 
 /**
@@ -10,7 +11,7 @@ open class BaseModel {
         return Gson().toJson(this)
     }
 
-    open fun getType(): Int {
-        return 0
+    open fun getType(): ItemTypeEnum {
+        return ItemTypeEnum.TYPE_UNKNOWN
     }
 }

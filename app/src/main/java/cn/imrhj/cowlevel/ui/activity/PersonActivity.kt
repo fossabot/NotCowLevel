@@ -7,8 +7,13 @@ import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.consts.ItemTypeEnum
+import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_FEED
+import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_USER
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
-import cn.imrhj.cowlevel.network.model.*
+import cn.imrhj.cowlevel.network.model.BaseModel
+import cn.imrhj.cowlevel.network.model.FeedModel
+import cn.imrhj.cowlevel.network.model.UserModel
 import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
 import cn.imrhj.cowlevel.ui.adapter.holder.UserHolder
 import cn.imrhj.cowlevel.ui.animate.listener.callEndAnimatorListener
@@ -199,20 +204,23 @@ class PersonActivity : BaseActivity() {
             multiTypeDelegate = object : MultiTypeDelegate<BaseModel>() {
                 override fun getItemType(t: BaseModel?): Int {
                     if (t != null) {
-                        return t.getType()
+                        return t.getType().ordinal
                     }
                     return -1
                 }
             }
-            multiTypeDelegate.registerItemType(TYPE_FEED, R.layout.item_feed_common)
-                    .registerItemType(TYPE_USER, R.layout.item_person_header)
+            multiTypeDelegate
+                    .registerItemType(TYPE_FEED.ordinal, R.layout.item_feed_common)
+                    .registerItemType(TYPE_USER.ordinal, R.layout.item_person_header)
 
         }
 
         override fun convert(helper: BaseViewHolder?, item: BaseModel?) {
-            when (helper?.itemViewType) {
-                TYPE_FEED -> feedHolder.renderCommon(helper, item as FeedModel)
-                TYPE_USER -> userHolder.renderHeader(helper, item as UserModel)
+            if (helper != null) {
+                when (ItemTypeEnum.valueOf(helper.itemViewType)) {
+                    TYPE_FEED -> feedHolder.renderCommon(helper, item as FeedModel)
+                    TYPE_USER -> userHolder.renderHeader(helper, item as UserModel)
+                }
             }
         }
     }

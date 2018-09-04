@@ -1,15 +1,23 @@
 package cn.imrhj.cowlevel.ui.fragment
 
+import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.consts.ItemTypeEnum
+import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_HEADER_POST
+import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_HEADER_TAG
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.FeedApiModel
 import cn.imrhj.cowlevel.network.model.FeedModel.Type.system_recommend_user
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
+import cn.imrhj.cowlevel.network.model.list.FollowedPostNewListModel
+import cn.imrhj.cowlevel.network.model.list.FollowedTagNewListModel
 import cn.imrhj.cowlevel.ui.adapter.FeedAdapter
+import cn.imrhj.cowlevel.ui.adapter.holder.HomeHeaderHolder
 import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.util.MultiTypeDelegate
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -21,7 +29,23 @@ class HomeFeedFragment : RecyclerFragment<BaseModel>() {
     private var mFirstId = 0
 
     override fun getAdapter(): BaseQuickAdapter<BaseModel, BaseViewHolder> {
-        return FeedAdapter(ArrayList(), this)
+        return object : FeedAdapter(ArrayList(), this) {
+            private val homeHeaderHolder = HomeHeaderHolder(this@HomeFeedFragment)
+            override fun initType(multiTypeDelegate: MultiTypeDelegate<BaseModel>) {
+                super.initType(multiTypeDelegate)
+                multiTypeDelegate.registerItemType(TYPE_HEADER_POST.ordinal, R.layout.item_home_header)
+                multiTypeDelegate.registerItemType(TYPE_HEADER_TAG.ordinal, R.layout.item_home_header)
+            }
+
+            override fun extendConvert(helper: BaseViewHolder, item: BaseModel?, type: ItemTypeEnum) {
+                when (type) {
+                    TYPE_HEADER_POST -> homeHeaderHolder.renderPost(helper, (item as FollowedPostNewListModel).list)
+                    TYPE_HEADER_TAG -> homeHeaderHolder.renderTag(helper, (item as FollowedTagNewListModel).list)
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {

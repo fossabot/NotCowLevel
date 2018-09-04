@@ -2,13 +2,10 @@ package cn.imrhj.cowlevel.ui.adapter
 
 import android.support.v4.app.Fragment
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.consts.ItemTypeEnum
+import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_FEED
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.FeedModel
-import cn.imrhj.cowlevel.network.model.TYPE_FEED
-import cn.imrhj.cowlevel.network.model.list.FollowedPostNewListModel
-import cn.imrhj.cowlevel.network.model.list.FollowedTagNewListModel
-import cn.imrhj.cowlevel.network.model.list.TYPE_HEADER_POST
-import cn.imrhj.cowlevel.network.model.list.TYPE_HEADER_TAG
 import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
 import cn.imrhj.cowlevel.ui.adapter.holder.HomeHeaderHolder
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
@@ -24,27 +21,37 @@ val DP65_2PX = dp2px(65)
 
 open class FeedAdapter(data: MutableList<BaseModel>?, fragment: Fragment) : BaseQuickAdapter<BaseModel, BaseViewHolder>(data) {
     private val feedHolder = FeedHolder(fragment)
-    private val homeHeaderHolder = HomeHeaderHolder(fragment)
 
     init {
         multiTypeDelegate = object : MultiTypeDelegate<BaseModel>() {
             override fun getItemType(t: BaseModel?): Int {
                 if (t != null) {
-                    return t.getType()
+                    return t.getType().ordinal
                 }
                 return 0
             }
         }
-        multiTypeDelegate.registerItemType(TYPE_FEED, R.layout.item_feed_common)
-        multiTypeDelegate.registerItemType(TYPE_HEADER_POST, R.layout.item_home_header)
-        multiTypeDelegate.registerItemType(TYPE_HEADER_TAG, R.layout.item_home_header)
+        this.initType(multiTypeDelegate)
+    }
+
+    open fun initType(multiTypeDelegate: MultiTypeDelegate<BaseModel>) {
+        multiTypeDelegate.registerItemType(TYPE_FEED.ordinal, R.layout.item_feed_common)
+
     }
 
     override fun convert(helper: BaseViewHolder?, item: BaseModel?) {
-        when (helper?.itemViewType) {
-            TYPE_FEED -> feedHolder.renderCommon(helper, item as FeedModel)
-            TYPE_HEADER_POST -> homeHeaderHolder.renderPost(helper, (item as FollowedPostNewListModel).list)
-            TYPE_HEADER_TAG -> homeHeaderHolder.renderTag(helper, (item as FollowedTagNewListModel).list)
+        if (helper != null) {
+            val type = ItemTypeEnum.valueOf(helper.itemViewType)
+
+            when (type) {
+                TYPE_FEED -> feedHolder.renderCommon(helper, item as FeedModel)
+                else -> {
+                    this.extendConvert(helper, item, type)
+                }
+            }
         }
+    }
+
+    open fun extendConvert(helper: BaseViewHolder, item: BaseModel?, type: ItemTypeEnum) {
     }
 }
