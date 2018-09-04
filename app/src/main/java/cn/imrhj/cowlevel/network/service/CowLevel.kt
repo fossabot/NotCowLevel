@@ -1,6 +1,7 @@
 package cn.imrhj.cowlevel.network.service
 
 import cn.imrhj.cowlevel.network.model.*
+import cn.imrhj.cowlevel.network.model.common.NotifyModel
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -77,4 +78,12 @@ interface CowLevel {
      */
     @GET("/element/{id}/feed")
     fun getElementFeed(@Path("id") id: Int, @Query("last_id") lastId: Int = 0): Observable<ApiModel<FeedApiModel>>
+
+
+    /**
+     * 检查是否有新的通知消息
+     * @return Observable
+     */
+    @GET("/user/notify/check")
+    fun checkNotify(): Observable<ApiModel<NotifyModel>>
 }

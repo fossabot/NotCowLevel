@@ -1,18 +1,21 @@
 package cn.imrhj.cowlevel.network.manager
 
+import android.widget.Toast
+import cn.imrhj.cowlevel.App
+import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.model.*
+import cn.imrhj.cowlevel.network.model.common.NotifyModel
 import cn.imrhj.cowlevel.network.service.CowLevel
-import cn.imrhj.cowlevel.network.service.CowLevelRaw
 import com.google.gson.GsonBuilder
+import com.google.gson.stream.MalformedJsonException
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.HttpUrl
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 
 /**
  * 网络请求管理类
@@ -36,16 +39,23 @@ class RetrofitManager private constructor() {
 
 
     private val mCowLevel = mRetrofit.create(CowLevel::class.java)
-    private val mCowLevelRaw = mRetrofit.create(CowLevelRaw::class.java)
 
     private fun <T : BaseModel> filterStatus(observable: Observable<ApiModel<T>>): Observable<T> {
-        return observable.map {
-            if (it.ec == 200) {
-                return@map it.data
-            } else {
-                throw ApiException(it.em, it.ec)
-            }
-        }.subscribeOn(Schedulers.io())
+        return observable
+                .map {
+                    if (it.ec == 200) {
+                        return@map it.data
+                    } else {
+                        throw ApiException(it.em, it.ec)
+                    }
+                }
+                .subscribeOn(Schedulers.io())
+                .doOnError {
+                    if (it is MalformedJsonException) {
+                        Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
+                        UserManager.logout()
+                    }
+                }
     }
 
     fun feedTimeline(id: Int = 0): Observable<FeedApiModel> {
@@ -77,12 +87,12 @@ class RetrofitManager private constructor() {
         return filterStatus(mCowLevel.voteReview(id))
     }
 
-    fun getFeedHome(): Observable<String> {
-        return mCowLevelRaw.feedHomeRaw()
-    }
-
     fun getElementFeed(id: Int, lastId: Int): Observable<FeedApiModel> {
         return filterStatus(mCowLevel.getElementFeed(id, lastId))
+    }
+
+    fun checkNotify(): Observable<NotifyModel> {
+        return filterStatus(mCowLevel.checkNotify())
     }
 
     // 单例实现

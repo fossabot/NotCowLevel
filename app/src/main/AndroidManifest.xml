@@ -34,6 +34,7 @@
         <activity android:name=".ui.activity.MainActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.Transparent" />
         <activity
             android:name=".ui.activity.WebviewActivity"

@@ -2,7 +2,7 @@ package cn.imrhj.cowlevel.network.manager
 
 import android.widget.Toast
 import cn.imrhj.cowlevel.App
-import cn.imrhj.cowlevel.manager.LinkUtils
+import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.exception.AuthException
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
@@ -30,8 +30,7 @@ object HtmlParseManager {
                 .flatMap { OkHttpManager.getServerData(it) }
                 .doOnError {
                     Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
-//                    UserManager.logout()
-                    LinkUtils.openLogin()
+                    UserManager.logout()
                 }
     }
 

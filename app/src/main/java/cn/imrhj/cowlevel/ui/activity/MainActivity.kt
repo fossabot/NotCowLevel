@@ -1,33 +1,33 @@
 package cn.imrhj.cowlevel.ui.activity
 
-import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
+import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.fragment.HomeFeedFragment
 import cn.imrhj.cowlevel.ui.fragment.HotFeedFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+    override fun layoutId(): Int? {
+        return R.layout.activity_main
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun initView() {
         setSupportActionBar(toolbar)
-
-
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-
         // initViewPager
         viewpager.adapter = FragmentAdapter(supportFragmentManager,
                 arrayOf(HomeFeedFragment(), HotFeedFragment()),
@@ -45,8 +45,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
             }
-
         })
+    }
+
+    override fun initData() {
+        RetrofitManager.getInstance().checkNotify()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, {
+                    Log.e(Thread.currentThread().name, "class = MainActivity rhjlog initData: $it")
+                })
     }
 
     override fun onBackPressed() {

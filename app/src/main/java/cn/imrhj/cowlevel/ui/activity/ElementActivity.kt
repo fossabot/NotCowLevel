@@ -33,7 +33,6 @@ class ElementActivity : BaseActivity() {
     }
 
     override fun initView() {
-//        name.text = mName
         Glide.with(this)
                 .load(cdnImageForDPSquare(mCover, 80))
                 .into(avatar)
@@ -48,7 +47,7 @@ class ElementActivity : BaseActivity() {
 
     }
 
-    fun waitForAnimationEnd() {
+    private fun waitForAnimationEnd() {
         viewpager.adapter = FragmentAdapter(supportFragmentManager,
                 arrayOf(mFeedFragment),
                 arrayOf("动态", "问题", "文章", "视频")

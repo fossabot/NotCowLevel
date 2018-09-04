@@ -6,8 +6,8 @@ import cn.imrhj.cowlevel.ui.activity.LoginActivity
 object LinkUtils {
     fun openLogin() {
         val activity = App.app.getLastActivity()
-        SchemeUtils.startActivity(LoginActivity::class.java)
         if (activity !is LoginActivity) {
+            SchemeUtils.startActivity(LoginActivity::class.java)
             activity.finish()
             activity.overridePendingTransition(0, 0)
         }
