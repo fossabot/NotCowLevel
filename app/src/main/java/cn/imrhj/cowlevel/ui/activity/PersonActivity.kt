@@ -12,7 +12,7 @@ import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_FEED
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_USER
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.FeedModel
+import cn.imrhj.cowlevel.network.model.feed.FeedModel
 import cn.imrhj.cowlevel.network.model.UserModel
 import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
 import cn.imrhj.cowlevel.ui.adapter.holder.UserHolder

@@ -7,8 +7,8 @@ import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_HEADER_TAG
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.FeedApiModel
-import cn.imrhj.cowlevel.network.model.FeedModel.Type.system_recommend_user
+import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
+import cn.imrhj.cowlevel.network.model.feed.FeedModel.Type.system_recommend_user
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.model.list.FollowedPostNewListModel
 import cn.imrhj.cowlevel.network.model.list.FollowedTagNewListModel

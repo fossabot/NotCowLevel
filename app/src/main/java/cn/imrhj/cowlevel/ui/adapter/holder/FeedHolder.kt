@@ -22,10 +22,10 @@ import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.COW_LEVEL_URL
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
-import cn.imrhj.cowlevel.network.model.FeedModel
-import cn.imrhj.cowlevel.network.model.FeedModel.Type.*
-import cn.imrhj.cowlevel.network.model.GameModel
-import cn.imrhj.cowlevel.network.model.ShareLinkModel
+import cn.imrhj.cowlevel.network.model.feed.FeedModel
+import cn.imrhj.cowlevel.network.model.feed.FeedModel.Type.*
+import cn.imrhj.cowlevel.network.model.feed.GameModel
+import cn.imrhj.cowlevel.network.model.feed.ShareLinkModel
 import cn.imrhj.cowlevel.ui.activity.PersonActivity
 import cn.imrhj.cowlevel.ui.adapter.DP130_2PX
 import cn.imrhj.cowlevel.ui.adapter.DP65_2PX

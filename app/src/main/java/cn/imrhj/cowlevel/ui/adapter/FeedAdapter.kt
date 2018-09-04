@@ -5,9 +5,8 @@ import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_FEED
 import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.FeedModel
+import cn.imrhj.cowlevel.network.model.feed.FeedModel
 import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
-import cn.imrhj.cowlevel.ui.adapter.holder.HomeHeaderHolder
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder

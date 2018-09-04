@@ -1,4 +1,8 @@
-package cn.imrhj.cowlevel.network.model
+package cn.imrhj.cowlevel.network.model.feed
+
+import cn.imrhj.cowlevel.network.model.BaseModel
+import cn.imrhj.cowlevel.network.model.MergedTagModel
+import cn.imrhj.cowlevel.network.model.UserModel
 
 /**
  * Created by rhj on 2017/12/4.

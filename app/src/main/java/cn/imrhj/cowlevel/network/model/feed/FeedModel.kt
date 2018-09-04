@@ -1,6 +1,7 @@
-package cn.imrhj.cowlevel.network.model
+package cn.imrhj.cowlevel.network.model.feed
 
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
+import cn.imrhj.cowlevel.network.model.*
 
 /**
  * Created by rhj on 2017/12/4.

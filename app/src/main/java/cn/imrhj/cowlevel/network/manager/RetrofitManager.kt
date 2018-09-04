@@ -7,6 +7,7 @@ import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
+import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.service.CowLevel
 import com.google.gson.GsonBuilder
 import com.google.gson.stream.MalformedJsonException

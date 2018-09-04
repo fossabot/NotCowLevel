@@ -1,7 +1,7 @@
 package cn.imrhj.cowlevel.network.model.home
 
 import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.FeedApiModel
+import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.model.list.FollowedPostNewListModel
 import cn.imrhj.cowlevel.network.model.list.FollowedTagNewListModel
 

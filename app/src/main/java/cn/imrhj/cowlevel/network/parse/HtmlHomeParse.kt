@@ -1,6 +1,6 @@
 package cn.imrhj.cowlevel.network.parse
 
-import cn.imrhj.cowlevel.network.model.FeedApiModel
+import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.model.FollowedPostNewModel
 import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel

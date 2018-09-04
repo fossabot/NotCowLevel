@@ -2,6 +2,7 @@ package cn.imrhj.cowlevel.network.service
 
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
+import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import io.reactivex.Observable
 import retrofit2.http.*
 
