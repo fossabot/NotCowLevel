@@ -19,6 +19,7 @@ import cn.imrhj.cowlevel.ui.adapter.holder.UserHolder
 import cn.imrhj.cowlevel.ui.animate.listener.callEndAnimatorListener
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import cn.imrhj.cowlevel.utils.StringUtils
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
 import cn.imrhj.cowlevel.utils.cdnImageForSize
@@ -172,7 +173,7 @@ class PersonActivity : BaseActivity() {
     private fun processHeaderResult(user: UserModel) {
         val cover = if (StringUtils.isNotBlank(user.cover)) user.cover else DEFAULT_COVER
         Glide.with(this)
-                .load(cdnImageForSize(cover, ScreenSizeUtil.getScreenWidth(), (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt()))
+                .load(cdnImageForSize(cover, ScreenSizeUtil.getScreenWidth(), dp2px(250)))
                 .into(imageview)
         mAdapter.addData(0, user)
     }
