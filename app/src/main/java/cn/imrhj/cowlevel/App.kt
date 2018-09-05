@@ -3,10 +3,9 @@ package cn.imrhj.cowlevel
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import cn.imrhj.cowlevel.log.AppRecoveryCallback
 import cn.imrhj.cowlevel.log.NewLineBorderFormatter
 import cn.imrhj.cowlevel.utils.CacheUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideBuilder
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
@@ -14,6 +13,8 @@ import com.elvishew.xlog.printer.AndroidPrinter
 import com.elvishew.xlog.printer.file.FilePrinter
 import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
 import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
+import com.readystatesoftware.chuck.internal.ui.MainActivity
+import com.zxy.recovery.core.Recovery
 import java.lang.ref.WeakReference
 
 
@@ -45,10 +46,16 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
                 .backupStrategy(NeverBackupStrategy())
                 .build()
         XLog.init(config, androidPrinter, filePrinter)
-
-        Glide.init(this, GlideBuilder())
-
         registerActivityLifecycleCallbacks(this)
+        Recovery.getInstance()
+                .debug(BuildConfig.DEBUG)
+                .recoverInBackground(false)
+                .recoverStack(true)
+                .mainPage(MainActivity::class.java)
+                .silent(false, Recovery.SilentMode.RECOVER_ACTIVITY_STACK)
+                .recoverEnabled(true)
+                .callback(AppRecoveryCallback())
+                .init(this)
     }
 
     fun getLastActivity(): Activity {

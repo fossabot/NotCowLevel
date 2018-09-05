@@ -2,7 +2,6 @@ package cn.imrhj.cowlevel.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.support.design.widget.Snackbar
 import android.text.Editable
 import android.text.TextWatcher
@@ -86,12 +85,14 @@ class LoginActivity : BaseActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ loginModel ->
                         if (StringUtils.isNotBlank(loginModel.authToken)) {
-                            btnLogin.doneLoadingAnimation(Color.GREEN,
+                            btnLogin.doneLoadingAnimation(0x86A697,
                                     ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(
                                             R.drawable.ic_done_white_48dp)!!))
                             UserManager.setToken(loginModel.authToken!!)
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
+                            btnLogin.postDelayed({
+                                startActivity(Intent(this, MainActivity::class.java))
+                                finish()
+                            }, 200)
                         }
                     }, { error ->
                         tilMail.error = error.message

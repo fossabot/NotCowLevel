@@ -36,10 +36,10 @@ data class ElementModel(
         val newTime: Int? = null,
 
         @field:SerializedName("article_count")
-        val articleCount: Int? = null,
+        val articleCount: Int = 0,
 
         @field:SerializedName("parent_count")
-        val parentCount: Int? = null,
+        val parentCount: Int = 0,
 
         @field:SerializedName("id")
         val id: Int? = null,
@@ -60,31 +60,34 @@ data class ElementModel(
         val hasCollect: Int? = null,
 
         @field:SerializedName("child_count")
-        val childCount: Int? = null,
+        val childCount: Int = 0,
 
         @field:SerializedName("can_edit")
         val canEdit: Int? = null,
 
         @field:SerializedName("question_count")
-        val questionCount: Int? = null,
+        val questionCount: Int = 0,
 
         @field:SerializedName("publish_time_before")
         val publishTimeBefore: String? = null,
 
+        /**
+         * 0 显示游戏标签, 1 隐藏游戏标签
+         */
         @field:SerializedName("not_show_game")
-        val notShowGame: Int? = null,
+        val notShowGame: Int = 1,
 
         @field:SerializedName("new_count")
-        val newCount: Int? = null,
+        val newCount: Int = 0,
 
         @field:SerializedName("name")
         val name: String? = null,
 
         @field:SerializedName("video_count")
-        val videoCount: Int? = null,
+        val videoCount: Int = 0,
 
         @field:SerializedName("post_count")
-        val postCount: Int? = null,
+        val postCount: Int = 0,
 
         @field:SerializedName("publish_time_human")
         val publishTimeHuman: String? = null,

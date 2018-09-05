@@ -6,6 +6,7 @@ import cn.imrhj.cowlevel.network.model.LoginModel
 import cn.imrhj.cowlevel.network.model.OuterUserModel
 import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
+import cn.imrhj.cowlevel.network.model.element.ArticleModel
 import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import io.reactivex.Observable
@@ -85,9 +86,25 @@ interface CowLevel {
     @GET("/element/{id}/feed")
     fun getElementFeed(@Path("id") id: Int, @Query("last_id") lastId: Int = 0): Observable<ApiModel<FeedApiModel>>
 
+    /**
+     * 获取 element 的问题
+     * @param tagId elementID
+     * @param page 当前分页
+     * @return Observable
+     */
     @GET("/api/search/question?per_page=10&sort=update_time&sort_type=desc&log=1")
     fun getElementQuestion(@Query("tag_id") tagId: Int, @Query("page") page: Int)
             : Observable<ApiModel<ListCountApiModel<QuestionModel>>>
+
+    /**
+     * 获取 element 的文章
+     * @param tagId elementID
+     * @param page 当前分页
+     * @return Observable
+     */
+    @GET("/api/search/article")
+    fun getElementArticle(@Query("tag_id") tagId: Int, @Query("page") page: Int)
+            : Observable<ApiModel<ListCountApiModel<ArticleModel>>>
 
     /**
      * 检查是否有新的通知消息

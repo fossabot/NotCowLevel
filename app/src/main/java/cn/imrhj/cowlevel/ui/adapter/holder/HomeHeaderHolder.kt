@@ -96,7 +96,9 @@ class HomeHeaderHolder() {
         val parent = renderParent(helper)
         posts.forEach {
             renderOneTag(parent, R.layout.item_home_header_post, it.title, it.newContent,
-                    cdnImageForDPSize(it.pic, 160, 80))
+                    cdnImageForDPSize(it.pic, 160, 80)) {
+                SchemeUtils.startActivity(ElementActivity::class.java)
+            }
         }
         helper.setText(R.id.title, "我关注的游戏")
         helper.getView<TextView>(R.id.more).setOnClickListener {

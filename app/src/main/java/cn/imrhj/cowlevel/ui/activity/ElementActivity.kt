@@ -10,6 +10,7 @@ import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
 import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
+import cn.imrhj.cowlevel.ui.fragment.element.ElementArticleFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementFeedFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementQuestionFragment
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
@@ -25,6 +26,7 @@ class ElementActivity : BaseActivity() {
 
     private val mFeedFragment by lazy {
         val fragment = ElementFeedFragment()
+        val clazz = ElementFeedFragment::class.java
         fragment.mId = mId
         fragment
     }
@@ -32,6 +34,20 @@ class ElementActivity : BaseActivity() {
         val fragment = ElementQuestionFragment()
         fragment.mId = mId
         fragment
+    }
+    private val mAritcleFragment by lazy {
+        val fragment = ElementArticleFragment()
+        fragment.mId = mId
+        fragment
+    }
+
+    private val mTitleList = arrayListOf("动态", "问题", "文章", "视频")
+
+    private val mAdapter by lazy {
+        FragmentAdapter(supportFragmentManager,
+                arrayOf(mFeedFragment, mQuestionFragment, mAritcleFragment),
+                mTitleList
+        )
     }
 
     override fun layoutId(): Int? {
@@ -54,10 +70,7 @@ class ElementActivity : BaseActivity() {
     }
 
     private fun waitForAnimationEnd() {
-        viewpager.adapter = FragmentAdapter(supportFragmentManager,
-                arrayOf(mFeedFragment, mQuestionFragment),
-                arrayOf("动态", "问题", "文章", "视频")
-        )
+        viewpager.adapter = mAdapter
     }
 
     override fun initData() {
@@ -92,5 +105,36 @@ class ElementActivity : BaseActivity() {
         desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             Html.fromHtml(element?.content, 0) else
             Html.fromHtml(element?.content)
+        if (element != null) {
+            if (element.notShowGame == 0) {
+                // 显示游戏
+                mTitleList.add(1, "游戏")
+                if (element.postCount > 0) {
+                    mTitleList[1] = "游戏 (${element.postCount})"
+                }
+                if (element.questionCount > 0) {
+                    mTitleList[2] = "问题 (${element.questionCount})"
+                }
+                if (element.articleCount > 0) {
+                    mTitleList[3] = "文章 (${element.articleCount})"
+                }
+                if (element.videoCount > 0) {
+                    mTitleList[4] = "视频 (${element.videoCount})"
+                }
+            } else {
+                // 隐藏游戏
+                if (element.questionCount > 0) {
+                    mTitleList[1] = "问题 (${element.questionCount})"
+                }
+                if (element.articleCount > 0) {
+                    mTitleList[2] = "文章 (${element.articleCount})"
+                }
+                if (element.videoCount > 0) {
+                    mTitleList[3] = "视频 (${element.videoCount})"
+                }
+            }
+        }
+        mAdapter.updateTitle(mTitleList)
+        tabLayout.setupWithViewPager(viewpager)
     }
 }

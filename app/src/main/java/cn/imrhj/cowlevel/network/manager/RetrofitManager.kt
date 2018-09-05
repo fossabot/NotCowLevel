@@ -8,12 +8,14 @@ import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
+import cn.imrhj.cowlevel.network.model.element.ArticleModel
 import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.service.CowLevel
 import com.google.gson.GsonBuilder
 import com.google.gson.stream.MalformedJsonException
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.HttpUrl
 import retrofit2.Retrofit
@@ -55,8 +57,12 @@ class RetrofitManager private constructor() {
                 .subscribeOn(Schedulers.io())
                 .doOnError {
                     if (it is MalformedJsonException) {
-                        Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
-                        UserManager.logout()
+                        Observable.just(1)
+                                .subscribeOn(AndroidSchedulers.mainThread())
+                                .subscribe { _ ->
+                                    Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
+                                    UserManager.logout()
+                                }
                     }
                 }
     }
@@ -96,6 +102,10 @@ class RetrofitManager private constructor() {
 
     fun elementQuestion(id: Int, page: Int = 1): Observable<ListCountApiModel<QuestionModel>> {
         return filterStatus(mCowLevel.getElementQuestion(id, page))
+    }
+
+    fun elementArticle(id: Int, page: Int = 1): Observable<ListCountApiModel<ArticleModel>> {
+        return filterStatus(mCowLevel.getElementArticle(id, page))
     }
 
     fun checkNotify(): Observable<NotifyModel> {

@@ -49,7 +49,7 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
         RetrofitManager.getInstance().elementFeed(mId, nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    if (!mFirstLoaded && mRelatedModel != null) {
+                    if (isResetData && mRelatedModel != null) {
                         val list = ArrayList<BaseModel>((result.list?.size ?: 0) + 1)
                         list.add(mRelatedModel!!)
                         if (result.list != null) {

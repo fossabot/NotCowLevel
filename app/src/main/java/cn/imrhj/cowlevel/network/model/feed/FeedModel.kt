@@ -1,7 +1,8 @@
 package cn.imrhj.cowlevel.network.model.feed
 
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
-import cn.imrhj.cowlevel.network.model.*
+import cn.imrhj.cowlevel.network.model.BaseModel
+import cn.imrhj.cowlevel.network.model.UserModel
 
 /**
  * Created by rhj on 2017/12/4.
@@ -39,7 +40,7 @@ data class FeedModel(
         val publish_time_human: String? = null,
         val update_time_human: String? = null,
         val publish_time_before: String? = null,
-        val article: ArticleModel? = null,
+        val article: FeedArticleModel? = null,
         val voter_count: Int = 0,
         val action_text: String? = null,
         val review: ReviewModel? = null,

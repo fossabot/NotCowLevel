@@ -4,7 +4,6 @@ import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import cn.imrhj.cowlevel.R
@@ -13,6 +12,7 @@ import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.fragment.HomeFeedFragment
 import cn.imrhj.cowlevel.ui.fragment.HotFeedFragment
+import com.elvishew.xlog.XLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -31,7 +31,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // initViewPager
         viewpager.adapter = FragmentAdapter(supportFragmentManager,
                 arrayOf(HomeFeedFragment(), HotFeedFragment()),
-                arrayOf("动态", "推荐", "BLANK")
+                listOf("动态", "推荐", "BLANK")
         )
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewpager, true)
@@ -52,7 +52,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         RetrofitManager.getInstance().checkNotify()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe({}, {
-                    Log.e(Thread.currentThread().name, "class = MainActivity rhjlog initData: $it")
+                    XLog.b().t().e("initData: $it")
                 })
     }
 

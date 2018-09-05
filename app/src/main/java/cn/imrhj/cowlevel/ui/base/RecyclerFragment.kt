@@ -164,7 +164,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     fun onError(t: Throwable) {
-        XLog.e("class = RecyclerFragment rhjlog onError: " + t.message)
+        XLog.b().t().e("class = RecyclerFragment rhjlog onError: $t")
         //todo 错误提示
         if (mRefresh?.isRefreshing == true) {
             mRefresh?.isRefreshing = false

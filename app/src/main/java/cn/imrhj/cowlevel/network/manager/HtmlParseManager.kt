@@ -9,6 +9,7 @@ import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.parse.parseElementJSString
 import cn.imrhj.cowlevel.network.parse.parseHomeJSString
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 const val SCRIPT_REGEX = "<script src=\"(https://cowlevel\\.net/(\\w+/)*_\\.\\w+\\.jo\\..{10}\\.js)\"></script>"
 
@@ -29,8 +30,12 @@ object HtmlParseManager {
                 }
                 .flatMap { OkHttpManager.getServerData(it) }
                 .doOnError {
-                    Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
-                    UserManager.logout()
+                    Observable.just(1)
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .subscribe { _ ->
+                                Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
+                                UserManager.logout()
+                            }
                 }
     }
 

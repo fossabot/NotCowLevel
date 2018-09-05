@@ -17,7 +17,7 @@ import cn.imrhj.cowlevel.network.model.ContentModel
  * hide_comment : 0
  * lock_comment : 0
  */
-data class ArticleModel(
+data class FeedArticleModel(
         val id: Int = 0,
         val title: String? = null,
         val comment_count: Int = 0,
