@@ -33,5 +33,20 @@
         completions."
     </string>
     <string name="forget_password">忘记密码?</string>
+    <string name="msg">私信</string>
+    <string name="share">分享</string>
+    <string name="empty_number">0</string>
+    <string name="answer">回答</string>
+    <string name="question">问题</string>
+    <string name="article">文章</string>
+    <string name="collection">收藏</string>
+    <string name="follow">关注</string>
+    <string name="played">玩过</string>
+    <string name="comment">评价</string>
+
+    <!--shortcuts-->
+    <string name="test">test</string>
+    <string name="title_activity_login2">Sign in</string>
+    <string name="see_more">查看更多</string>
 
 </resources>

@@ -33,4 +33,15 @@
         completions."
     </string>
     <string name="forget_password">Forget password?</string>
+    <string name="msg">Message</string>
+    <string name="share">Share</string>
+    <string name="empty_number">0</string>
+    <string name="answer">Answer</string>
+    <string name="question">Question</string>
+    <string name="article">Article</string>
+    <string name="collection">Collection</string>
+    <string name="follow">Follow</string>
+    <string name="played">Played</string>
+    <string name="comment">Comment</string>
+    <string name="see_more">More</string>
 </resources>

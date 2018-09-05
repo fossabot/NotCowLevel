@@ -12,9 +12,4 @@ class CowWebView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, def
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : this(context, attrs, defStyleAttr, 0)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context?) : this(context, null)
-
-    override fun onOverScrolled(scrollX: Int, scrollY: Int, clampedX: Boolean, clampedY: Boolean) {
-        super.onOverScrolled(scrollX, scrollY, clampedX, clampedY)
-        Log.d(Thread.currentThread().name, "class = CowWebView rhjlog onOverScrolled: scrollY = $scrollY")
-    }
 }

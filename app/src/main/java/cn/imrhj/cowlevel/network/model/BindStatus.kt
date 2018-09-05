@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class BindStatus(
 
-	@field:SerializedName("weibo")
-	val weibo: Int? = null,
+        @field:SerializedName("weibo")
+        val weibo: Int? = null,
 
-	@field:SerializedName("steam")
-	val steam: Int? = null
-)
+        @field:SerializedName("steam")
+        val steam: Int? = null
+) : BaseModel()

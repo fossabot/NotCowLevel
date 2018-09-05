@@ -8,4 +8,4 @@ package cn.imrhj.cowlevel.network.model
 data class ContentModel(
         val desc: String? = null,
         val thumb: String? = null
-)
+) : BaseModel()

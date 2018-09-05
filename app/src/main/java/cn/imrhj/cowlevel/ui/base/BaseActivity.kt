@@ -1,9 +1,9 @@
 package cn.imrhj.cowlevel.ui.base
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
+import android.transition.Transition
 
 /**
  * Created by rhj on 11/12/2017.
@@ -15,13 +15,40 @@ abstract class BaseActivity : AppCompatActivity() {
         if (id != null) {
             setContentView(id)
         }
+        initData()
         initView()
     }
 
-    @LayoutRes abstract fun layoutId(): Int?
+    @LayoutRes
+    abstract fun layoutId(): Int?
+
+    open fun initData() {
+
+    }
 
     open fun initView() {
 
+    }
+
+    fun callEndTransitionListener(callback: () -> Unit): Transition.TransitionListener {
+        return object : Transition.TransitionListener {
+            override fun onTransitionEnd(transition: Transition?) {
+                callback()
+            }
+
+            override fun onTransitionResume(transition: Transition?) {
+            }
+
+            override fun onTransitionPause(transition: Transition?) {
+            }
+
+            override fun onTransitionCancel(transition: Transition?) {
+            }
+
+            override fun onTransitionStart(transition: Transition?) {
+            }
+
+        }
     }
 
 }

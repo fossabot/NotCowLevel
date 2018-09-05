@@ -9,10 +9,13 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.ui.view.SmoothLinearLayoutManager
 import cn.imrhj.cowlevel.utils.CollectionUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.loadmore.LoadMoreView
+import com.elvishew.xlog.XLog
 
 
 /**
@@ -23,7 +26,6 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     private var mRecycler: RecyclerView? = null
     private var mRefresh: SwipeRefreshLayout? = null
     private var mAdapter: BaseQuickAdapter<T, BaseViewHolder>? = null
-
     open var mOnComplete: () -> Unit = { this.onComplete() }
     open var mOnError: (t: Throwable) -> Unit = { this.onError(it) }
 
@@ -38,6 +40,8 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
 
     private var mNextCursor: Int = 0
 
+    open var mFirstLoaded = false
+
     override fun initView(baseView: View?) {
         mRecycler = baseView?.findViewById(R.id.recycler)
         mRefresh = baseView?.findViewById(R.id.refresh)
@@ -50,6 +54,24 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
 
         mRefresh?.setOnRefreshListener { reload() }
         mAdapter?.setOnLoadMoreListener(this::loadNextPage, mRecycler)
+        mAdapter?.setLoadMoreView(object : LoadMoreView() {
+            override fun getLayoutId(): Int {
+                return R.layout.recycler_load_more
+            }
+
+            override fun getLoadingViewId(): Int {
+                return R.id.load_more_loading_view
+            }
+
+            override fun getLoadEndViewId(): Int {
+                return R.id.load_more_load_fail_view
+            }
+
+            override fun getLoadFailViewId(): Int {
+                return R.id.load_more_load_end_view
+            }
+
+        })
         mRefresh?.isRefreshing = true
     }
 
@@ -62,13 +84,17 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     open fun getLayoutManager(): RecyclerView.LayoutManager {
-        return LinearLayoutManager(context)
+        return SmoothLinearLayoutManager(mRecycler?.context)
     }
 
     open fun getDivider(): RecyclerView.ItemDecoration {
-        val divider = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+        val divider = DividerItemDecoration(mRecycler?.context, LinearLayoutManager.VERTICAL)
         divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
         return divider
+    }
+
+    open fun getFirstPageIndex(): Int {
+        return 0
     }
 
     /**
@@ -79,7 +105,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     /**
      * 加载服务器数据
      */
-    abstract fun loadServer(isResetData: Boolean, nextCursor: Int = 0)
+    abstract fun loadServer(isResetData: Boolean, nextCursor: Int = getFirstPageIndex())
 
 
     fun setHasMore(hasMore: Boolean) {
@@ -102,18 +128,20 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     private fun reload() {
         this.mHasMore = false
         mIsShowNext = false
-        mNextCursor = 0
-        loadServer(true, 0)
+        mNextCursor = this.getFirstPageIndex()
+        loadServer(true, mNextCursor)
     }
 
     fun updateList(lists: List<T>?, isReset: Boolean) {
         if (CollectionUtils.isNotEmpty(lists)) {
             if (isReset) {
+                mFirstLoaded = true
                 mAdapter?.setNewData(lists)
             } else {
                 mAdapter?.addData(lists!!)
             }
         } else if (isReset) {
+            mFirstLoaded = true
             mAdapter?.setNewData(lists)
         }
     }
@@ -136,7 +164,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     fun onError(t: Throwable) {
-        Log.e(Thread.currentThread().name, "class = RecyclerFragment rhjlog onError: " + t.message)
+        XLog.b().t().e("class = RecyclerFragment rhjlog onError: $t")
         //todo 错误提示
         if (mRefresh?.isRefreshing == true) {
             mRefresh?.isRefreshing = false
@@ -154,5 +182,11 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     override fun onConfigFragment(bundle: Bundle) {}
+
+    fun scrollToTop() {
+//        mRecycler?.layoutManager?.scrollToPosition(0)
+        mRecycler?.smoothScrollToPosition(0)
+    }
+
 
 }

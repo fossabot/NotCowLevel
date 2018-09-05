@@ -11,7 +11,7 @@ import cn.imrhj.cowlevel.App
  * Created by rhj on 12/12/2017.
  */
 object ResourcesUtils {
-    private val res = App.getAppContext().resources
+    private val res = App.app.resources
 
     @ColorInt
     fun getColor(@ColorRes id: Int): Int {

@@ -71,7 +71,7 @@ object ConvertUtils {
      * @return drawable
      */
     fun bitmap2Drawable(bitmap: Bitmap?): Drawable? {
-        return if (bitmap == null) null else BitmapDrawable(App.getAppContext().resources, bitmap)
+        return if (bitmap == null) null else BitmapDrawable(App.app.resources, bitmap)
     }
 
     /**
