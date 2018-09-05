@@ -26,7 +26,8 @@
 -dontskipnonpubliclibraryclassmembers
 
 #混淆时采用的算法
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-optimizations !code/simplification/cast,!field/*,!class/merging/*
+#!code/simplification/arithmetic,!field/*,!class/merging/*
 
 #把混淆类中的方法名也混淆了
 -useuniqueclassmembernames
@@ -49,9 +50,48 @@
     java.lang.Object readResolve();
 }
 
+#############################################
+#
+# Android开发中一些需要保留的公共部分
+#
+#############################################
+
+# 保留我们使用的四大组件，自定义的Application等等这些类不被混淆
+# 因为这些子类都有可能被外部调用
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Appliction
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.view.View
+-keep public class com.android.vending.licensing.ILicensingService
+
+
+# 保留support下的所有类及其内部类
+-keep class android.support.** {*;}
+
 #Fragment不需要在AndroidManifest.xml中注册，需要额外保护下
 -keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Fragment
+
+# 保留继承的
+-keep public class * extends android.support.v4.**
+-keep public class * extends android.support.v7.**
+-keep public class * extends android.support.annotation.**
+
+# 不做预校验，preverify是proguard的四个步骤之一，Android不需要preverify，去掉这一步能够加快混淆速度。
+-dontpreverify
+
+# 保留Annotation不混淆
+-keepattributes *Annotation*,InnerClasses
+
+# 避免混淆泛型
+-keepattributes Signature
+
+#保持所有的model
+-keep class cn.imrhj.cowlevel.network.model.**{*;}
 
 # 保持测试相关的代码
 -dontnote junit.framework.**
@@ -79,11 +119,28 @@
 
 # retrofit2
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
--dontnote retrofit2.Platform
+-dontwarn retrofit2.**
+-dontwarn org.codehaus.mojo.**
+-keep class retrofit2.** { *; }
 # Retain generic type information for use by reflection by converters and adapters.
--keepattributes Signature
--dontwarn retrofit2.Platform$Java8
 -keepattributes Exceptions
+
+-keepattributes RuntimeVisibleAnnotations
+-keepattributes RuntimeInvisibleAnnotations
+-keepattributes RuntimeVisibleParameterAnnotations
+-keepattributes RuntimeInvisibleParameterAnnotations
+
+-keepattributes EnclosingMethod
+
+-keepclasseswithmembers class * {
+    @retrofit2.* <methods>;
+}
+-keepclasseswithmembers interface * {
+    @retrofit2.* <methods>;
+}
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
 
 #Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -94,4 +151,13 @@
 }
 
 
+#BaseRecyclerViewAdapter
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
 

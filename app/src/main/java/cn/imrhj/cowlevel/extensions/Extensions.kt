@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.StringUtils
+import okhttp3.Request
 
 /**
  * 函数扩展中心
@@ -25,3 +26,7 @@ fun TextView.setTextAndShow(text: String?) {
     }
 }
 
+fun Request.toLogString(): String {
+    return "Request: method=${method()}, url = ${url()},\nheader=${headers()}" +
+            if (body() != null) ",\nbody=${body()}" else ""
+}

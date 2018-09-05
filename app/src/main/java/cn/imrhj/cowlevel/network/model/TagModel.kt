@@ -10,4 +10,4 @@ class TagModel(
         val id: Int = 0,
         val name: String? = null,
         val pic: String? = null
-)
+) : BaseModel()

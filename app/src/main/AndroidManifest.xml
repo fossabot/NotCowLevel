@@ -5,25 +5,44 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.StartActivity">
+        <activity
+            android:name=".ui.activity.StartActivity"
+            android:theme="@style/AppTheme.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity android:name=".ui.activity.MainActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.Transparent" />
-        <activity android:name=".ui.activity.WebviewActivity" />
+        <activity
+            android:name=".ui.activity.WebviewActivity"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".ui.activity.PersonActivity"
+            android:theme="@style/AppTheme.Transition.Person" />
+        <activity android:name=".ui.activity.ElementActivity" />
     </application>
 
 </manifest>

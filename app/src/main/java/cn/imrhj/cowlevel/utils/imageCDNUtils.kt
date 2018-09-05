@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.utils
 
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import com.elvishew.xlog.XLog
 
 /**
@@ -10,7 +11,7 @@ import com.elvishew.xlog.XLog
  * 传递参数为DP的裁图工具类
  */
 fun cdnImageForDPSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): String? {
-    return cdnImageForDPSize(imageUrl, dp2px(width ?: 0), dp2px(height ?: 0))
+    return cdnImageForSize(imageUrl, dp2px(width ?: 0), dp2px(height ?: 0))
 }
 
 /**
@@ -56,6 +57,7 @@ fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): Strin
     } else {
         result.append("/format/webp")
     }
+    XLog.d("CDNImageUrl: $result")
     return result.toString()
 }
 
@@ -64,4 +66,8 @@ fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): Strin
  */
 fun cdnImageForSquare(imageUrl: String?, size: Int? = 0): String? {
     return cdnImageForSize(imageUrl, size, size)
+}
+
+fun cdnImageForDPSquare(imageUrl: String?, size: Int? = 0): String? {
+    return cdnImageForDPSize(imageUrl, size, size)
 }

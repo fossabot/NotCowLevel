@@ -1,9 +1,14 @@
 package cn.imrhj.cowlevel.network.interceptor
 
 import cn.imrhj.cowlevel.BuildConfig
+import cn.imrhj.cowlevel.extensions.toLogString
 import com.elvishew.xlog.XLog
 import okhttp3.Interceptor
 import okhttp3.Response
+import okhttp3.internal.http.RealResponseBody
+import okio.Okio
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 
@@ -13,16 +18,36 @@ import java.io.IOException
 class ApiLogInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
         if (BuildConfig.DEBUG) {
-            val request = chain.request()
-            val requestHeaders = request.headers()
-            XLog.t().st(1).b().w(request)
-            XLog.w(requestHeaders)
-//            XLog.w(requestBody)
+            XLog.t().b().nst().w(request.toLogString())
         } else {
-            XLog.w("api.req url " + chain.request().url().toString() + ", METHOD " + chain.request().method())
+            XLog.w("api.req:url=${request.url()}, METHOD=${request.method()}, HEADERS=${request.headers()}, body=${request.body()}")
         }
 
-        return chain.proceed(chain.request())
+        return if (BuildConfig.DEBUG) {
+            val response = chain.proceed(chain.request())
+            val body = response.body()
+            if (body != null) {
+                val bos = ByteArrayOutputStream()
+                bos.write(body.bytes())
+                val bodyString = bos.toString(Charsets.UTF_8.name())
+                if (bodyString.length < 200) {
+                    XLog.t().b().nst().w("api.resp:${chain.request().url()}, " +
+                            "code:${response.code()},msg:${response.message()}," +
+                            "protocol:${response.protocol()}")
+                    XLog.b().json(bodyString)
+                }
+                val contentType = response.header("Content-Type")
+                response.newBuilder()
+                        .body(RealResponseBody(contentType, body.contentLength(), Okio.buffer(Okio.source(ByteArrayInputStream(bos.toByteArray())))))
+                        .build()
+            } else {
+                response
+            }
+        } else {
+            return chain.proceed(chain.request())
+        }
+
     }
 }

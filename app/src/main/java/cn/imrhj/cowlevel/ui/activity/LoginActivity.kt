@@ -1,17 +1,14 @@
 package cn.imrhj.cowlevel.ui.activity
 
-import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
-import android.os.Bundle
-import android.support.customtabs.CustomTabsClient
-import android.support.customtabs.CustomTabsIntent
-import android.support.customtabs.CustomTabsServiceConnection
-import android.util.Log
-import android.view.View
+import android.support.design.widget.Snackbar
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.ui.base.BaseActivity
@@ -23,39 +20,62 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {
-    private val INVITE_URL = "https://cowlevel.net/apply"
-    private var customTabsReady = false
-    private var isRegister = true
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        bindCustomTabsService()
-    }
+    private val INVITE_URL = "https://cowlevel.net/reg"
+    private val FORGOT_URL = "https://cowlevel.net/forgot"
+//    private var isRegister = true
 
     override fun layoutId(): Int {
         return R.layout.activity_login
     }
 
     override fun initView() {
-        tvInvite.setOnClickListener { openUrl(INVITE_URL) }
-        llRegister.setOnClickListener {
-            if (!isRegister) {
-                isRegister = true
-                changeView(isRegister)
-            }
+        llRegister.setOnClickListener { _ ->
+            this.hideKeyboard()
+            Snackbar.make(llRegister, "请前往打开的网页注册新帐号", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("前往") { openUrl(INVITE_URL) }
+                    .show()
         }
 
         llLogin.setOnClickListener {
-            if (isRegister) {
-                isRegister = false
-                changeView(isRegister)
-            }
+            Snackbar.make(llLogin, "点我干啥？", Snackbar.LENGTH_SHORT).show()
         }
 
         btnLogin.setOnClickListener {
-            if (isRegister) doRegister() else doLogin()
+            doLogin()
         }
 
+        tvForget.setOnClickListener {
+            openUrl(FORGOT_URL)
+        }
+
+        val textWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                clearError()
+            }
+        }
+
+        etMail.addTextChangedListener(textWatcher)
+        etPassword.addTextChangedListener(textWatcher)
+
+        // 添加actionDone按键回调
+        etPassword.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(v.windowToken, 0)
+                doLogin()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isActive) {
+            imm.hideSoftInputFromWindow(etMail.windowToken, 0)
+        }
     }
 
     private fun doLogin() {
@@ -65,14 +85,18 @@ class LoginActivity : BaseActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ loginModel ->
                         if (StringUtils.isNotBlank(loginModel.authToken)) {
-                            btnLogin.doneLoadingAnimation(Color.GREEN, ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(R.drawable.ic_done_white_48dp)!!))
+                            btnLogin.doneLoadingAnimation(0x86A697,
+                                    ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(
+                                            R.drawable.ic_done_white_48dp)!!))
                             UserManager.setToken(loginModel.authToken!!)
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
+                            btnLogin.postDelayed({
+                                startActivity(Intent(this, MainActivity::class.java))
+                                finish()
+                            }, 200)
                         }
                     }, { error ->
-                        etMail.error = error.message
-                        etPassword.error = error.message
+                        tilMail.error = error.message
+                        tilPassword.error = error.message
                         btnLogin.revertAnimation()
                     })
 
@@ -80,19 +104,13 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun doRegister() {
-        if (checkMail() && checkPassword() && checkInv()) {
-
-        }
-    }
-
     private fun checkMail(): Boolean {
         if (StringUtils.isBlank(etMail.text)) {
-            etMail.error = "你还没有填写邮箱"
+            tilMail.error = "你还没有填写邮箱"
             return false
         }
         if (!RegexUtils.isMail(etMail.text)) {
-            etMail.error = "邮箱格式不正确"
+            tilMail.error = "邮箱格式不正确"
             return false
         }
         return true
@@ -100,64 +118,36 @@ class LoginActivity : BaseActivity() {
 
     private fun checkPassword(): Boolean {
         if (StringUtils.isBlank(etPassword.text)) {
-            etPassword.error = "你还没有填写密码"
+            tilPassword.error = "你还没有填写密码"
             return false
         }
         return true
     }
 
-    private fun checkInv(): Boolean {
-        if (StringUtils.isBlank(etInviteCode.text)) {
-            etInviteCode.error = "邀请码不能为空"
-            return false
+    private fun clearError() {
+        if (tilMail.error != null) {
+            tilMail.error = null
         }
-        return true
+        if (tilPassword.error != null) {
+            tilPassword.error = null
+        }
     }
 
-
-    private fun changeView(status: Boolean) {
-        etMail.error = null
-        etPassword.error = null
-        etInviteCode.error = null
-
-        llRegister.isClickable = !status
-        llLogin.isClickable = status
-        tvRegister.setTextColor(ResourcesUtils.getColor(if (status) R.color.white else R.color.colorWhite5))
-        tvLogin.setTextColor(ResourcesUtils.getColor(if (status) R.color.colorWhite5 else R.color.white))
-        viewRegister.visibility = if (status) View.VISIBLE else View.GONE
-        viewLogin.visibility = if (status) View.GONE else View.VISIBLE
-        tilInviteCode.visibility = if (status) View.VISIBLE else View.GONE
-        btnLogin.text = resources.getString(if (status) R.string.register else R.string.login)
-        etPassword.imeOptions = if (status) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
-    }
-
-
-    private fun bindCustomTabsService() {
-        CustomTabsClient.bindCustomTabsService(applicationContext, "com.android.chrome",
-                object : CustomTabsServiceConnection() {
-                    override fun onCustomTabsServiceConnected(name: ComponentName?,
-                                                              client: CustomTabsClient?) {
-                        customTabsReady = true
-                    }
-
-                    override fun onServiceDisconnected(name: ComponentName?) {
-                    }
-                })
-
-    }
+//    private fun changeView(status: Boolean) {
+//        tilMail.error = null
+//        tilPassword.error = null
+//
+//        llRegister.isClickable = !status
+//        llLogin.isClickable = status
+//        tvRegister.setTextColor(ResourcesUtils.getColor(if (status) R.color.white else R.color.colorWhite5))
+//        tvLogin.setTextColor(ResourcesUtils.getColor(if (status) R.color.colorWhite5 else R.color.white))
+//        viewRegister.visibility = if (status) View.VISIBLE else View.GONE
+//        viewLogin.visibility = if (status) View.GONE else View.VISIBLE
+//        btnLogin.text = resources.getString(if (status) R.string.register else R.string.login)
+//        etPassword.imeOptions = if (status) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
+//    }
 
     private fun openUrl(url: String) {
-        if (customTabsReady) {
-            CustomTabsIntent.Builder()
-                    .setToolbarColor(ResourcesUtils.getColor(R.color.colorPrimary))
-                    .setSecondaryToolbarColor(ResourcesUtils.getColor(R.color.colorPrimaryDark))
-                    .setCloseButtonIcon(ConvertUtils.drawable2Bitmap(ResourcesUtils.getDrawable(R.drawable.ic_arrow_back_white)!!))
-                    .build()
-                    .launchUrl(this, Uri.parse(url))
-        } else {
-            Log.d(Thread.currentThread().name, "class = LoginActivity rhjlog openUrl: todo")
-
-        }
+        SchemeUtils.openWithChromeTabs(url)
     }
-
 }

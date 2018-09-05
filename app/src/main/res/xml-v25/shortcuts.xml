@@ -1,0 +1,14 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<shortcut-->
+        <!--android:shortcutId="test"-->
+        <!--android:enabled="true"-->
+        <!--android:icon="@mipmap/ic_launcher"-->
+        <!--android:shortcutShortLabel="@string/test"-->
+        <!--android:shortcutLongLabel="@string/test" >-->
+        <!--<intent-->
+            <!--android:action="android.intent.action.VIEW"-->
+            <!--android:targetPackage="cn.imrhj.cowlevel"-->
+            <!--android:targetClass="cn.imrhj.cowlevel.ui.activity.MainActivity" />-->
+        <!--<categories android:name="android.shortcut.conversation" />-->
+    <!--</shortcut>-->
+</shortcuts>
