@@ -2,6 +2,7 @@ package cn.imrhj.cowlevel.ui.adapter.holder
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.util.Pair
@@ -9,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.HorizontalScrollView
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import cn.imrhj.cowlevel.App
@@ -51,11 +51,14 @@ class HomeHeaderHolder() {
         return if (mFragment?.get() != null) Glide.with(getFragment()!!) else Glide.with(getActivity())
     }
 
-    fun renderBase(helper: BaseViewHolder) {
-
+    private fun renderParent(helper: BaseViewHolder): LinearLayout {
+        val parent = helper.getView<LinearLayout>(R.id.container)
+        helper.getView<HorizontalScrollView>(R.id.scrollView).scrollTo(0, 0)
+        parent.removeAllViews()
+        return parent
     }
 
-    fun getSubtitle(newContent: NewContent?): String {
+    private fun getSubtitle(newContent: NewContent?): String {
         val list = ArrayList<String>()
         if (newContent?.articleCount ?: 0 > 0) {
             list.add("新文章")
@@ -72,25 +75,28 @@ class HomeHeaderHolder() {
         return list.reduce { str1, str2 -> "$str1,$str2" }
     }
 
-    fun renderPost(helper: BaseViewHolder, posts: List<FollowedPostNewModel>) {
-        val parent = helper.getView<LinearLayout>(R.id.container)
-        helper.getView<HorizontalScrollView>(R.id.scrollView).scrollTo(0, 0)
-        parent.removeAllViews()
-        posts.forEach {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_header_post, parent, false)
-            val title = view.findViewById<TextView>(R.id.title)
-            val subTitle = view.findViewById<TextView>(R.id.subtitle)
-            title.text = it.title
-            subTitle.text = this.getSubtitle(it.newContent)
-            getGlide().load(cdnImageForDPSize(it.pic, 160, 80))
-                    .into(view.findViewById(R.id.cover))
-            view.setOnClickListener { _ ->
-                SchemeUtils.startActivity(ElementActivity::class.java)
-            }
+    private fun renderOneTag(parent: LinearLayout, @LayoutRes resId: Int, title: String?,
+                             newContent: NewContent?, imgUrl: String?,
+                             listener: ((view: View) -> Unit)? = null) {
+        val view = LayoutInflater.from(parent.context).inflate(resId, parent, false)
+        val titleView = view.findViewById<TextView>(R.id.title)
+        val subTitle = view.findViewById<TextView>(R.id.subtitle)
+        titleView.text = title
+        subTitle.text = this.getSubtitle(newContent)
+        getGlide().load(imgUrl).into(view.findViewById(R.id.cover))
+        view.setOnClickListener(listener)
+        val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.rightMargin = dp2px(12)
+        parent.addView(view, params)
+    }
 
-            val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            params.rightMargin = dp2px(12)
-            parent.addView(view, params)
+    fun renderPost(helper: BaseViewHolder, posts: List<FollowedPostNewModel>) {
+
+        val parent = renderParent(helper)
+        posts.forEach {
+            renderOneTag(parent, R.layout.item_home_header_post, it.title, it.newContent,
+                    cdnImageForDPSize(it.pic, 160, 80))
         }
         helper.setText(R.id.title, "我关注的游戏")
         helper.getView<TextView>(R.id.more).setOnClickListener {
@@ -100,31 +106,18 @@ class HomeHeaderHolder() {
     }
 
     fun renderTag(helper: BaseViewHolder, tags: List<FollowedTagNewModel>) {
-        val parent = helper.getView<LinearLayout>(R.id.container)
-        helper.getView<HorizontalScrollView>(R.id.scrollView).scrollTo(0, 0)
-        parent.removeAllViews()
+        val parent = renderParent(helper)
         tags.forEach {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_header_tag, parent, false)
-            val title = view.findViewById<TextView>(R.id.title)
-            val subTitle = view.findViewById<TextView>(R.id.subtitle)
-            title.text = it.name
-            subTitle.text = this.getSubtitle(it.newContent)
-            val cover = view.findViewById<ImageView>(R.id.cover)
-            getGlide().load(cdnImageForDPSquare(it.pic, 80))
-                    .into(cover)
-            view.setOnClickListener { _ ->
-                //                SchemeUtils.startActivity(ElementActivity::class.java)
+            renderOneTag(parent, R.layout.item_home_header_tag, it.name, it.newContent,
+                    cdnImageForDPSquare(it.pic, 80)) { view ->
                 val bundle = Bundle()
                 bundle.putString("cover", it.pic)
                 bundle.putString("name", it.name)
                 bundle.putString("id", it.id?.toString())
                 SchemeUtils.startActivityTransition(ElementActivity::class.java, bundle,
-                        Pair.create(cover as View, "cover")
+                        Pair.create(view.findViewById(R.id.cover), "cover")
                 )
             }
-            val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            params.rightMargin = dp2px(20)
-            parent.addView(view, params)
         }
         helper.setText(R.id.title, "我关注的元素")
         helper.getView<TextView>(R.id.more).setOnClickListener {
