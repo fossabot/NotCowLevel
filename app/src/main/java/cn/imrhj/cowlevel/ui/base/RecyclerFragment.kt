@@ -93,6 +93,10 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         return divider
     }
 
+    open fun getFirstPageIndex(): Int {
+        return 0
+    }
+
     /**
      * 获取对应的Adapter
      */
@@ -101,7 +105,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     /**
      * 加载服务器数据
      */
-    abstract fun loadServer(isResetData: Boolean, nextCursor: Int = 0)
+    abstract fun loadServer(isResetData: Boolean, nextCursor: Int = getFirstPageIndex())
 
 
     fun setHasMore(hasMore: Boolean) {
@@ -124,8 +128,8 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     private fun reload() {
         this.mHasMore = false
         mIsShowNext = false
-        mNextCursor = 0
-        loadServer(true, 0)
+        mNextCursor = this.getFirstPageIndex()
+        loadServer(true, mNextCursor)
     }
 
     fun updateList(lists: List<T>?, isReset: Boolean) {

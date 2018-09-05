@@ -16,7 +16,7 @@ import cn.imrhj.cowlevel.network.model.ContentModel
  * neat_content : {"desc":"突然想到这个游戏，当时抬手就去游戏页面下给了一颗星，没错这游戏只玩了半个小时就申请退款了。 然后又突然想到几个问题。 1.如果没有媒体和他人的安利（不知道这游戏 ...","thumb":""}
  * my_answer : []
  */
-data class QuestionModel(
+data class FeedQuestionModel(
         val id: Int = 0,
         val title: String? = null,
         val comment_count: Int = 0,

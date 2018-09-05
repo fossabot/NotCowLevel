@@ -10,7 +10,8 @@ import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
 import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
-import cn.imrhj.cowlevel.ui.fragment.ElementFeedFragment
+import cn.imrhj.cowlevel.ui.fragment.element.ElementFeedFragment
+import cn.imrhj.cowlevel.ui.fragment.element.ElementQuestionFragment
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
 import com.bumptech.glide.Glide
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,6 +25,11 @@ class ElementActivity : BaseActivity() {
 
     private val mFeedFragment by lazy {
         val fragment = ElementFeedFragment()
+        fragment.mId = mId
+        fragment
+    }
+    private val mQuestionFragment by lazy {
+        val fragment = ElementQuestionFragment()
         fragment.mId = mId
         fragment
     }
@@ -49,7 +55,7 @@ class ElementActivity : BaseActivity() {
 
     private fun waitForAnimationEnd() {
         viewpager.adapter = FragmentAdapter(supportFragmentManager,
-                arrayOf(mFeedFragment),
+                arrayOf(mFeedFragment, mQuestionFragment),
                 arrayOf("动态", "问题", "文章", "视频")
         )
     }

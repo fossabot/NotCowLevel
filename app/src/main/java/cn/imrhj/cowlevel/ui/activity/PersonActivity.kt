@@ -12,8 +12,8 @@ import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_FEED
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_USER
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.feed.FeedModel
 import cn.imrhj.cowlevel.network.model.UserModel
+import cn.imrhj.cowlevel.network.model.feed.FeedModel
 import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
 import cn.imrhj.cowlevel.ui.adapter.holder.UserHolder
 import cn.imrhj.cowlevel.ui.animate.listener.callEndAnimatorListener
@@ -106,6 +106,8 @@ class PersonActivity : BaseActivity() {
 
         Glide.with(this)
                 .load(cdnImageForDPSquare(mAvatar, 80))
+                .thumbnail(Glide.with(this)
+                        .load(cdnImageForDPSquare(mAvatar, 48)))
                 .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))
                 .into(avatar)
         imageview.layoutParams.height = (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt()

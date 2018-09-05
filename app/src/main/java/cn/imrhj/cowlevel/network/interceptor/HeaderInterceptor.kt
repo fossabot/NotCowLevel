@@ -24,10 +24,8 @@ class HeaderInterceptor : Interceptor {
     }
 
     private fun getUserAgent(): String {
-//        "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36")
-
         return "Mozilla/5.0 (Linux; Android ${Build.VERSION.RELEASE}; ${Build.MANUFACTURER} " +
-                "${Build.MODEL}) CowLevelApp/v${BuildConfig.VERSION_CODE} AppleWebKit/537.36 " +
+                "${Build.MODEL}) CowLevelApp/${BuildConfig.VERSION_CODE} AppleWebKit/537.36 " +
                 "(KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36"
 
     }

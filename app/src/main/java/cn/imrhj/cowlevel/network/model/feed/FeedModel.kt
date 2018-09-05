@@ -47,7 +47,7 @@ data class FeedModel(
         val answer: AnswerModel? = null,
         val sharelink: ShareLinkModel? = null,
         val comment: CommentModel? = null,
-        val question: QuestionModel? = null,
+        val question: FeedQuestionModel? = null,
         val has_more: Int = 0,
         val voters: List<VotersModel>? = null,
         val users: List<UserModel>? = null

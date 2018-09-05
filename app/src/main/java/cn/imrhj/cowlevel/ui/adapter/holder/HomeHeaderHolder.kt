@@ -48,7 +48,7 @@ class HomeHeaderHolder() {
     }
 
     private fun getGlide(): RequestManager {
-        return if (mFragment != null) Glide.with(getFragment()) else Glide.with(getActivity())
+        return if (mFragment?.get() != null) Glide.with(getFragment()!!) else Glide.with(getActivity())
     }
 
     fun renderBase(helper: BaseViewHolder) {

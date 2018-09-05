@@ -1,7 +1,12 @@
 package cn.imrhj.cowlevel.network.service
 
-import cn.imrhj.cowlevel.network.model.*
+import cn.imrhj.cowlevel.network.model.ApiModel
+import cn.imrhj.cowlevel.network.model.BaseModel
+import cn.imrhj.cowlevel.network.model.LoginModel
+import cn.imrhj.cowlevel.network.model.OuterUserModel
+import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
+import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import io.reactivex.Observable
 import retrofit2.http.*
@@ -80,6 +85,9 @@ interface CowLevel {
     @GET("/element/{id}/feed")
     fun getElementFeed(@Path("id") id: Int, @Query("last_id") lastId: Int = 0): Observable<ApiModel<FeedApiModel>>
 
+    @GET("/api/search/question?per_page=10&sort=update_time&sort_type=desc&log=1")
+    fun getElementQuestion(@Query("tag_id") tagId: Int, @Query("page") page: Int)
+            : Observable<ApiModel<ListCountApiModel<QuestionModel>>>
 
     /**
      * 检查是否有新的通知消息

@@ -6,10 +6,10 @@ buildscript {
             'compileSdk'    : 28,
             'targetSdk'     : 28,
             'buildTools'    : '28.0.2',
-            'glide'         : '4.4.0',
-            'retrofit'      : '2.3.0',
             'supportLibrary': '27.1.1',
-            'okhttp'        : '3.9.1',
+            'glide'         : '4.8.0',
+            'retrofit'      : '2.4.0',
+            'okhttp'        : '3.11.0',
             'chunk'         : '1.1.0'
     ]
 

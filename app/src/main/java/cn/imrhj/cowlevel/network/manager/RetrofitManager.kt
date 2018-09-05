@@ -6,7 +6,9 @@ import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.model.*
+import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
+import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.service.CowLevel
 import com.google.gson.GsonBuilder
@@ -88,8 +90,12 @@ class RetrofitManager private constructor() {
         return filterStatus(mCowLevel.voteReview(id))
     }
 
-    fun getElementFeed(id: Int, lastId: Int): Observable<FeedApiModel> {
+    fun elementFeed(id: Int, lastId: Int): Observable<FeedApiModel> {
         return filterStatus(mCowLevel.getElementFeed(id, lastId))
+    }
+
+    fun elementQuestion(id: Int, page: Int = 1): Observable<ListCountApiModel<QuestionModel>> {
+        return filterStatus(mCowLevel.getElementQuestion(id, page))
     }
 
     fun checkNotify(): Observable<NotifyModel> {

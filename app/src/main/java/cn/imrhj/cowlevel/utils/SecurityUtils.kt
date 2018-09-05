@@ -18,7 +18,7 @@ object SecurityUtils {
             try {
                 return AESUtils.decrypt(SEED, encryption!!)
             } catch (e: Exception) {
-                XLog.t().b().e(e)
+                XLog.e("Security getValue Error:", e)
             }
 
         }
@@ -31,7 +31,7 @@ object SecurityUtils {
             val encryption = AESUtils.encrypt(SEED, value)
             mACache.put(key, encryption)
         } catch (e: Exception) {
-            XLog.t().st(0).b().e(e)
+            XLog.e("Security putValue Error:", e)
         }
 
     }

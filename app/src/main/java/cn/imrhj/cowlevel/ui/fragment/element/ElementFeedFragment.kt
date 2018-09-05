@@ -1,4 +1,4 @@
-package cn.imrhj.cowlevel.ui.fragment
+package cn.imrhj.cowlevel.ui.fragment.element
 
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
@@ -46,7 +46,7 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
     }
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
-        RetrofitManager.getInstance().getElementFeed(mId, nextCursor)
+        RetrofitManager.getInstance().elementFeed(mId, nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (!mFirstLoaded && mRelatedModel != null) {
