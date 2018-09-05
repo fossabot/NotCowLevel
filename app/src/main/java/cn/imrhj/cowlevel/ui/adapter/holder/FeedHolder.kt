@@ -74,7 +74,7 @@ class FeedHolder() {
         val vThumb = helper.getView<ImageView>(R.id.thumb)
         val vGameLayout = helper.getView<View>(R.id.layout_game)
         helper.getView<View>(R.id.layout_link)?.visibility = GONE
-        helper.getView<View>(R.id.feed_card)?.setOnClickListener(null)
+        helper.getView<View>(R.id.container)?.setOnClickListener(null)
         helper.getView<ViewGroup>(R.id.ll_dynamic)?.removeAllViews()
         vGameLayout?.visibility = GONE
         vPic?.visibility = GONE
@@ -167,7 +167,7 @@ class FeedHolder() {
     }
 
     private fun setUrl(helper: BaseViewHolder?, url: String) {
-        helper?.getView<View>(R.id.feed_card)?.setOnClickListener { SchemeUtils.openLink(url) }
+        helper?.getView<View>(R.id.container)?.setOnClickListener { SchemeUtils.openLink(url) }
     }
 
     private fun renderEditorEliteReview(helper: BaseViewHolder?, item: FeedModel) {
