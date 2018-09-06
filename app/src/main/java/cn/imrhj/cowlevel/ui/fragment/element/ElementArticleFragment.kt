@@ -1,10 +1,15 @@
 package cn.imrhj.cowlevel.ui.fragment.element
 
+import android.os.Bundle
+import android.util.Pair
+import android.view.View
 import android.widget.ImageView
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.element.ArticleModel
+import cn.imrhj.cowlevel.ui.activity.PersonActivity
 import cn.imrhj.cowlevel.ui.base.ApiRecyclerFragment
 import cn.imrhj.cowlevel.utils.cdnImageForDPSize
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
@@ -53,6 +58,15 @@ class ElementArticleFragment : ApiRecyclerFragment<ArticleModel, ListCountApiMod
                 .setText(R.id.tv_commit, "评论 ${item.commentCount}")
                 .setText(R.id.tv_vote, "赞同 ${item.voteCount}")
                 .setGone(R.id.btn_follower, false)
+        // listener
+        helper.getView<View>(R.id.user).setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("avatar", item.user?.avatar)
+            bundle.putString("name", item.user?.name)
+            bundle.putString("url_slug", item.user?.url_slug)
+            SchemeUtils.startActivityTransition(PersonActivity::class.java, bundle,
+                    Pair.create(avatar as View, "avatar"))
+        }
 
     }
 }
