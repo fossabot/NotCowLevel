@@ -2,6 +2,7 @@ package cn.imrhj.cowlevel.network.model.element
 
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.ContentModel
+import cn.imrhj.cowlevel.network.model.common.CommonIDModel
 import com.google.gson.annotations.SerializedName
 
 data class QuestionModel(
@@ -57,7 +58,7 @@ data class QuestionModel(
         val games: List<Int?>? = null,
 
         @field:SerializedName("my_answer")
-        val myAnswer: List<Any?>? = null,
+        val myAnswer: CommonIDModel? = null,
 
         @field:SerializedName("id")
         val id: Int? = null,
