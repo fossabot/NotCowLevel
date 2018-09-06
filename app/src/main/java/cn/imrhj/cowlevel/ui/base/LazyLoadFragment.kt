@@ -1,6 +1,7 @@
 package cn.imrhj.cowlevel.ui.base
 
 import android.os.Bundle
+import com.elvishew.xlog.XLog
 
 
 /**
@@ -14,6 +15,7 @@ abstract class LazyLoadFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         isViewInitiated = true
+        isDataLoaded = false
         prepareRequestData()
     }
 
