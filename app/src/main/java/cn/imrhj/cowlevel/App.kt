@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import cn.imrhj.cowlevel.log.AppRecoveryCallback
 import cn.imrhj.cowlevel.log.NewLineBorderFormatter
+import cn.imrhj.cowlevel.ui.activity.MainActivity
 import cn.imrhj.cowlevel.utils.CacheUtils
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
@@ -13,7 +14,6 @@ import com.elvishew.xlog.printer.AndroidPrinter
 import com.elvishew.xlog.printer.file.FilePrinter
 import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
 import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
-import com.readystatesoftware.chuck.internal.ui.MainActivity
 import com.zxy.recovery.core.Recovery
 import java.lang.ref.WeakReference
 

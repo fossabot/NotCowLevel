@@ -384,9 +384,6 @@ class FeedHolder() {
         if (user != null) {
             val avatarView = helper?.getView<ImageView>(R.id.avatar)
             helper?.getView<View>(R.id.user)?.visibility = VISIBLE
-
-//                    .`as`(if (user.avatar?.endsWith(".gif") != false)
-//                GifDrawable::class.java else Bitmap::class.java)
             if (avatarView != null) {
                 getGlide().load(cdnImageForDPSquare(user.avatar, 48))
                         .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))

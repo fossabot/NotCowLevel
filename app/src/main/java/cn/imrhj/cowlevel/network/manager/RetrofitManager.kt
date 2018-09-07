@@ -4,6 +4,7 @@ import android.widget.Toast
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
+import cn.imrhj.cowlevel.network.adapter.QuestionAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
@@ -33,6 +34,7 @@ class RetrofitManager private constructor() {
     private val mGson = GsonBuilder()
             .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
             .registerTypeAdapter(OuterUserModel::class.java, OuterUserAdapter())
+            .registerTypeAdapter(QuestionModel::class.java, QuestionAdapter())
             .create()
 
     private val mRetrofit = Retrofit.Builder()

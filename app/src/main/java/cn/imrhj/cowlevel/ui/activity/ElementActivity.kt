@@ -35,7 +35,7 @@ class ElementActivity : BaseActivity() {
         fragment.mId = mId
         fragment
     }
-    private val mAritcleFragment by lazy {
+    private val mArticleFragment by lazy {
         val fragment = ElementArticleFragment()
         fragment.mId = mId
         fragment
@@ -45,7 +45,7 @@ class ElementActivity : BaseActivity() {
 
     private val mAdapter by lazy {
         FragmentAdapter(supportFragmentManager,
-                arrayOf(mFeedFragment, mQuestionFragment, mAritcleFragment),
+                arrayOf(mFeedFragment, mQuestionFragment, mArticleFragment),
                 mTitleList
         )
     }
@@ -66,7 +66,7 @@ class ElementActivity : BaseActivity() {
         tabLayout.setupWithViewPager(viewpager)
         window.sharedElementEnterTransition.addListener(callEndTransitionListener(this::waitForAnimationEnd))
         toolbarLayout.title = mName
-
+        viewpager.offscreenPageLimit = 5
     }
 
     private fun waitForAnimationEnd() {

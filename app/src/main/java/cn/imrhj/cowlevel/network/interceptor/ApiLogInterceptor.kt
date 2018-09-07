@@ -20,22 +20,22 @@ class ApiLogInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         if (BuildConfig.DEBUG) {
-            XLog.t().b().nst().w(request.toLogString())
+            XLog.t().b().nst().tag("rhjlog req:").w(request.toLogString())
         } else {
             XLog.w("api.req:url=${request.url()}, METHOD=${request.method()}, HEADERS=${request.headers()}, body=${request.body()}")
         }
 
         return if (BuildConfig.DEBUG) {
             val response = chain.proceed(chain.request())
+            XLog.t().b().nst().tag("rhjlog resp:").w("api.resp:${chain.request().url()}, " +
+                    "code:${response.code()},msg:${response.message()}," +
+                    "protocol:${response.protocol()}")
             val body = response.body()
             if (body != null) {
                 val bos = ByteArrayOutputStream()
                 bos.write(body.bytes())
                 val bodyString = bos.toString(Charsets.UTF_8.name())
                 if (bodyString.length < 200) {
-                    XLog.t().b().nst().w("api.resp:${chain.request().url()}, " +
-                            "code:${response.code()},msg:${response.message()}," +
-                            "protocol:${response.protocol()}")
                     XLog.b().json(bodyString)
                 }
                 val contentType = response.header("Content-Type")
