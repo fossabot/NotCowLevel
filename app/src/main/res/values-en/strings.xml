@@ -44,4 +44,7 @@
     <string name="played">Played</string>
     <string name="comment">Comment</string>
     <string name="see_more">More</string>
+
+    <string name="test">test</string>
+    <string name="title_activity_login2">Sign in</string>
 </resources>
