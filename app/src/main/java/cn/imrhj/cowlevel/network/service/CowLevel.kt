@@ -7,6 +7,7 @@ import cn.imrhj.cowlevel.network.model.OuterUserModel
 import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
 import cn.imrhj.cowlevel.network.model.element.ArticleModel
+import cn.imrhj.cowlevel.network.model.element.GameModel
 import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import io.reactivex.Observable
@@ -105,6 +106,10 @@ interface CowLevel {
     @GET("/api/search/article")
     fun getElementArticle(@Query("tag_id") tagId: Int, @Query("page") page: Int)
             : Observable<ApiModel<ListCountApiModel<ArticleModel>>>
+
+    @GET("/api/search/game")
+    fun getElementGame(@Query("tag_id") tagId: Int, @Query("page") page: Int)
+            : Observable<ApiModel<ListCountApiModel<GameModel>>>
 
     /**
      * 检查是否有新的通知消息

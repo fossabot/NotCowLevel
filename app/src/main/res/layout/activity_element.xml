@@ -8,7 +8,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
+        android:elevation="10dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -22,9 +22,7 @@
             app:expandedTitleMarginStart="108dp"
             app:expandedTitleMarginTop="70dp"
             app:expandedTitleTextAppearance="@style/BarTheme"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            android:elevation="10dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"

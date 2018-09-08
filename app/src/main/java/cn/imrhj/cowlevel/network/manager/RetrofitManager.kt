@@ -10,6 +10,7 @@ import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
 import cn.imrhj.cowlevel.network.model.element.ArticleModel
+import cn.imrhj.cowlevel.network.model.element.GameModel
 import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.service.CowLevel
@@ -108,6 +109,10 @@ class RetrofitManager private constructor() {
 
     fun elementArticle(id: Int, page: Int = 1): Observable<ListCountApiModel<ArticleModel>> {
         return filterStatus(mCowLevel.getElementArticle(id, page))
+    }
+
+    fun elementGame(id: Int, page: Int = 1): Observable<ListCountApiModel<GameModel>> {
+        return filterStatus(mCowLevel.getElementGame(id, page))
     }
 
     fun checkNotify(): Observable<NotifyModel> {
