@@ -2,6 +2,7 @@ package cn.imrhj.cowlevel.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.support.v4.app.Fragment
 import android.text.Html
 import android.util.Log
 import cn.imrhj.cowlevel.R
@@ -12,6 +13,7 @@ import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.fragment.element.ElementArticleFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementFeedFragment
+import cn.imrhj.cowlevel.ui.fragment.element.ElementGameFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementQuestionFragment
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
 import com.bumptech.glide.Glide
@@ -26,7 +28,6 @@ class ElementActivity : BaseActivity() {
 
     private val mFeedFragment by lazy {
         val fragment = ElementFeedFragment()
-        val clazz = ElementFeedFragment::class.java
         fragment.mId = mId
         fragment
     }
@@ -41,13 +42,19 @@ class ElementActivity : BaseActivity() {
         fragment
     }
 
-    private val mTitleList = arrayListOf("动态", "问题", "文章", "视频")
+    private val mGameFragment by lazy {
+        val fragment = ElementGameFragment()
+        fragment.mId = mId
+        fragment
+    }
+
+    private val mTitleList = arrayListOf("动态")
+    private val mFragmentList by lazy {
+        arrayListOf<Fragment>(mFeedFragment)
+    }
 
     private val mAdapter by lazy {
-        FragmentAdapter(supportFragmentManager,
-                arrayOf(mFeedFragment, mQuestionFragment, mArticleFragment),
-                mTitleList
-        )
+        FragmentAdapter(supportFragmentManager, mFragmentList, mTitleList)
     }
 
     override fun layoutId(): Int? {
@@ -108,7 +115,8 @@ class ElementActivity : BaseActivity() {
         if (element != null) {
             if (element.notShowGame == 0) {
                 // 显示游戏
-                mTitleList.add(1, "游戏")
+                mTitleList.addAll(listOf("游戏", "问题", "文章", "视频"))
+                mFragmentList.addAll(listOf(mGameFragment, mQuestionFragment, mArticleFragment))
                 if (element.postCount > 0) {
                     mTitleList[1] = "游戏 (${element.postCount})"
                 }
@@ -123,6 +131,8 @@ class ElementActivity : BaseActivity() {
                 }
             } else {
                 // 隐藏游戏
+                mTitleList.addAll(listOf("问题", "文章", "视频"))
+                mFragmentList.addAll(listOf(mQuestionFragment, mArticleFragment))
                 if (element.questionCount > 0) {
                     mTitleList[1] = "问题 (${element.questionCount})"
                 }
@@ -134,7 +144,7 @@ class ElementActivity : BaseActivity() {
                 }
             }
         }
-        mAdapter.updateTitle(mTitleList)
+        mAdapter.update(mTitleList, mFragmentList)
         tabLayout.setupWithViewPager(viewpager)
     }
 }

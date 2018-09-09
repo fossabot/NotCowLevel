@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/card_foreground"
+    android:paddingBottom="6dp">
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorTipsGrey"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="塞尔达传说 旷野之息"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_cover"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:text="2018年9月26日"
+        android:textColor="@color/colorTextSub"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="9.0"
+        android:textColor="@color/colorScoreYellow"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle"
+        app:layout_constraintStart_toEndOf="@+id/tv_subtitle"
+        app:layout_constraintTop_toTopOf="@+id/tv_subtitle" />
+
+    <TextView
+        android:id="@+id/tv_score_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="(999)"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_score"
+        app:layout_constraintStart_toEndOf="@+id/tv_score"
+        app:layout_constraintTop_toTopOf="@+id/tv_score" />
+
+    <TextView
+        android:id="@+id/tv_platform"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="Windows / Mac / PS4 / Linux / Switch / PS3 / Wii U / PSP"
+        android:textColor="@color/colorWhite5"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@+id/tv_subtitle" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:text="¥48.00"
+        android:textColor="@color/colorPriceBlue"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@+id/tv_platform" />
+
+
+</android.support.constraint.ConstraintLayout>

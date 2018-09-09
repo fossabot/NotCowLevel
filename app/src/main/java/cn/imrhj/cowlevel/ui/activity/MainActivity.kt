@@ -30,7 +30,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nav_view.setNavigationItemSelectedListener(this)
         // initViewPager
         viewpager.adapter = FragmentAdapter(supportFragmentManager,
-                arrayOf(HomeFeedFragment(), HotFeedFragment()),
+                arrayListOf(HomeFeedFragment(), HotFeedFragment()),
                 listOf("动态", "推荐", "BLANK")
         )
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
