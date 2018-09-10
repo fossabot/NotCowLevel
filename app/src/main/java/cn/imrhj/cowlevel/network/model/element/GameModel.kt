@@ -1,6 +1,7 @@
 package cn.imrhj.cowlevel.network.model.element
 
 import cn.imrhj.cowlevel.network.model.common.ContentModel
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
@@ -45,8 +46,8 @@ data class GameModel(
         @field:SerializedName("star_avg")
         val starAvg: String? = null,
 
-        @field:SerializedName("publish_time_map")
-        val publishTimeMap: JsonObject,
+//        @field:SerializedName("publish_time_map")
+//        val publishTimeMap: JsonArray,
 
         @field:SerializedName("max_discount")
         val maxDiscount: Int? = null,
