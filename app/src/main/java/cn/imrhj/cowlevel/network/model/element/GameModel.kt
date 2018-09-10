@@ -1,8 +1,6 @@
 package cn.imrhj.cowlevel.network.model.element
 
 import cn.imrhj.cowlevel.network.model.common.ContentModel
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
 data class GameModel(
@@ -46,6 +44,8 @@ data class GameModel(
         @field:SerializedName("star_avg")
         val starAvg: String? = null,
 
+        // 服务端真是善变,如果为空的话返回的是[],如果不为空的话则是个对象{"tag_4":1373385600, "tag_xxx":xxx}
+        // 这个代码没法写了
 //        @field:SerializedName("publish_time_map")
 //        val publishTimeMap: JsonArray,
 
