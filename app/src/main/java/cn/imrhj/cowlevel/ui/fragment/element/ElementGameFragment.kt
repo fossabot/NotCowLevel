@@ -16,8 +16,8 @@ class ElementGameFragment : ApiRecyclerFragment<GameModel, PostListCountApiModel
 
     override fun onNext(result: PostListCountApiModel<GameModel>, isResetData: Boolean, nextCursor: Int) {
         updateList(result.list, isResetData)
-        setHasMore(result.hasMore == 1)
         setNextCursor(nextCursor + 1)
+        setHasMore(result.hasMore == 1)
     }
 
     override fun getItemLayoutResId(): Int {
