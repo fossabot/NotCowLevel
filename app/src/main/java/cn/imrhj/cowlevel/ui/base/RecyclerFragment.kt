@@ -46,7 +46,9 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         mRecycler = baseView?.findViewById(R.id.recycler)
         mRefresh = baseView?.findViewById(R.id.refresh)
         mRecycler?.layoutManager = getLayoutManager()
-        mRecycler?.addItemDecoration(getDivider())
+        if (this.showDivider()) {
+            mRecycler?.addItemDecoration(getDivider())
+        }
         mAdapter = getAdapter()
         mAdapter?.openLoadAnimation(SLIDEIN_BOTTOM)
         mAdapter?.disableLoadMoreIfNotFullPage(mRecycler)
@@ -73,6 +75,10 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
 
         })
         mRefresh?.isRefreshing = true
+    }
+
+    open fun showDivider(): Boolean {
+        return true
     }
 
     override fun requestData() {
