@@ -83,16 +83,37 @@
         app:layout_constraintStart_toEndOf="@+id/iv_cover"
         app:layout_constraintTop_toBottomOf="@+id/tv_subtitle" />
 
-    <TextView
-        android:id="@+id/tv_price"
+    <LinearLayout
+        android:id="@+id/ll_price_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="2dp"
-        android:textColor="@color/colorPriceBlue"
-        android:textSize="12sp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintStart_toEndOf="@+id/iv_cover"
-        app:layout_constraintTop_toBottomOf="@+id/tv_platform" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_platform">
+
+        <TextView
+            android:id="@+id/tv_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/background_price_off"
+            android:paddingEnd="4dp"
+            android:paddingStart="4dp"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPriceBlue"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

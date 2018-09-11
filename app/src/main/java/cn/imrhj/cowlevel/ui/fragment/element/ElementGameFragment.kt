@@ -36,13 +36,15 @@ class ElementGameFragment : ApiRecyclerFragment<GameModel, PostListCountApiModel
         Glide.with(this)
                 .load(cdnImageForDPSize(item.pic, 120, 60))
                 .into(cover)
-        val price = if (item.gamePrices?.size ?: 0 > 0) item.gamePrices?.get(0)?.data else null
+        val price = item.gamePrices?.sortedBy { it?.data?.cnyPrice?.toDouble() }?.take(1)?.get(0)
         helper.setText(R.id.tv_title, item.chineseTitle)
                 .setText(R.id.tv_subtitle, item.gamePublishDateShow)
                 .setText(R.id.tv_score, item.starAvg)
                 .setText(R.id.tv_score_number, "(${item.playedCount})")
                 .setText(R.id.tv_platform, item.platformSupportList?.map { it?.name }?.reduce { acc, s -> "$acc / $s" })
-//                .setText(R.id.tv_price, )
-
+                .setText(R.id.tv_price, "¥${price?.data?.cnyPrice}")
+                .setText(R.id.tv_off, price?.data?.priceOff)
+                .setGone(R.id.tv_price, price?.data?.cnyPrice != null)
+                .setGone(R.id.tv_off, price?.data?.priceOff?.length ?: 0 > 0)
     }
 }

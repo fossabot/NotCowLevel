@@ -20,6 +20,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 
 /**
  * feed详情
@@ -58,6 +59,9 @@ class HomeFeedFragment : RecyclerFragment<BaseModel>() {
                             Observable.just(it)
                         }
                     }
+                    .onErrorResumeNext(Function {
+                        RetrofitManager.getInstance().feedTimeline(nextCursor)
+                    })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         if (it is FeedApiModel) {

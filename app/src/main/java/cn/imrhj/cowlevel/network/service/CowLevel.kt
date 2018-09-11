@@ -109,7 +109,9 @@ interface CowLevel {
             : Observable<ApiModel<ListCountApiModel<ArticleModel>>>
 
     @GET("/api/search/game")
-    fun getElementGame(@Query("tag_id") tagId: Int, @Query("page") page: Int)
+    fun getElementGame(@Query("tag_id") tagId: Int,
+                       @Query("page") page: Int,
+                       @Query("is_discount") isDiscount: Int = 1)
             : Observable<ApiModel<PostListCountApiModel<GameModel>>>
 
     /**
