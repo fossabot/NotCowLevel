@@ -2,6 +2,7 @@ package cn.imrhj.cowlevel.ui.fragment.element
 
 import android.widget.ImageView
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.extensions.getLastOrEmpty
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.common.PostListCountApiModel
 import cn.imrhj.cowlevel.network.model.element.GameModel
@@ -36,12 +37,15 @@ class ElementGameFragment : ApiRecyclerFragment<GameModel, PostListCountApiModel
         Glide.with(this)
                 .load(cdnImageForDPSize(item.pic, 120, 60))
                 .into(cover)
-        val price = item.gamePrices?.sortedBy { it?.data?.cnyPrice?.toDouble() }?.take(1)?.get(0)
+        val price = item.gamePrices?.sortedBy { it?.data?.cnyPrice?.toDouble() }?.take(1)?.getLastOrEmpty()
         helper.setText(R.id.tv_title, item.chineseTitle)
                 .setText(R.id.tv_subtitle, item.gamePublishDateShow)
                 .setText(R.id.tv_score, item.starAvg)
                 .setText(R.id.tv_score_number, "(${item.playedCount})")
-                .setText(R.id.tv_platform, item.platformSupportList?.map { it?.name }?.reduce { acc, s -> "$acc / $s" })
+                .setText(R.id.tv_platform,
+                        if (item.platformSupportList?.size ?: 0 > 0)
+                            item.platformSupportList?.map { it?.name }?.reduce { acc, s -> "$acc / $s" }
+                        else "")
                 .setText(R.id.tv_price, "¥${price?.data?.cnyPrice}")
                 .setText(R.id.tv_off, price?.data?.priceOff)
                 .setGone(R.id.tv_price, price?.data?.cnyPrice != null)

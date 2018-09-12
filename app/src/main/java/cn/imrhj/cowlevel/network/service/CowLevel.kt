@@ -111,8 +111,8 @@ interface CowLevel {
     @GET("/api/search/game")
     fun getElementGame(@Query("tag_id") tagId: Int,                     // 当前 Element tagId
                        @Query("page") page: Int,                        // 分页
-                       @Query("is_discount") isDiscount: Int = 0)       // 是否打折
-            : Observable<ApiModel<PostListCountApiModel<GameModel>>>
+                       @Query("is_discount") isDiscount: Int = 0        // 是否打折
+    ): Observable<ApiModel<PostListCountApiModel<GameModel>>>
 
     /**
      * 检查是否有新的通知消息

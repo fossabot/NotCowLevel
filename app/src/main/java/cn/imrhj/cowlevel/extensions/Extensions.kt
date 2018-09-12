@@ -30,3 +30,10 @@ fun Request.toLogString(): String {
     return "Request: method=${method()}, url = ${url()},\nheader=${headers()}" +
             if (body() != null) ",\nbody=${body()}" else ""
 }
+
+fun <T> List<T>.getLastOrEmpty(): T? {
+    if (this.isNotEmpty()) {
+        return this[0]
+    }
+    return null
+}
