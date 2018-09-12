@@ -18,6 +18,10 @@ class ElementGameFragment : ApiRecyclerFragment<GameModel, PostListCountApiModel
         return false
     }
 
+//    override fun layoutId(): Int {
+//        return R.layout.fragment_recycler_ftb
+//    }
+
     override fun getApiObservable(nextCursor: Int): Observable<PostListCountApiModel<GameModel>> {
         return RetrofitManager.getInstance().elementGame(mId, nextCursor)
     }

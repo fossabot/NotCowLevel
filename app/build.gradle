@@ -85,6 +85,8 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
     implementation 'com.elvishew:xlog:1.4.1'
+    implementation 'com.allattentionhere:fabulousfilter:0.0.5'
+
     debugImplementation "com.readystatesoftware.chuck:library:${versions.chunk}"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:${versions.chunk}"
 

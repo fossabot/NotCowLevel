@@ -16,11 +16,17 @@ import cn.imrhj.cowlevel.ui.fragment.element.ElementFeedFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementGameFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementQuestionFragment
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
+import com.allattentionhere.fabulousfilter.AAH_FabulousFragment
 import com.bumptech.glide.Glide
+import com.elvishew.xlog.XLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_element.*
 
-class ElementActivity : BaseActivity() {
+class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
+    override fun onResult(result: Any?) {
+        XLog.d("class = ElementActivity onResult: $result")
+    }
+
     private var mId: Int = -1
     private lateinit var mName: String
     private lateinit var mCover: String
@@ -57,6 +63,18 @@ class ElementActivity : BaseActivity() {
         FragmentAdapter(supportFragmentManager, mFragmentList, mTitleList)
     }
 
+//    private val mOnPageChangeListener by lazy {
+//        object : ViewPager.SimpleOnPageChangeListener() {
+//            override fun onPageSelected(position: Int) {
+//                if (position == 1) {
+//                    fab_filter.show()
+//                } else {
+//                    fab_filter.hide()
+//                }
+//            }
+//        }
+//    }
+
     override fun layoutId(): Int? {
         return R.layout.activity_element
     }
@@ -74,6 +92,12 @@ class ElementActivity : BaseActivity() {
         window.sharedElementEnterTransition.addListener(callEndTransitionListener(this::waitForAnimationEnd))
         toolbarLayout.title = mName
         viewpager.offscreenPageLimit = 5
+//        fab_filter.setOnClickListener {
+//            val dialogFragment = GameElementFilterFabFragment()
+//            dialogFragment.setParentFab(fab_filter)
+//            dialogFragment.show(supportFragmentManager, dialogFragment.tag)
+//        }
+
     }
 
     private fun waitForAnimationEnd() {
@@ -114,6 +138,7 @@ class ElementActivity : BaseActivity() {
             Html.fromHtml(element?.content)
         if (element != null) {
             if (element.notShowGame == 0) {
+//                viewpager.addOnPageChangeListener(mOnPageChangeListener)
                 // 显示游戏
                 mTitleList.addAll(listOf("游戏", "问题", "文章", "视频"))
                 mFragmentList.addAll(listOf(mGameFragment, mQuestionFragment, mArticleFragment))

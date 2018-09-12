@@ -132,4 +132,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab_filter"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:src="@drawable/ic_filter_list_white_24dp"-->
+    <!--android:visibility="gone"-->
+    <!--app:fabSize="normal"-->
+    <!--app:layout_anchor="@id/viewpager"-->
+    <!--app:layout_anchorGravity="end|bottom"-->
+    <!--app:layout_behavior="cn.imrhj.cowlevel.ui.view.behavior.ScrollAwareFABBehaviorDefault" />-->
+
 </android.support.design.widget.CoordinatorLayout>
