@@ -99,6 +99,9 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         return divider
     }
 
+    /**
+     * 若页面从非0开始,子类复写该函数
+     */
     open fun getFirstPageIndex(): Int {
         return 0
     }

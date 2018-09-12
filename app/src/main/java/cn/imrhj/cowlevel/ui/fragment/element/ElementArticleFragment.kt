@@ -68,8 +68,4 @@ class ElementArticleFragment : ApiRecyclerFragment<ArticleModel, ListCountApiMod
                     Pair.create(avatar as View, "avatar"))
         }
     }
-
-    override fun getFirstPageIndex(): Int {
-        return 1
-    }
 }

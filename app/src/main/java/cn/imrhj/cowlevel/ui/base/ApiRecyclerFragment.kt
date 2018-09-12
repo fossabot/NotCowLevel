@@ -29,4 +29,11 @@ abstract class ApiRecyclerFragment<T, S> : RecyclerFragment<T>() {
             }
         }
     }
+
+    /**
+     * 默认页面 index 从1开始
+     */
+    override fun getFirstPageIndex(): Int {
+        return 1
+    }
 }

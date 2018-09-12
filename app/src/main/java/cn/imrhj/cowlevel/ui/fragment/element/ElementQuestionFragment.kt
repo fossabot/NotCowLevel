@@ -30,8 +30,4 @@ class ElementQuestionFragment : ApiRecyclerFragment<QuestionModel, ListCountApiM
         helper.setGone(R.id.btn_vote, false)
         helper.setText(R.id.tv_commit, "回答 ${item.answerCount}")
     }
-
-    override fun getFirstPageIndex(): Int {
-        return 1
-    }
 }
