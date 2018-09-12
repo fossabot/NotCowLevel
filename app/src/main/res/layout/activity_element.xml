@@ -64,16 +64,35 @@
                     app:layout_constraintStart_toEndOf="@+id/avatar"
                     app:layout_constraintTop_toBottomOf="@+id/name" />
 
-                <TextView
-                    android:id="@+id/desc"
+                <com.ms.square.android.expandabletextview.ExpandableTextView
+                    android:id="@+id/et_desc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/colorGreyText"
-                    android:textSize="14sp"
+                    app:animDuration="200"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/avatar"
-                    app:layout_constraintTop_toBottomOf="@+id/avatar" />
+                    app:layout_constraintTop_toBottomOf="@+id/avatar"
+                    app:maxCollapsedLines="2">
+
+                    <TextView
+                        android:id="@id/expandable_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorGreyText"
+                        android:textSize="14sp" />
+
+                    <ImageButton
+                        android:id="@id/expand_collapse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:background="@android:color/transparent"
+                        android:paddingEnd="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp" />
+
+                </com.ms.square.android.expandabletextview.ExpandableTextView>
 
                 <LinearLayout
                     android:id="@+id/btn_follower"

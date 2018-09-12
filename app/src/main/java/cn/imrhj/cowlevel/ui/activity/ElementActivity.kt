@@ -133,7 +133,7 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
         val relatedModel = data.related
         mFeedFragment.setRelatedData(relatedModel)
         subtitle.text = "${element?.followerCount} 人关注"
-        desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        et_desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             Html.fromHtml(element?.content, 0) else
             Html.fromHtml(element?.content)
         if (element != null) {
