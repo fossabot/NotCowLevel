@@ -1,9 +1,12 @@
 package cn.imrhj.cowlevel.extensions
 
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.ColorRes
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.text.Html
+import android.text.Spanned
 import android.view.View
 import android.widget.TextView
 import cn.imrhj.cowlevel.App
@@ -43,4 +46,10 @@ fun <T> List<T>.getLastOrEmpty(): T? {
 
 fun Fragment.getColor(@ColorRes id: Int): Int {
     return ContextCompat.getColor(context ?: App.app, id)
+}
+
+fun String.parseHtml(): Spanned {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        Html.fromHtml(this, 0) else
+        Html.fromHtml(this)
 }

@@ -1,11 +1,14 @@
 package cn.imrhj.cowlevel.ui.fragment.element
 
+import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Pair
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import cn.imrhj.cowlevel.App
@@ -13,10 +16,13 @@ import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_ELEMENT_RELATED
 import cn.imrhj.cowlevel.extensions.getColor
+import cn.imrhj.cowlevel.extensions.parseHtml
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.element.ElementChildItemModel
 import cn.imrhj.cowlevel.network.model.element.ElementRelatedModel
+import cn.imrhj.cowlevel.ui.activity.ElementActivity
 import cn.imrhj.cowlevel.ui.adapter.FeedAdapter
 import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 import cn.imrhj.cowlevel.ui.view.recycler.LinearDividerItemDecoration
@@ -44,13 +50,24 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
                 }
                 helper?.setText(R.id.tv_title, item?.name)
                         ?.setText(R.id.tv_subtitle, "${item?.followerCount}人关注")
-                        ?.setText(R.id.tv_desc, item?.content)
+                        ?.setText(R.id.tv_desc, item?.content?.parseHtml())
                         ?.setText(R.id.tv_game_number, "游戏 ${item?.postCount}")
                         ?.setText(R.id.tv_question_number, "问题 ${item?.questionCount}")
                         ?.setText(R.id.tv_article_number, "文章 ${item?.articleCount}")
+                        ?.getView<ViewGroup>(R.id.ir_container)
+                        ?.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("cover", item?.pic)
+                            bundle.putString("name", item?.name)
+                            bundle.putString("id", item?.id?.toString())
+                            SchemeUtils.startActivityTransition(ElementActivity::class.java, bundle,
+                                    Pair.create(avatar as View, "cover")
+                            )
+                        }
             }
         }
     }
+
     private lateinit var mToolbar: Toolbar
 
     private val mAdapter by lazy {

@@ -1,11 +1,10 @@
 package cn.imrhj.cowlevel.ui.activity
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.support.v4.app.Fragment
-import android.text.Html
 import android.util.Log
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.extensions.parseHtml
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
@@ -30,6 +29,7 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     private var mId: Int = -1
     private lateinit var mName: String
     private lateinit var mCover: String
+    private var mUseTransition: Boolean = true
     private lateinit var mElementData: ElementModel
 
     private val mFeedFragment by lazy {
@@ -89,7 +89,11 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar?.setNavigationOnClickListener { this.onBackPressed() }
         tabLayout.setupWithViewPager(viewpager)
-        window.sharedElementEnterTransition.addListener(callEndTransitionListener(this::waitForAnimationEnd))
+        if (mUseTransition) {
+            window.sharedElementEnterTransition.addListener(callEndTransitionListener(this::waitForAnimationEnd))
+        } else {
+            waitForAnimationEnd()
+        }
         toolbarLayout.title = mName
         viewpager.offscreenPageLimit = 5
 //        fab_filter.setOnClickListener {
@@ -112,6 +116,7 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
         }
         mCover = intent.getStringExtra("cover")
         mName = intent.getStringExtra("name")
+        mUseTransition = intent.getBooleanExtra("useTransition", true)
         HtmlParseManager.getElement(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -123,8 +128,12 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     }
 
     override fun onBackPressed() {
-        finishAfterTransition()
-        overridePendingTransition(0, 0)
+        if (mUseTransition) {
+            finishAfterTransition()
+            overridePendingTransition(0, 0)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -133,9 +142,7 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
         val relatedModel = data.related
         mFeedFragment.setRelatedData(relatedModel)
         subtitle.text = "${element?.followerCount} 人关注"
-        et_desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            Html.fromHtml(element?.content, 0) else
-            Html.fromHtml(element?.content)
+        et_desc.text = element?.content?.parseHtml()
         if (element != null) {
             if (element.notShowGame == 0) {
 //                viewpager.addOnPageChangeListener(mOnPageChangeListener)
