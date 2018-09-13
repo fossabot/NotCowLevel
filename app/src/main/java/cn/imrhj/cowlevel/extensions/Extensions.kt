@@ -1,9 +1,12 @@
 package cn.imrhj.cowlevel.extensions
 
 import android.os.Bundle
+import android.support.annotation.ColorRes
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.TextView
+import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.StringUtils
 import okhttp3.Request
@@ -36,4 +39,8 @@ fun <T> List<T>.getLastOrEmpty(): T? {
         return this[0]
     }
     return null
+}
+
+fun Fragment.getColor(@ColorRes id: Int): Int {
+    return ContextCompat.getColor(context ?: App.app, id)
 }

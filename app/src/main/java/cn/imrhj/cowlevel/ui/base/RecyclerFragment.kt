@@ -1,15 +1,15 @@
 package cn.imrhj.cowlevel.ui.base
 
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.ui.view.SmoothLinearLayoutManager
+import cn.imrhj.cowlevel.ui.view.recycler.LinearDividerItemDecoration
 import cn.imrhj.cowlevel.utils.CollectionUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
@@ -94,9 +94,11 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     open fun getDivider(): RecyclerView.ItemDecoration {
-        val divider = DividerItemDecoration(mRecycler?.context, LinearLayoutManager.VERTICAL)
-        divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
-        return divider
+//        val divider = DividerItemDecoration(mRecycler?.context, LinearLayoutManager.VERTICAL)
+//        divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
+//        return divider
+        return LinearDividerItemDecoration(mRecycler?.context ?: App.app,
+                LinearLayoutManager.VERTICAL, R.drawable.background_divider, false, true)
     }
 
     /**

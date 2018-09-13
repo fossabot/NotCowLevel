@@ -3,6 +3,7 @@ package cn.imrhj.cowlevel.network.manager
 import android.widget.Toast
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.manager.UserManager
+import cn.imrhj.cowlevel.network.adapter.FeedApiAdapter
 import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
 import cn.imrhj.cowlevel.network.adapter.QuestionAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
@@ -37,6 +38,7 @@ class RetrofitManager private constructor() {
             .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
             .registerTypeAdapter(OuterUserModel::class.java, OuterUserAdapter())
             .registerTypeAdapter(QuestionModel::class.java, QuestionAdapter())
+            .registerTypeAdapter(FeedApiModel::class.java, FeedApiAdapter())
             .create()
 
     private val mRetrofit = Retrofit.Builder()
