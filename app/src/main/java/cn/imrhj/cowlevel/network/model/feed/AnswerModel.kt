@@ -2,6 +2,7 @@ package cn.imrhj.cowlevel.network.model.feed
 
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.common.ContentModel
+import com.google.gson.annotations.SerializedName
 
 /**
  * Created by rhj on 2017/12/4.
@@ -22,5 +23,7 @@ data class AnswerModel(
         val brief_content: ContentModel? = null,
         val neat_content: ContentModel? = null,
         val lock_comment: Int = 0,
-        val hide_comment: Int = 0
+        val hide_comment: Int = 0,
+        @SerializedName("question_id") val questionId: Int?,
+        @SerializedName("question_title") val questionTitle: String?
 ) : BaseModel()

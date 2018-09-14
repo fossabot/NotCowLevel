@@ -63,7 +63,7 @@ class ElementArticleFragment : ApiRecyclerFragment<ArticleModel, ListCountApiMod
             val bundle = Bundle()
             bundle.putString("avatar", item.user?.avatar)
             bundle.putString("name", item.user?.name)
-            bundle.putString("url_slug", item.user?.url_slug)
+            bundle.putString("url_slug", item.user?.urlSlug)
             SchemeUtils.startActivityTransition(PersonActivity::class.java, bundle,
                     Pair.create(avatar as View, "avatar"))
         }

@@ -12,7 +12,7 @@ import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
 import cn.imrhj.cowlevel.network.model.common.PostListCountApiModel
 import cn.imrhj.cowlevel.network.model.element.ArticleModel
-import cn.imrhj.cowlevel.network.model.element.GameModel
+import cn.imrhj.cowlevel.network.model.element.SimpleGameModel
 import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.service.CowLevel
@@ -114,7 +114,7 @@ class RetrofitManager private constructor() {
         return filterStatus(mCowLevel.getElementArticle(id, page))
     }
 
-    fun elementGame(id: Int, page: Int = 1): Observable<PostListCountApiModel<GameModel>> {
+    fun elementGame(id: Int, page: Int = 1): Observable<PostListCountApiModel<SimpleGameModel>> {
         return filterStatus(mCowLevel.getElementGame(id, page))
     }
 

@@ -1,9 +1,15 @@
-package cn.imrhj.cowlevel.network.model.element
+package cn.imrhj.cowlevel.network.model.game
 
-import cn.imrhj.cowlevel.network.model.common.ContentModel
+import cn.imrhj.cowlevel.network.model.BaseModel
+import cn.imrhj.cowlevel.network.model.common.NameIDModel
+import cn.imrhj.cowlevel.network.model.common.TagModel
+import cn.imrhj.cowlevel.network.model.common.UrlModel
 import com.google.gson.annotations.SerializedName
 
-data class GameModel(
+data class GamesItem(
+
+        @field:SerializedName("is_dislike")
+        val isDislike: Int? = null,
 
         @field:SerializedName("game_publish_date_show")
         val gamePublishDateShow: String? = null,
@@ -14,11 +20,11 @@ data class GameModel(
         @field:SerializedName("is_wish")
         val isWish: Int? = null,
 
+        @field:SerializedName("permanent_slug")
+        val permanentSlug: String? = null,
+
         @field:SerializedName("played_count")
         val playedCount: Int? = null,
-
-        @field:SerializedName("language")
-        val language: List<NameIDModel?>? = null,
 
         @field:SerializedName("pic")
         val pic: String? = null,
@@ -38,19 +44,14 @@ data class GameModel(
         @field:SerializedName("url_slug")
         val urlSlug: String? = null,
 
+        @field:SerializedName("cover")
+        val cover: String? = null,
+
         @field:SerializedName("urls")
-        val urls: List<UrlsItemModel?>? = null,
+        val urls: List<UrlModel?>? = null,
 
         @field:SerializedName("star_avg")
         val starAvg: String? = null,
-
-        // 服务端真是善变,如果为空的话返回的是[],如果不为空的话则是个对象{"tag_4":1373385600, "tag_xxx":xxx}
-        // 这个代码没法写了
-//        @field:SerializedName("publish_time_map")
-//        val publishTimeMap: JsonArray,
-
-        @field:SerializedName("max_discount")
-        val maxDiscount: Int? = null,
 
         @field:SerializedName("chinese_title")
         val chineseTitle: String? = null,
@@ -70,9 +71,6 @@ data class GameModel(
         @field:SerializedName("discover")
         val discover: String? = null,
 
-        @field:SerializedName("brief_content")
-        val briefContent: ContentModel? = null,
-
         @field:SerializedName("is_follow")
         val isFollow: Int? = null,
 
@@ -82,15 +80,15 @@ data class GameModel(
         @field:SerializedName("game_publish_month")
         val gamePublishMonth: Int? = null,
 
-        @field:SerializedName("tags")
-        val tags: List<TagsItem?>? = null,
-
         @field:SerializedName("game_prices")
-        val gamePrices: List<GamePricesItemModel?>? = null,
+        val gamePrices: List<Any?>? = null,
+
+        @field:SerializedName("tags")
+        val tags: List<TagModel?>? = null,
 
         @field:SerializedName("play_time_avg")
-        val playTimeAvg: Double? = null,
+        val playTimeAvg: String? = null,
 
         @field:SerializedName("my_post_interest")
         val myPostInterest: Any? = null
-)
+) : BaseModel()

@@ -6,6 +6,7 @@ import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
 import cn.imrhj.cowlevel.network.model.element.ElementRelatedModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
+import cn.imrhj.cowlevel.network.model.game.GameHomeModel
 import cn.imrhj.cowlevel.network.model.home.BannerModel
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.model.list.BannerListModel
@@ -52,4 +53,12 @@ val parseElementJSString: (String) -> ElementHomeModel? = {
         elementHomeModel.related = gson.fromJson(relatedResult?.get(1)?.value, ElementRelatedModel::class.java)
     }
     elementHomeModel
+}
+
+val parseGameJSString: (String) -> GameHomeModel? = {
+    val gameHomeModel = GameHomeModel()
+
+
+    gameHomeModel
+
 }

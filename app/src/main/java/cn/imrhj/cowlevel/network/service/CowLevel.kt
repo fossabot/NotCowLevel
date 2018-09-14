@@ -8,7 +8,7 @@ import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
 import cn.imrhj.cowlevel.network.model.common.PostListCountApiModel
 import cn.imrhj.cowlevel.network.model.element.ArticleModel
-import cn.imrhj.cowlevel.network.model.element.GameModel
+import cn.imrhj.cowlevel.network.model.element.SimpleGameModel
 import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import io.reactivex.Observable
@@ -112,7 +112,7 @@ interface CowLevel {
     fun getElementGame(@Query("tag_id") tagId: Int,                     // 当前 Element tagId
                        @Query("page") page: Int,                        // 分页
                        @Query("is_discount") isDiscount: Int = 0        // 是否打折
-    ): Observable<ApiModel<PostListCountApiModel<GameModel>>>
+    ): Observable<ApiModel<PostListCountApiModel<SimpleGameModel>>>
 
     /**
      * 检查是否有新的通知消息

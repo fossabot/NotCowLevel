@@ -5,14 +5,14 @@ import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.extensions.getLastOrEmpty
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.common.PostListCountApiModel
-import cn.imrhj.cowlevel.network.model.element.GameModel
+import cn.imrhj.cowlevel.network.model.element.SimpleGameModel
 import cn.imrhj.cowlevel.ui.base.ApiRecyclerFragment
 import cn.imrhj.cowlevel.utils.cdnImageForDPSize
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseViewHolder
 import io.reactivex.Observable
 
-class ElementGameFragment : ApiRecyclerFragment<GameModel, PostListCountApiModel<GameModel>>() {
+class ElementGameFragment : ApiRecyclerFragment<SimpleGameModel, PostListCountApiModel<SimpleGameModel>>() {
     var mId = 0
     override fun showDivider(): Boolean {
         return false
@@ -22,11 +22,11 @@ class ElementGameFragment : ApiRecyclerFragment<GameModel, PostListCountApiModel
 //        return R.layout.fragment_recycler_ftb
 //    }
 
-    override fun getApiObservable(nextCursor: Int): Observable<PostListCountApiModel<GameModel>> {
+    override fun getApiObservable(nextCursor: Int): Observable<PostListCountApiModel<SimpleGameModel>> {
         return RetrofitManager.getInstance().elementGame(mId, nextCursor)
     }
 
-    override fun onNext(result: PostListCountApiModel<GameModel>, isResetData: Boolean, nextCursor: Int) {
+    override fun onNext(result: PostListCountApiModel<SimpleGameModel>, isResetData: Boolean, nextCursor: Int) {
         updateList(result.list, isResetData)
         setNextCursor(nextCursor + 1)
         setHasMore(result.hasMore == 1)
@@ -36,7 +36,7 @@ class ElementGameFragment : ApiRecyclerFragment<GameModel, PostListCountApiModel
         return R.layout.item_game_row_small
     }
 
-    override fun convert(helper: BaseViewHolder, item: GameModel) {
+    override fun convert(helper: BaseViewHolder, item: SimpleGameModel) {
         val cover = helper.getView<ImageView>(R.id.iv_cover)
         Glide.with(this)
                 .load(cdnImageForDPSize(item.pic, 120, 60))

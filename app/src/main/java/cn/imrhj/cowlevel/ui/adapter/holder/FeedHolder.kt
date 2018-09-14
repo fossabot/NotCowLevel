@@ -21,9 +21,9 @@ import cn.imrhj.cowlevel.extensions.setTextAndShow
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.COW_LEVEL_URL
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
+import cn.imrhj.cowlevel.network.model.element.SimpleGameModel
 import cn.imrhj.cowlevel.network.model.feed.FeedModel
 import cn.imrhj.cowlevel.network.model.feed.FeedModel.Type.*
-import cn.imrhj.cowlevel.network.model.feed.GameModel
 import cn.imrhj.cowlevel.network.model.feed.ShareLinkModel
 import cn.imrhj.cowlevel.ui.activity.PersonActivity
 import cn.imrhj.cowlevel.ui.adapter.DP130_2PX
@@ -178,7 +178,7 @@ class FeedHolder() {
                 review.comment_count, "评论",
                 { this.voteReview(review.has_vote, review.id) })
         renderGame(helper, item.game)
-        setUrl(helper, "https://cowlevel.net/game/${item.game?.url_slug}/review/${review.id}")
+        setUrl(helper, "https://cowlevel.net/game/${item.game?.urlSlug}/review/${review.id}")
     }
 
 
@@ -218,7 +218,7 @@ class FeedHolder() {
         }
     }
 
-    private fun renderGame(helper: BaseViewHolder?, game: GameModel?, hideOuter: Boolean = false) {
+    private fun renderGame(helper: BaseViewHolder?, game: SimpleGameModel?, hideOuter: Boolean = false) {
         val layout = helper?.getView<LinearLayout>(R.id.ll_dynamic)
         val gameView = LayoutInflater.from(App.app)
                 .inflate(R.layout.item_game_layout, layout, false)
@@ -232,18 +232,18 @@ class FeedHolder() {
         }
 //
         if (game != null) {
-            val platforms = game.platform_support_list
+            val platforms = game.platformSupportList
             gameView.findViewById<TextView>(R.id.game_title)?.text = game.title
-            gameView.findViewById<TextView>(R.id.game_time)?.text = game.game_publish_date_show
+            gameView.findViewById<TextView>(R.id.game_time)?.text = game.gamePublishDateShow
             gameView.findViewById<TextView>(R.id.game_platforms)?.text =
                     if (platforms?.isNotEmpty() == true)
-                        platforms.map { it.name }.reduce { n1, n2 -> "$n1 / $n2" }
+                        platforms.map { it?.name }.reduce { n1, n2 -> "$n1 / $n2" }
                     else ""
             getGlide().load(cdnImageForSize(game.pic, DP130_2PX, DP65_2PX))
                     .into(gameView.findViewById(R.id.game_pic))
 
             gameView.setOnClickListener {
-                SchemeUtils.openLink(COW_LEVEL_URL + "game/" + game.url_slug)
+                SchemeUtils.openLink(COW_LEVEL_URL + "game/" + game.urlSlug)
             }
 
             layout?.addView(gameView)
@@ -251,7 +251,7 @@ class FeedHolder() {
         }
     }
 
-    private fun renderGame(helper: BaseViewHolder?, games: List<GameModel>?) {
+    private fun renderGame(helper: BaseViewHolder?, games: List<SimpleGameModel>?) {
         games?.forEach { renderGame(helper, it, true) }
     }
 
@@ -291,7 +291,7 @@ class FeedHolder() {
         var tagValue = when {
             voters?.isNotEmpty() == true && voters[0].name?.isNotBlank() == true -> voters[0].name
             followers?.isNotEmpty() == true && followers[0].name?.isNotBlank() == true -> followers[0].name
-            games?.isNotEmpty() == true && games[0].chinese_title?.isNotBlank() == true -> games[0].chinese_title
+            games?.isNotEmpty() == true && games[0].chineseTitle?.isNotBlank() == true -> games[0].chineseTitle
             tags?.isNotEmpty() == true && tags[0].name?.isNotBlank() == true -> tags[0].name
             else -> ""
         }
@@ -314,7 +314,7 @@ class FeedHolder() {
                 subValue = "的文章"
             }
             post_submit_review.name -> {
-                tagValue = getListItemFirst(games)?.chinese_title ?: ""
+                tagValue = getListItemFirst(games)?.chineseTitle ?: ""
                 subValue = "的评价"
             }
             tag_question.name -> {
@@ -322,11 +322,11 @@ class FeedHolder() {
                 subValue = "的问题"
             }
             post_submit_question.name -> {
-                tagValue = getListItemFirst(games)?.chinese_title ?: ""
+                tagValue = getListItemFirst(games)?.chineseTitle ?: ""
                 subValue = "的问题"
             }
             post_submit_article.name -> {
-                tagValue = getListItemFirst(games)?.chinese_title ?: ""
+                tagValue = getListItemFirst(games)?.chineseTitle ?: ""
                 subValue = "的文章"
             }
             tag_answer.name -> {

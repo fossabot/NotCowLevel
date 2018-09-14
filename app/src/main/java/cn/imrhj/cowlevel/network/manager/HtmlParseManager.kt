@@ -5,8 +5,10 @@ import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.exception.AuthException
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
+import cn.imrhj.cowlevel.network.model.game.GameHomeModel
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.parse.parseElementJSString
+import cn.imrhj.cowlevel.network.parse.parseGameJSString
 import cn.imrhj.cowlevel.network.parse.parseHomeJSString
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -48,5 +50,10 @@ object HtmlParseManager {
 
     fun getElement(id: Int): Observable<ElementHomeModel> {
         return getJSData("element/$id", 2).map(parseElementJSString)
+    }
+
+    fun getGame(name: String): Observable<GameHomeModel> {
+        return getJSData("game/$name", 1).map(parseGameJSString)
+
     }
 }
