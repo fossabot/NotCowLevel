@@ -17,7 +17,7 @@ script:
 - "./gradlew assembleRelease"
 branches:
   only:
-  - master
+  - /v*\d+\.\d+\.\d+(-[a-zA-Z0-9]*)*/
 deploy:
   provider: releases
   api_key:
