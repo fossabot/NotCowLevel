@@ -8,6 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.concurrent.TimeUnit
 
 object OkHttpManager {
     private val mClient: OkHttpClient by lazy {
@@ -15,6 +16,7 @@ object OkHttpManager {
                 .addInterceptor(HeaderInterceptor())
                 .addInterceptor(ChuckInterceptor(App.app.applicationContext))
                 .addInterceptor(ApiLogInterceptor())
+                .readTimeout(20, TimeUnit.SECONDS)
                 .build()
     }
 

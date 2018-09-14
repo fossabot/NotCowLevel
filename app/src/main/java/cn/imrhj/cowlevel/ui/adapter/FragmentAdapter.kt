@@ -8,8 +8,8 @@ import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 /**
  * Created by rhj on 2017/11/28.
  */
-class FragmentAdapter(fm: FragmentManager?, list: Array<Fragment>, titleList: List<String>) : FragmentPagerAdapter(fm) {
-    private val mFragmentList = list
+class FragmentAdapter(fm: FragmentManager?, list: List<Fragment>, titleList: List<String>) : FragmentPagerAdapter(fm) {
+    private var mFragmentList = list
     private var mTabTitles = titleList
 
     override fun getPageTitle(position: Int): CharSequence {
@@ -31,7 +31,9 @@ class FragmentAdapter(fm: FragmentManager?, list: Array<Fragment>, titleList: Li
         }
     }
 
-    fun updateTitle(titleList: List<String>) {
+    fun update(titleList: List<String>, fragmentList: List<Fragment>) {
         this.mTabTitles = titleList
+        this.mFragmentList = fragmentList
+        notifyDataSetChanged()
     }
 }

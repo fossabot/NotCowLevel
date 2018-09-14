@@ -3,13 +3,16 @@ package cn.imrhj.cowlevel.network.manager
 import android.widget.Toast
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.manager.UserManager
+import cn.imrhj.cowlevel.network.adapter.FeedApiAdapter
 import cn.imrhj.cowlevel.network.adapter.OuterUserAdapter
 import cn.imrhj.cowlevel.network.adapter.QuestionAdapter
 import cn.imrhj.cowlevel.network.exception.ApiException
 import cn.imrhj.cowlevel.network.model.*
 import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.common.NotifyModel
+import cn.imrhj.cowlevel.network.model.common.PostListCountApiModel
 import cn.imrhj.cowlevel.network.model.element.ArticleModel
+import cn.imrhj.cowlevel.network.model.element.GameModel
 import cn.imrhj.cowlevel.network.model.element.QuestionModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.service.CowLevel
@@ -35,6 +38,7 @@ class RetrofitManager private constructor() {
             .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
             .registerTypeAdapter(OuterUserModel::class.java, OuterUserAdapter())
             .registerTypeAdapter(QuestionModel::class.java, QuestionAdapter())
+            .registerTypeAdapter(FeedApiModel::class.java, FeedApiAdapter())
             .create()
 
     private val mRetrofit = Retrofit.Builder()
@@ -108,6 +112,10 @@ class RetrofitManager private constructor() {
 
     fun elementArticle(id: Int, page: Int = 1): Observable<ListCountApiModel<ArticleModel>> {
         return filterStatus(mCowLevel.getElementArticle(id, page))
+    }
+
+    fun elementGame(id: Int, page: Int = 1): Observable<PostListCountApiModel<GameModel>> {
+        return filterStatus(mCowLevel.getElementGame(id, page))
     }
 
     fun checkNotify(): Observable<NotifyModel> {

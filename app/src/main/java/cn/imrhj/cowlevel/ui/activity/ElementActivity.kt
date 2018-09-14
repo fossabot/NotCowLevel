@@ -1,10 +1,10 @@
 package cn.imrhj.cowlevel.ui.activity
 
 import android.annotation.SuppressLint
-import android.os.Build
-import android.text.Html
+import android.support.v4.app.Fragment
 import android.util.Log
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.extensions.parseHtml
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
@@ -12,21 +12,28 @@ import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.fragment.element.ElementArticleFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementFeedFragment
+import cn.imrhj.cowlevel.ui.fragment.element.ElementGameFragment
 import cn.imrhj.cowlevel.ui.fragment.element.ElementQuestionFragment
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
+import com.allattentionhere.fabulousfilter.AAH_FabulousFragment
 import com.bumptech.glide.Glide
+import com.elvishew.xlog.XLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_element.*
 
-class ElementActivity : BaseActivity() {
+class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
+    override fun onResult(result: Any?) {
+        XLog.d("class = ElementActivity onResult: $result")
+    }
+
     private var mId: Int = -1
     private lateinit var mName: String
     private lateinit var mCover: String
+    private var mUseTransition: Boolean = true
     private lateinit var mElementData: ElementModel
 
     private val mFeedFragment by lazy {
         val fragment = ElementFeedFragment()
-        val clazz = ElementFeedFragment::class.java
         fragment.mId = mId
         fragment
     }
@@ -41,14 +48,32 @@ class ElementActivity : BaseActivity() {
         fragment
     }
 
-    private val mTitleList = arrayListOf("动态", "问题", "文章", "视频")
+    private val mGameFragment by lazy {
+        val fragment = ElementGameFragment()
+        fragment.mId = mId
+        fragment
+    }
+
+    private val mTitleList = arrayListOf("动态")
+    private val mFragmentList by lazy {
+        arrayListOf<Fragment>(mFeedFragment)
+    }
 
     private val mAdapter by lazy {
-        FragmentAdapter(supportFragmentManager,
-                arrayOf(mFeedFragment, mQuestionFragment, mArticleFragment),
-                mTitleList
-        )
+        FragmentAdapter(supportFragmentManager, mFragmentList, mTitleList)
     }
+
+//    private val mOnPageChangeListener by lazy {
+//        object : ViewPager.SimpleOnPageChangeListener() {
+//            override fun onPageSelected(position: Int) {
+//                if (position == 1) {
+//                    fab_filter.show()
+//                } else {
+//                    fab_filter.hide()
+//                }
+//            }
+//        }
+//    }
 
     override fun layoutId(): Int? {
         return R.layout.activity_element
@@ -64,9 +89,19 @@ class ElementActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar?.setNavigationOnClickListener { this.onBackPressed() }
         tabLayout.setupWithViewPager(viewpager)
-        window.sharedElementEnterTransition.addListener(callEndTransitionListener(this::waitForAnimationEnd))
+        if (mUseTransition) {
+            window.sharedElementEnterTransition.addListener(callEndTransitionListener(this::waitForAnimationEnd))
+        } else {
+            waitForAnimationEnd()
+        }
         toolbarLayout.title = mName
         viewpager.offscreenPageLimit = 5
+//        fab_filter.setOnClickListener {
+//            val dialogFragment = GameElementFilterFabFragment()
+//            dialogFragment.setParentFab(fab_filter)
+//            dialogFragment.show(supportFragmentManager, dialogFragment.tag)
+//        }
+
     }
 
     private fun waitForAnimationEnd() {
@@ -81,6 +116,7 @@ class ElementActivity : BaseActivity() {
         }
         mCover = intent.getStringExtra("cover")
         mName = intent.getStringExtra("name")
+        mUseTransition = intent.getBooleanExtra("useTransition", true)
         HtmlParseManager.getElement(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -92,8 +128,12 @@ class ElementActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        finishAfterTransition()
-        overridePendingTransition(0, 0)
+        if (mUseTransition) {
+            finishAfterTransition()
+            overridePendingTransition(0, 0)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -102,13 +142,13 @@ class ElementActivity : BaseActivity() {
         val relatedModel = data.related
         mFeedFragment.setRelatedData(relatedModel)
         subtitle.text = "${element?.followerCount} 人关注"
-        desc.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            Html.fromHtml(element?.content, 0) else
-            Html.fromHtml(element?.content)
+        et_desc.text = element?.content?.parseHtml()
         if (element != null) {
             if (element.notShowGame == 0) {
+//                viewpager.addOnPageChangeListener(mOnPageChangeListener)
                 // 显示游戏
-                mTitleList.add(1, "游戏")
+                mTitleList.addAll(listOf("游戏", "问题", "文章", "视频"))
+                mFragmentList.addAll(listOf(mGameFragment, mQuestionFragment, mArticleFragment))
                 if (element.postCount > 0) {
                     mTitleList[1] = "游戏 (${element.postCount})"
                 }
@@ -123,6 +163,8 @@ class ElementActivity : BaseActivity() {
                 }
             } else {
                 // 隐藏游戏
+                mTitleList.addAll(listOf("问题", "文章", "视频"))
+                mFragmentList.addAll(listOf(mQuestionFragment, mArticleFragment))
                 if (element.questionCount > 0) {
                     mTitleList[1] = "问题 (${element.questionCount})"
                 }
@@ -134,7 +176,7 @@ class ElementActivity : BaseActivity() {
                 }
             }
         }
-        mAdapter.updateTitle(mTitleList)
+        mAdapter.update(mTitleList, mFragmentList)
         tabLayout.setupWithViewPager(viewpager)
     }
 }

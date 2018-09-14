@@ -1,7 +1,7 @@
 package cn.imrhj.cowlevel.network.model.element
 
 import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.ContentModel
+import cn.imrhj.cowlevel.network.model.common.ContentModel
 import cn.imrhj.cowlevel.network.model.common.CommonIDModel
 import com.google.gson.annotations.SerializedName
 

@@ -30,12 +30,15 @@ object HtmlParseManager {
                 }
                 .flatMap { OkHttpManager.getServerData(it) }
                 .doOnError {
-                    Observable.just(1)
-                            .subscribeOn(AndroidSchedulers.mainThread())
-                            .subscribe { _ ->
-                                Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
-                                UserManager.logout()
-                            }
+                    if (it is AuthException) {
+                        Observable.just(1)
+                                .subscribeOn(AndroidSchedulers.mainThread())
+                                .subscribe { _ ->
+                                    Toast.makeText(App.app.getLastActivity(), "认证失败,请重新登录", Toast.LENGTH_LONG).show()
+                                    UserManager.logout()
+                                }
+
+                    }
                 }
     }
 

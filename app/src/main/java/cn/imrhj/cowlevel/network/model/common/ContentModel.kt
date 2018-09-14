@@ -1,4 +1,6 @@
-package cn.imrhj.cowlevel.network.model
+package cn.imrhj.cowlevel.network.model.common
+
+import cn.imrhj.cowlevel.network.model.BaseModel
 
 /**
  * Created by rhj on 2017/12/4.

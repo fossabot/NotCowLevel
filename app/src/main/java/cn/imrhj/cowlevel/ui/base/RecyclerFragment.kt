@@ -1,15 +1,15 @@
 package cn.imrhj.cowlevel.ui.base
 
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.ui.view.SmoothLinearLayoutManager
+import cn.imrhj.cowlevel.ui.view.recycler.LinearDividerItemDecoration
 import cn.imrhj.cowlevel.utils.CollectionUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
@@ -46,7 +46,9 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         mRecycler = baseView?.findViewById(R.id.recycler)
         mRefresh = baseView?.findViewById(R.id.refresh)
         mRecycler?.layoutManager = getLayoutManager()
-        mRecycler?.addItemDecoration(getDivider())
+        if (this.showDivider()) {
+            mRecycler?.addItemDecoration(getDivider())
+        }
         mAdapter = getAdapter()
         mAdapter?.openLoadAnimation(SLIDEIN_BOTTOM)
         mAdapter?.disableLoadMoreIfNotFullPage(mRecycler)
@@ -64,15 +66,19 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
             }
 
             override fun getLoadEndViewId(): Int {
-                return R.id.load_more_load_fail_view
+                return R.id.load_more_load_end_view
             }
 
             override fun getLoadFailViewId(): Int {
-                return R.id.load_more_load_end_view
+                return R.id.load_more_load_fail_view
             }
 
         })
         mRefresh?.isRefreshing = true
+    }
+
+    open fun showDivider(): Boolean {
+        return true
     }
 
     override fun requestData() {
@@ -88,11 +94,16 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     open fun getDivider(): RecyclerView.ItemDecoration {
-        val divider = DividerItemDecoration(mRecycler?.context, LinearLayoutManager.VERTICAL)
-        divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
-        return divider
+//        val divider = DividerItemDecoration(mRecycler?.context, LinearLayoutManager.VERTICAL)
+//        divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
+//        return divider
+        return LinearDividerItemDecoration(mRecycler?.context ?: App.app,
+                LinearLayoutManager.VERTICAL, R.drawable.background_divider, false, true)
     }
 
+    /**
+     * 若页面从非0开始,子类复写该函数
+     */
     open fun getFirstPageIndex(): Int {
         return 0
     }
