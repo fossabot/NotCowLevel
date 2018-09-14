@@ -1,9 +1,15 @@
 package cn.imrhj.cowlevel.extensions
 
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.ColorRes
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.text.Html
+import android.text.Spanned
 import android.view.View
 import android.widget.TextView
+import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.StringUtils
 import okhttp3.Request
@@ -29,4 +35,21 @@ fun TextView.setTextAndShow(text: String?) {
 fun Request.toLogString(): String {
     return "Request: method=${method()}, url = ${url()},\nheader=${headers()}" +
             if (body() != null) ",\nbody=${body()}" else ""
+}
+
+fun <T> List<T>.getLastOrEmpty(): T? {
+    if (this.isNotEmpty()) {
+        return this[0]
+    }
+    return null
+}
+
+fun Fragment.getColor(@ColorRes id: Int): Int {
+    return ContextCompat.getColor(context ?: App.app, id)
+}
+
+fun String.parseHtml(): Spanned {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        Html.fromHtml(this, 0) else
+        Html.fromHtml(this)
 }

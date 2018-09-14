@@ -43,6 +43,9 @@ class SchemeUtils {
 
         fun <T> startActivity(clazz: Class<T>, bundle: Bundle? = null) {
             val intent = Intent(App.app.getLastActivity(), clazz)
+            if (bundle != null) {
+                intent.putExtras(bundle)
+            }
             App.app.getLastActivity().startActivity(intent)
         }
 

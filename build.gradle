@@ -5,7 +5,7 @@ buildscript {
             'kotlin'        : '1.2.61',
             'compileSdk'    : 28,
             'targetSdk'     : 28,
-            'buildTools'    : '28.0.2',
+            'buildTools'    : '28.0.2',     //版本修改时需要同时修改 travis 构建脚本
             'supportLibrary': '27.1.1',
             'glide'         : '4.8.0',
             'retrofit'      : '2.4.0',

@@ -8,7 +8,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
+        android:elevation="10dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -22,9 +22,7 @@
             app:expandedTitleMarginStart="108dp"
             app:expandedTitleMarginTop="70dp"
             app:expandedTitleTextAppearance="@style/BarTheme"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            android:elevation="10dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -66,16 +64,35 @@
                     app:layout_constraintStart_toEndOf="@+id/avatar"
                     app:layout_constraintTop_toBottomOf="@+id/name" />
 
-                <TextView
-                    android:id="@+id/desc"
+                <com.ms.square.android.expandabletextview.ExpandableTextView
+                    android:id="@+id/et_desc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/colorGreyText"
-                    android:textSize="14sp"
+                    app:animDuration="200"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/avatar"
-                    app:layout_constraintTop_toBottomOf="@+id/avatar" />
+                    app:layout_constraintTop_toBottomOf="@+id/avatar"
+                    app:maxCollapsedLines="2">
+
+                    <TextView
+                        android:id="@id/expandable_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorGreyText"
+                        android:textSize="14sp" />
+
+                    <ImageButton
+                        android:id="@id/expand_collapse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:background="@android:color/transparent"
+                        android:paddingEnd="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp" />
+
+                </com.ms.square.android.expandabletextview.ExpandableTextView>
 
                 <LinearLayout
                     android:id="@+id/btn_follower"
@@ -134,4 +151,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab_filter"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:src="@drawable/ic_filter_list_white_24dp"-->
+    <!--android:visibility="gone"-->
+    <!--app:fabSize="normal"-->
+    <!--app:layout_anchor="@id/viewpager"-->
+    <!--app:layout_anchorGravity="end|bottom"-->
+    <!--app:layout_behavior="cn.imrhj.cowlevel.ui.view.behavior.ScrollAwareFABBehaviorDefault" />-->
+
 </android.support.design.widget.CoordinatorLayout>

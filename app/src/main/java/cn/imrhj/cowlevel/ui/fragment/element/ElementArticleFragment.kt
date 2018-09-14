@@ -67,6 +67,5 @@ class ElementArticleFragment : ApiRecyclerFragment<ArticleModel, ListCountApiMod
             SchemeUtils.startActivityTransition(PersonActivity::class.java, bundle,
                     Pair.create(avatar as View, "avatar"))
         }
-
     }
 }

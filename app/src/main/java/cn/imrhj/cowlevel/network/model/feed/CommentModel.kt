@@ -1,7 +1,7 @@
 package cn.imrhj.cowlevel.network.model.feed
 
 import cn.imrhj.cowlevel.network.model.BaseModel
-import cn.imrhj.cowlevel.network.model.ContentModel
+import cn.imrhj.cowlevel.network.model.common.ContentModel
 import com.google.gson.annotations.SerializedName
 
 data class CommentModel(
