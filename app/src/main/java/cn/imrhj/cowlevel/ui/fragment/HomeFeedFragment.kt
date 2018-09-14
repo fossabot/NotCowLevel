@@ -2,14 +2,14 @@ package cn.imrhj.cowlevel.ui.fragment
 
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
-import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_HEADER_POST
-import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_HEADER_TAG
+import cn.imrhj.cowlevel.consts.ItemTypeEnum.*
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.model.feed.FeedModel.Type.system_recommend_user
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
+import cn.imrhj.cowlevel.network.model.list.BannerListModel
 import cn.imrhj.cowlevel.network.model.list.FollowedPostNewListModel
 import cn.imrhj.cowlevel.network.model.list.FollowedTagNewListModel
 import cn.imrhj.cowlevel.ui.adapter.FeedAdapter
@@ -18,6 +18,7 @@ import cn.imrhj.cowlevel.ui.base.RecyclerFragment
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
+import com.elvishew.xlog.XLog
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
@@ -36,12 +37,14 @@ class HomeFeedFragment : RecyclerFragment<BaseModel>() {
                 super.initType(multiTypeDelegate)
                 multiTypeDelegate.registerItemType(TYPE_HEADER_POST.ordinal, R.layout.item_home_header)
                 multiTypeDelegate.registerItemType(TYPE_HEADER_TAG.ordinal, R.layout.item_home_header)
+                multiTypeDelegate.registerItemType(TYPE_BANNER.ordinal, R.layout.item_banner)
             }
 
             override fun extendConvert(helper: BaseViewHolder, item: BaseModel?, type: ItemTypeEnum) {
                 when (type) {
                     TYPE_HEADER_POST -> homeHeaderHolder.renderPost(helper, (item as FollowedPostNewListModel).list)
                     TYPE_HEADER_TAG -> homeHeaderHolder.renderTag(helper, (item as FollowedTagNewListModel).list)
+                    TYPE_BANNER -> homeHeaderHolder.renderBanner(helper, (item as BannerListModel).list)
                     else -> {
                     }
                 }
@@ -68,10 +71,14 @@ class HomeFeedFragment : RecyclerFragment<BaseModel>() {
                             this.onLoadEnd(it, isResetData)
                         } else if (it is FeedHomeModel) {
                             val list: MutableList<BaseModel> = ArrayList()
-                            if (it.followedPostNews != null && it.followedPostNews?.list != null) {
+                            if (it.banners?.list?.size ?: 0 > 0) {
+                                XLog.d("class = HomeFeedFragment loadServer: ${it.banners}")
+                                list.add(it.banners!!)
+                            }
+                            if (it.followedPostNews?.list?.size ?: 0 > 0) {
                                 list.add(it.followedPostNews!!)
                             }
-                            if (it.followedTagNews != null && it.followedTagNews?.list != null) {
+                            if (it.followedTagNews?.list?.size ?: 0 > 0) {
                                 list.add(it.followedTagNews!!)
                             }
                             list.addAll(it.feedData?.list?.filter { it.action != system_recommend_user.name }!!)

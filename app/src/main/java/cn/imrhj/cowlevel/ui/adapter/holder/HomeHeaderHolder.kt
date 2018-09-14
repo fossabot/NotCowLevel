@@ -10,21 +10,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.HorizontalScrollView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import cn.bingoogolapple.bgabanner.BGABanner
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.model.FollowedPostNewModel
 import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
 import cn.imrhj.cowlevel.network.model.NewContent
+import cn.imrhj.cowlevel.network.model.home.BannerModel
 import cn.imrhj.cowlevel.ui.activity.ElementActivity
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import cn.imrhj.cowlevel.utils.cdnImageForDPSize
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
+import cn.imrhj.cowlevel.utils.cdnImageForSize
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.chad.library.adapter.base.BaseViewHolder
+import com.elvishew.xlog.XLog
 import java.lang.ref.WeakReference
 
 class HomeHeaderHolder() {
@@ -97,7 +103,7 @@ class HomeHeaderHolder() {
         posts.forEach {
             renderOneTag(parent, R.layout.item_home_header_post, it.title, it.newContent,
                     cdnImageForDPSize(it.pic, 160, 80)) {
-//                SchemeUtils.startActivity(ElementActivity::class.java)
+                //                SchemeUtils.startActivity(ElementActivity::class.java)
             }
         }
         helper.setText(R.id.title, "我关注的游戏")
@@ -125,6 +131,18 @@ class HomeHeaderHolder() {
         helper.getView<TextView>(R.id.more).setOnClickListener {
             // todo goto more
             Log.d(Thread.currentThread().name, "class = HomeHeaderHolder rhjlog renderPost: onClick")
+        }
+    }
+
+    fun renderBanner(helper: BaseViewHolder, banners: List<BannerModel>) {
+        val bannerView = helper.getView<BGABanner>(R.id.banner)
+        bannerView.setAdapter { _, itemView, model, _ ->
+            getGlide().load(cdnImageForSize(model.toString(), ScreenSizeUtil.getScreenWidth(), dp2px(100)))
+                    .into(itemView as ImageView)
+        }
+        bannerView.setData(banners.map { it.smallPic }, null)
+        bannerView.setDelegate { _, _, _, position ->
+            XLog.d("class = HomeHeaderHolder renderBanner: ${banners[position].url}")
         }
     }
 }

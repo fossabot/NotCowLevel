@@ -1,12 +1,14 @@
 package cn.imrhj.cowlevel.network.parse
 
-import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
 import cn.imrhj.cowlevel.network.model.FollowedPostNewModel
 import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
 import cn.imrhj.cowlevel.network.model.element.ElementRelatedModel
+import cn.imrhj.cowlevel.network.model.feed.FeedApiModel
+import cn.imrhj.cowlevel.network.model.home.BannerModel
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
+import cn.imrhj.cowlevel.network.model.list.BannerListModel
 import cn.imrhj.cowlevel.network.model.list.FollowedPostNewListModel
 import cn.imrhj.cowlevel.network.model.list.FollowedTagNewListModel
 import com.google.gson.Gson
@@ -28,6 +30,12 @@ val parseHomeJSString: (String) -> FeedHomeModel = {
     if (followTagResult?.size?.compareTo(2) == 0) {
         data.followedTagNews = FollowedTagNewListModel(gson.fromJson(followTagResult[1]?.value,
                 object : TypeToken<List<FollowedTagNewModel>>() {}.type))
+    }
+    val bannerResult = Regex("banners:(.+),").find(it)?.groups
+    if (bannerResult?.size?.compareTo(2) == 0) {
+        // 有 banner
+        data.banners = BannerListModel(gson.fromJson(bannerResult[1]?.value,
+                object : TypeToken<List<BannerModel>>() {}.type))
     }
     data
 }

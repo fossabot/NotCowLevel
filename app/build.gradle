@@ -87,6 +87,7 @@ dependencies {
     implementation 'com.elvishew:xlog:1.4.1'
     implementation 'com.allattentionhere:fabulousfilter:0.0.5'
     implementation 'com.ms-square:expandableTextView:0.1.4'
+    implementation 'cn.bingoogolapple:bga-banner:2.2.4'
 
     debugImplementation "com.readystatesoftware.chuck:library:${versions.chunk}"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:${versions.chunk}"

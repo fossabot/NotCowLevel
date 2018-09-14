@@ -26,7 +26,13 @@ fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): Strin
         return imageUrl
     }
 
-    val result = StringBuilder(imageUrl).append("?imageView2")
+    val tmuUrl = if (imageUrl.indexOf("?imageView2") > 0) {
+        imageUrl.substring(0, imageUrl.indexOf("?imageView2"))
+    } else {
+        imageUrl
+    }
+
+    val result = StringBuilder(tmuUrl).append("?imageView2")
     if (width != null && height != null) {
         if (width > 0 && height > 0) {
             result.append("/1")
@@ -52,7 +58,7 @@ fun cdnImageForSize(imageUrl: String?, width: Int? = 0, height: Int? = 0): Strin
         result.append("/0")
     }
 
-    if (imageUrl.endsWith(".gif", true)) {
+    if (tmuUrl.endsWith(".gif", true)) {
         result.append("/format/gif")
     } else {
         result.append("/format/webp")
