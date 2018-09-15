@@ -3,7 +3,6 @@ package cn.imrhj.cowlevel.ui.activity
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import cn.imrhj.cowlevel.R
@@ -30,6 +29,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.loadmore.LoadMoreView
 import com.chad.library.adapter.base.util.MultiTypeDelegate
+import com.elvishew.xlog.XLog
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_person.*
@@ -60,17 +60,15 @@ class PersonActivity : BaseActivity() {
         val personTimelineObservable = getFeedObservable(mUrlSlug)
         Observable.merge(personObservable, personTimelineObservable)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .subscribe(getObserver<BaseModel>({
                     if (it is UserModel) {
                         processHeaderResult(it)
                     } else {
                         mAdapter.addData(it as FeedModel)
                     }
                 }, {
-                    Log.e(Thread.currentThread().name, "class = PersonActivity rhjlog initData: error $it")
-                }, {
-                    //                    mAdapter.notifyDataSetChanged()
-                })
+                    XLog.t().b().st(3).e("class = PersonActivity initData: $it")
+                }))
     }
 
     private fun getFeedObservable(urlSlug: String, nextCursor: Int = 0): Observable<FeedModel> {
@@ -150,7 +148,9 @@ class PersonActivity : BaseActivity() {
     private fun loadFeed(nextCursor: Int) {
         getFeedObservable(mUrlSlug, nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ mAdapter.addData(it) }, {
+                .subscribe(getObserver({
+                    mAdapter.addData(it)
+                }, {
                     //todo show error
                     if (mIsShowNext) {
                         mAdapter.loadMoreFail()
@@ -165,7 +165,8 @@ class PersonActivity : BaseActivity() {
                         }
                         mIsShowNext = false
                     }
-                })
+                }))
+
     }
 
     override fun onBackPressed() {
@@ -226,6 +227,10 @@ class PersonActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    override fun shouldCallOnDestroy(): Boolean {
+        return true
     }
 
 }

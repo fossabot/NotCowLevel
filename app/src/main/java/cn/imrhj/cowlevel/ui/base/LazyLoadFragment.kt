@@ -1,7 +1,6 @@
 package cn.imrhj.cowlevel.ui.base
 
 import android.os.Bundle
-import com.elvishew.xlog.XLog
 
 
 /**

@@ -15,6 +15,7 @@ import com.elvishew.xlog.printer.file.FilePrinter
 import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
 import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
 import com.zxy.recovery.core.Recovery
+import io.reactivex.disposables.CompositeDisposable
 import java.lang.ref.WeakReference
 
 
@@ -27,6 +28,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     private lateinit var mLastResumeActivity: WeakReference<Activity>
+    private val mDisposeableMap by lazy { HashMap<Any, CompositeDisposable>() }
 
     override fun onCreate() {
         super.onCreate()
@@ -83,6 +85,24 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
+    }
+
+    private fun addCompositeDisposable(key: Any, value: CompositeDisposable) {
+        mDisposeableMap.put(key, value)
+    }
+
+    fun removeCompositeDisposable(key: Any) {
+        val d = mDisposeableMap.remove(key)
+        d?.dispose()
+    }
+
+    fun getCompositeDisposable(key: Any): CompositeDisposable {
+        var d = mDisposeableMap[key]
+        if (d == null) {
+            d = CompositeDisposable()
+            addCompositeDisposable(key, d)
+        }
+        return d
     }
 
 }

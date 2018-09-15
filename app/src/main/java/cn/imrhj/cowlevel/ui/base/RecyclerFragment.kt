@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
@@ -16,9 +15,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.loadmore.LoadMoreView
 import com.elvishew.xlog.XLog
-import io.reactivex.Observer
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 
 
 /**
@@ -29,7 +25,6 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     private var mRecycler: RecyclerView? = null
     private var mRefresh: SwipeRefreshLayout? = null
     private var mAdapter: BaseQuickAdapter<T, BaseViewHolder>? = null
-    private val mOnDestroyDisposable by lazy { CompositeDisposable() }
 
     /**
      * 是否还有更多数据
@@ -168,53 +163,37 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         mRecycler?.smoothScrollToPosition(0)
     }
 
-    open fun <T> getObserver(onNext: (t: T) -> Unit): Observer<T> {
-        return object : Observer<T> {
-            private lateinit var mDisposable: Disposable
-            override fun onComplete() {
-                mOnDestroyDisposable.remove(mDisposable)
-                Log.d(Thread.currentThread().name, "class = RecyclerFragment rhjlog onComplete: ")
-                if (mRefresh?.isRefreshing == true) {
-                    mRefresh?.isRefreshing = false
-                }
-
-                if (mIsShowNext) {
-                    if (mHasMore) {
-                        mAdapter?.loadMoreComplete()
-                    } else {
-                        mAdapter?.loadMoreEnd()
-                    }
-                    mIsShowNext = false
-                }
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                mOnDestroyDisposable.add(d)
-                mDisposable = d
-            }
-
-            override fun onNext(t: T) {
-                onNext(t)
-            }
-
-            override fun onError(e: Throwable) {
-                mOnDestroyDisposable.remove(mDisposable)
-                XLog.b().t().e("class = RecyclerFragment rhjlog onError: $e")
-                if (mRefresh?.isRefreshing == true) {
-                    mRefresh?.isRefreshing = false
-                }
-
-                if (mIsShowNext) {
-                    mAdapter?.loadMoreFail()
-                    mIsShowNext = false
-                }
-            }
+    override fun onComplete() {
+        XLog.d(Thread.currentThread().name, "class = RecyclerFragment rhjlog onComplete: ")
+        if (mRefresh?.isRefreshing == true) {
+            mRefresh?.isRefreshing = false
         }
+
+        if (mIsShowNext) {
+            if (mHasMore) {
+                mAdapter?.loadMoreComplete()
+            } else {
+                mAdapter?.loadMoreEnd()
+            }
+            mIsShowNext = false
+        }
+
     }
 
-    override fun onDestroy() {
-        mOnDestroyDisposable.dispose()
-        super.onDestroy()
+    override fun onError(e: Throwable) {
+        XLog.b().t().e("class = RecyclerFragment rhjlog onError: $e")
+        if (mRefresh?.isRefreshing == true) {
+            mRefresh?.isRefreshing = false
+        }
+
+        if (mIsShowNext) {
+            mAdapter?.loadMoreFail()
+            mIsShowNext = false
+        }
+
     }
 
+    override fun shouldCallOnDestroy(): Boolean {
+        return true
+    }
 }
