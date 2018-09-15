@@ -19,10 +19,10 @@ class HotFeedFragment : RecyclerFragment<BaseModel>() {
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
         RetrofitManager.getInstance().hotFeeds(nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    updateList(result.list, isResetData)
-                    setHasMore(result.has_more == 1)
+                .subscribe(getObserver {
+                    updateList(it.list, isResetData)
+                    setHasMore(it.has_more == 1)
                     setNextCursor(nextCursor + 1)
-                }, mOnError, mOnComplete)
+                })
     }
 }

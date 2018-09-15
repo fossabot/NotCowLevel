@@ -23,7 +23,7 @@ data class QuestionModel(
         @SerializedName("update_time") val updateTime: Int? = null,
         @SerializedName("user_id") val userId: Int? = null,
         @SerializedName("games") val games: List<Int?>? = null,
-        @SerializedName("my_answer") val myAnswer: CommonIDModel? = null,
+//        @SerializedName("my_answer") val myAnswer: CommonIDModel? = null,
         @SerializedName("id") val id: Int? = null,
         @SerializedName("status") val status: Int? = null
 ) : BaseModel()

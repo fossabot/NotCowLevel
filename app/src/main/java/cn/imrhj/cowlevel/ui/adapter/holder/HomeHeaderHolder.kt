@@ -1,11 +1,9 @@
 package cn.imrhj.cowlevel.ui.adapter.holder
 
 import android.app.Activity
-import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import android.widget.TextView
 import cn.bingoogolapple.bgabanner.BGABanner
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
-import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.model.FollowedPostNewModel
 import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
 import cn.imrhj.cowlevel.network.model.NewContent
@@ -118,13 +115,8 @@ class HomeHeaderHolder() {
         tags.forEach {
             renderOneTag(parent, R.layout.item_home_header_tag, it.name, it.newContent,
                     cdnImageForDPSquare(it.pic, 80)) { view ->
-                val bundle = Bundle()
-                bundle.putString("cover", it.pic)
-                bundle.putString("name", it.name)
-                bundle.putString("id", it.id?.toString())
-                SchemeUtils.startActivityTransition(ElementActivity::class.java, bundle,
-                        Pair.create(view.findViewById(R.id.cover), "cover")
-                )
+                ElementActivity.startWithShareElement(view.findViewById(R.id.cover), it.pic,
+                        it.name, it.id)
             }
         }
         helper.setText(R.id.title, "我关注的元素")
@@ -144,5 +136,6 @@ class HomeHeaderHolder() {
         bannerView.setDelegate { _, _, _, position ->
             XLog.d("class = HomeHeaderHolder renderBanner: ${banners[position].url}")
         }
+        bannerView.setAutoPlayAble(banners.size > 1)
     }
 }

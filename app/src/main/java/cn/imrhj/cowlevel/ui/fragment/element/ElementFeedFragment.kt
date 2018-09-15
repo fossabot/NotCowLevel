@@ -1,12 +1,10 @@
 package cn.imrhj.cowlevel.ui.fragment.element
 
-import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,6 @@ import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_ELEMENT_RELATED
 import cn.imrhj.cowlevel.extensions.getColor
 import cn.imrhj.cowlevel.extensions.parseHtml
-import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.element.ElementChildItemModel
@@ -56,13 +53,8 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
                         ?.setText(R.id.tv_article_number, "文章 ${item?.articleCount}")
                         ?.getView<ViewGroup>(R.id.ir_container)
                         ?.setOnClickListener {
-                            val bundle = Bundle()
-                            bundle.putString("cover", item?.pic)
-                            bundle.putString("name", item?.name)
-                            bundle.putString("id", item?.id?.toString())
-                            SchemeUtils.startActivityTransition(ElementActivity::class.java, bundle,
-                                    Pair.create(avatar as View, "cover")
-                            )
+                            ElementActivity.startWithShareElement(avatar as View, item?.pic,
+                                    item?.name, item?.id, 52)
                         }
             }
         }
@@ -150,20 +142,20 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
         RetrofitManager.getInstance().elementFeed(mId, nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
+                .subscribe(getObserver {
                     if (isResetData && mRelatedModel != null) {
-                        val list = ArrayList<BaseModel>((result.list?.size ?: 0) + 1)
+                        val list = ArrayList<BaseModel>((it.list?.size ?: 0) + 1)
                         list.add(mRelatedModel!!)
-                        if (result.list != null) {
-                            list.addAll(result.list)
+                        if (it.list != null) {
+                            list.addAll(it.list)
                         }
                         updateList(list, isResetData)
                     } else {
-                        updateList(result.list, isResetData)
+                        updateList(it.list, isResetData)
                     }
-                    setHasMore(result.has_more == 1)
+                    setHasMore(it.has_more == 1)
                     setNextCursor(nextCursor + 1)
-                }, mOnError, mOnComplete)
+                })
     }
 
 }

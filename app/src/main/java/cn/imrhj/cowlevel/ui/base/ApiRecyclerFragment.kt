@@ -17,7 +17,7 @@ abstract class ApiRecyclerFragment<T, S> : RecyclerFragment<T>() {
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
         getApiObservable(nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.onNext(it, isResetData, nextCursor) }, mOnError, mOnComplete)
+                .subscribe(getObserver<S> { this.onNext(it, isResetData, nextCursor) })
     }
 
     override fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder> {

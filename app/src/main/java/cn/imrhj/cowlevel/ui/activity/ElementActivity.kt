@@ -1,10 +1,14 @@
 package cn.imrhj.cowlevel.ui.activity
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.util.Pair
+import android.view.View
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.extensions.parseHtml
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
@@ -22,6 +26,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_element.*
 
 class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
+    companion object {
+        private const val KEY_ID = "id"
+        private const val KEY_COVER = "cover"
+        private const val KEY_NAME = "name"
+        private const val KEY_CACHE_SIZE = "cache_cover_size"
+        fun startWithShareElement(avatar: View, pic: String?, name: String?, id: Int?, cacheSize: Int = 0) {
+            val bundle = Bundle()
+            bundle.putString(KEY_COVER, pic)
+            bundle.putString(ElementActivity.KEY_NAME, name)
+            bundle.putInt(ElementActivity.KEY_ID, id ?: -1)
+            bundle.putInt(ElementActivity.KEY_CACHE_SIZE, cacheSize)
+            SchemeUtils.startActivityTransition(ElementActivity::class.java, bundle,
+                    Pair.create(avatar, "cover")
+            )
+        }
+    }
+
     override fun onResult(result: Any?) {
         XLog.d("class = ElementActivity onResult: $result")
     }
@@ -31,6 +52,7 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     private lateinit var mCover: String
     private var mUseTransition: Boolean = true
     private lateinit var mElementData: ElementModel
+    private var mCacheSize = 0
 
     private val mFeedFragment by lazy {
         val fragment = ElementFeedFragment()
@@ -82,6 +104,9 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     override fun initView() {
         Glide.with(this)
                 .load(cdnImageForDPSquare(mCover, 80))
+                .thumbnail(if (mCacheSize > 0)
+                    Glide.with(this).load(cdnImageForDPSquare(mCover, mCacheSize)) else
+                    null)
                 .into(avatar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -109,13 +134,14 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     }
 
     override fun initData() {
-        try {
-            mId = intent.getStringExtra("id").toInt()
-        } catch (e: Exception) {
-            Log.e(Thread.currentThread().name, "class = ElementActivity rhjlog initView: $e")
+        mId = intent.getIntExtra(KEY_ID, -1)
+        if (mId == -1) {
+            XLog.t().b().st(3).e("class = ElementActivity initData: ID error")
         }
-        mCover = intent.getStringExtra("cover")
-        mName = intent.getStringExtra("name")
+        mCover = intent.getStringExtra(KEY_COVER)
+        mName = intent.getStringExtra(KEY_NAME)
+        mCacheSize = intent.getIntExtra(KEY_CACHE_SIZE, 0)
+
         mUseTransition = intent.getBooleanExtra("useTransition", true)
         HtmlParseManager.getElement(mId)
                 .observeOn(AndroidSchedulers.mainThread())

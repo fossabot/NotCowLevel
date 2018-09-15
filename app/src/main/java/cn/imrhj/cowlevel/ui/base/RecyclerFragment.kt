@@ -16,6 +16,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.loadmore.LoadMoreView
 import com.elvishew.xlog.XLog
+import io.reactivex.Observer
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 
 /**
@@ -26,8 +29,7 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     private var mRecycler: RecyclerView? = null
     private var mRefresh: SwipeRefreshLayout? = null
     private var mAdapter: BaseQuickAdapter<T, BaseViewHolder>? = null
-    open var mOnComplete: () -> Unit = { this.onComplete() }
-    open var mOnError: (t: Throwable) -> Unit = { this.onError(it) }
+    private val mOnDestroyDisposable by lazy { CompositeDisposable() }
 
     /**
      * 是否还有更多数据
@@ -118,7 +120,6 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
      */
     abstract fun loadServer(isResetData: Boolean, nextCursor: Int = getFirstPageIndex())
 
-
     fun setHasMore(hasMore: Boolean) {
         this.mHasMore = hasMore
     }
@@ -157,37 +158,6 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         }
     }
 
-    fun onComplete() {
-        Log.d(Thread.currentThread().name, "class = RecyclerFragment rhjlog onComplete: ")
-        if (mRefresh?.isRefreshing == true) {
-            mRefresh?.isRefreshing = false
-        }
-
-        if (mIsShowNext) {
-            if (mHasMore) {
-                mAdapter?.loadMoreComplete()
-            } else {
-                mAdapter?.loadMoreEnd()
-            }
-            mIsShowNext = false
-        }
-
-    }
-
-    fun onError(t: Throwable) {
-        XLog.b().t().e("class = RecyclerFragment rhjlog onError: $t")
-        //todo 错误提示
-        if (mRefresh?.isRefreshing == true) {
-            mRefresh?.isRefreshing = false
-        }
-
-        if (mIsShowNext) {
-            mAdapter?.loadMoreFail()
-            mIsShowNext = false
-        }
-
-    }
-
     protected fun updateList(lists: List<T>?) {
         updateList(lists, false)
     }
@@ -195,9 +165,56 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     override fun onConfigFragment(bundle: Bundle) {}
 
     fun scrollToTop() {
-//        mRecycler?.layoutManager?.scrollToPosition(0)
         mRecycler?.smoothScrollToPosition(0)
     }
 
+    open fun <T> getObserver(onNext: (t: T) -> Unit): Observer<T> {
+        return object : Observer<T> {
+            private lateinit var mDisposable: Disposable
+            override fun onComplete() {
+                mOnDestroyDisposable.remove(mDisposable)
+                Log.d(Thread.currentThread().name, "class = RecyclerFragment rhjlog onComplete: ")
+                if (mRefresh?.isRefreshing == true) {
+                    mRefresh?.isRefreshing = false
+                }
+
+                if (mIsShowNext) {
+                    if (mHasMore) {
+                        mAdapter?.loadMoreComplete()
+                    } else {
+                        mAdapter?.loadMoreEnd()
+                    }
+                    mIsShowNext = false
+                }
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                mOnDestroyDisposable.add(d)
+                mDisposable = d
+            }
+
+            override fun onNext(t: T) {
+                onNext(t)
+            }
+
+            override fun onError(e: Throwable) {
+                mOnDestroyDisposable.remove(mDisposable)
+                XLog.b().t().e("class = RecyclerFragment rhjlog onError: $e")
+                if (mRefresh?.isRefreshing == true) {
+                    mRefresh?.isRefreshing = false
+                }
+
+                if (mIsShowNext) {
+                    mAdapter?.loadMoreFail()
+                    mIsShowNext = false
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        mOnDestroyDisposable.dispose()
+        super.onDestroy()
+    }
 
 }

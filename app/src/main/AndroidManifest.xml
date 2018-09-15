@@ -43,6 +43,7 @@
             android:name=".ui.activity.PersonActivity"
             android:theme="@style/AppTheme.Transition.Person" />
         <activity android:name=".ui.activity.ElementActivity" />
+        <activity android:name=".ui.activity.GameActivity"></activity>
     </application>
 
 </manifest>

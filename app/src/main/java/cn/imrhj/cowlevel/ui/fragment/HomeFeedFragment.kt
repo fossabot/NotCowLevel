@@ -66,7 +66,8 @@ class HomeFeedFragment : RecyclerFragment<BaseModel>() {
                         RetrofitManager.getInstance().feedTimeline(nextCursor)
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
+                    .subscribe(getObserver {
+
                         if (it is FeedApiModel) {
                             this.onLoadEnd(it, isResetData)
                         } else if (it is FeedHomeModel) {
@@ -87,16 +88,16 @@ class HomeFeedFragment : RecyclerFragment<BaseModel>() {
                             setHasMore(it.feedData?.has_more == 1)
                             setNextCursor(it.feedData?.last_id!!)
                         }
-                    }, mOnError, mOnComplete)
+                    })
         } else {
             RetrofitManager.getInstance().feedTimeline(nextCursor)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ result ->
+                    .subscribe(getObserver { result ->
                         if (result.first_id == mFirstId && !isResetData) {
-                            return@subscribe
+                            return@getObserver
                         }
                         this.onLoadEnd(result, isResetData)
-                    }, mOnError, mOnComplete)
+                    })
         }
     }
 
