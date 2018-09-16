@@ -7,6 +7,10 @@ import com.elvishew.xlog.XLog
  * Created by rhj on 2017/12/6.
  */
 
+fun cdnImageForFullWidthAndDPHeight(imageUrl: String?, height: Int?): String? {
+    return cdnImageForSize(imageUrl, ScreenSizeUtil.getScreenWidth(), dp2px(height ?: 0))
+}
+
 /**
  * 传递参数为DP的裁图工具类
  */

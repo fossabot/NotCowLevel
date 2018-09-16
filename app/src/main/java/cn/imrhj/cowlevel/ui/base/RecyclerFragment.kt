@@ -91,9 +91,6 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
     }
 
     open fun getDivider(): RecyclerView.ItemDecoration {
-//        val divider = DividerItemDecoration(mRecycler?.context, LinearLayoutManager.VERTICAL)
-//        divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
-//        return divider
         return LinearDividerItemDecoration(mRecycler?.context ?: App.app,
                 LinearLayoutManager.VERTICAL, R.drawable.background_divider, false, true)
     }
