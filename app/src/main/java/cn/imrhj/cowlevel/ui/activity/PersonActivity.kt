@@ -20,10 +20,9 @@ import cn.imrhj.cowlevel.ui.adapter.holder.UserHolder
 import cn.imrhj.cowlevel.ui.animate.listener.callEndAnimatorListener
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil
-import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import cn.imrhj.cowlevel.utils.StringUtils
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
-import cn.imrhj.cowlevel.utils.cdnImageForSize
+import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndPXHeight
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -47,6 +46,7 @@ class PersonActivity : BaseActivity() {
     private var mHasMore = true
     private var mIsShowNext = false
     private lateinit var mUrlSlug: String
+    private val HEADER_COVER_HEIGHT by lazy { (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt() }
 
 
     override fun layoutId(): Int? {
@@ -108,7 +108,7 @@ class PersonActivity : BaseActivity() {
         }
         initViewAfter()
 
-        imageview.layoutParams.height = (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt()
+        imageview.layoutParams.height = HEADER_COVER_HEIGHT
         recycler.layoutManager = LinearLayoutManager(recycler.context)
         val divider = DividerItemDecoration(recycler.context, LinearLayoutManager.VERTICAL)
         divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
@@ -193,7 +193,7 @@ class PersonActivity : BaseActivity() {
             initViewAfter()
         }
         Glide.with(this)
-                .load(cdnImageForSize(cover, ScreenSizeUtil.getScreenWidth(), dp2px(250)))
+                .load(cdnImageForFullWidthAndPXHeight(cover, HEADER_COVER_HEIGHT))
                 .into(imageview)
         mAdapter.addData(0, user)
     }

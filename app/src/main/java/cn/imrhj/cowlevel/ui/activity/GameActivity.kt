@@ -5,8 +5,13 @@ import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
 import cn.imrhj.cowlevel.manager.SchemeUtils
+import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.ui.activity.GameActivity.Companion.KEY_URL_SLUG
 import cn.imrhj.cowlevel.ui.base.BaseActivity
+import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndDPHeight
+import com.bumptech.glide.Glide
+import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.activity_game.*
 
 
 @AppDeepLink("/game/{$KEY_URL_SLUG}")
@@ -44,9 +49,22 @@ class GameActivity : BaseActivity() {
         }
     }
 
-    override fun initView() {
-//        Glide.with(this)
-//                .load(cdnImageForFullWidthAndDPHeight(mCover, 280))
-//                .into(imageview)
+//    override fun initView() {
+//    }
+
+    fun initTopView(cover: String?, title: String?) {
+        Glide.with(this)
+                .load(cdnImageForFullWidthAndDPHeight(cover, 280))
+                .into(imageview)
     }
+
+    fun getGameInfo() {
+        HtmlParseManager.getGame(mUrlSlug)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(getObserver({
+
+                }, {}))
+
+    }
+
 }

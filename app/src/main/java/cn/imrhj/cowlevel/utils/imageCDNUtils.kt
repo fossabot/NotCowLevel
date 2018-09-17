@@ -11,6 +11,10 @@ fun cdnImageForFullWidthAndDPHeight(imageUrl: String?, height: Int?): String? {
     return cdnImageForSize(imageUrl, ScreenSizeUtil.getScreenWidth(), dp2px(height ?: 0))
 }
 
+fun cdnImageForFullWidthAndPXHeight(imageUrl: String?, height: Int?): String? {
+    return cdnImageForSize(imageUrl, ScreenSizeUtil.getScreenWidth(), height)
+}
+
 /**
  * 传递参数为DP的裁图工具类
  */
