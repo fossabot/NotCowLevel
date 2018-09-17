@@ -7,11 +7,14 @@ import android.util.Log
 import android.util.Pair
 import android.view.View
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.deeplink.AppDeepLink
+import cn.imrhj.cowlevel.deeplink.WebDeepLink
 import cn.imrhj.cowlevel.extensions.parseHtml
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
 import cn.imrhj.cowlevel.network.model.element.ElementModel
+import cn.imrhj.cowlevel.ui.activity.ElementActivity.Companion.KEY_ID
 import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.fragment.element.ElementArticleFragment
@@ -25,9 +28,11 @@ import com.elvishew.xlog.XLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_element.*
 
+@AppDeepLink("/element/{$KEY_ID}")
+@WebDeepLink("/element/{$KEY_ID}")
 class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     companion object {
-        private const val KEY_ID = "id"
+        const val KEY_ID = "id"
         private const val KEY_COVER = "cover"
         private const val KEY_NAME = "name"
         private const val KEY_CACHE_SIZE = "cache_cover_size"
@@ -102,12 +107,9 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     }
 
     override fun initView() {
-        Glide.with(this)
-                .load(cdnImageForDPSquare(mCover, 80))
-                .thumbnail(if (mCacheSize > 0)
-                    Glide.with(this).load(cdnImageForDPSquare(mCover, mCacheSize)) else
-                    null)
-                .into(avatar)
+        if (!isFromDeepLink()) {
+            initHeaderView()
+        }
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeButtonEnabled(true)
@@ -119,7 +121,6 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
         } else {
             waitForAnimationEnd()
         }
-        toolbarLayout.title = mName
         viewpager.offscreenPageLimit = 5
 //        fab_filter.setOnClickListener {
 //            val dialogFragment = GameElementFilterFabFragment()
@@ -133,16 +134,32 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
         viewpager.adapter = mAdapter
     }
 
-    override fun initData() {
-        mId = intent.getIntExtra(KEY_ID, -1)
-        if (mId == -1) {
-            XLog.t().b().st(3).e("class = ElementActivity initData: ID error")
-        }
-        mCover = intent.getStringExtra(KEY_COVER)
-        mName = intent.getStringExtra(KEY_NAME)
-        mCacheSize = intent.getIntExtra(KEY_CACHE_SIZE, 0)
+    private fun initHeaderView() {
+        XLog.d("class = ElementActivity initHeaderView: ")
+        Glide.with(this)
+                .load(cdnImageForDPSquare(mCover, 80))
+                .thumbnail(if (mCacheSize > 0)
+                    Glide.with(this).load(cdnImageForDPSquare(mCover, mCacheSize)) else
+                    null)
+                .into(avatar)
+        toolbarLayout.title = mName
+    }
 
-        mUseTransition = intent.getBooleanExtra("useTransition", true)
+    override fun initData() {
+        if (isFromDeepLink()) {
+            mId = intent.extras?.getString(KEY_ID, "-1")?.toInt() ?: -1
+            mUseTransition = false
+        } else {
+            mId = intent.getIntExtra(KEY_ID, -1)
+            if (mId == -1) {
+                XLog.t().b().st(3).e("class = ElementActivity initData: ID error")
+            }
+            mCover = intent.getStringExtra(KEY_COVER)
+            mName = intent.getStringExtra(KEY_NAME)
+            mCacheSize = intent.getIntExtra(KEY_CACHE_SIZE, 0)
+
+            mUseTransition = intent.getBooleanExtra("useTransition", true)
+        }
         HtmlParseManager.getElement(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -150,7 +167,6 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
                 }, {
                     Log.e(Thread.currentThread().name, "class = ElementActivity rhjlog initData: error: $it")
                 })
-
     }
 
     override fun onBackPressed() {
@@ -165,6 +181,12 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
     @SuppressLint("SetTextI18n")
     private fun processHeaderData(data: ElementHomeModel) {
         val element = data.element
+        if (isFromDeepLink()) {
+            mName = element?.name ?: ""
+            mCover = element?.pic ?: ""
+            initHeaderView()
+        }
+
         val relatedModel = data.related
         mFeedFragment.setRelatedData(relatedModel)
         subtitle.text = "${element?.followerCount} 人关注"

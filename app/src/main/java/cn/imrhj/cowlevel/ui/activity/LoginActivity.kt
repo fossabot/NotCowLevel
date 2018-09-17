@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.deeplink.AppDeepLinkModuleLoader
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.manager.UserManager
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
@@ -90,7 +91,12 @@ class LoginActivity : BaseActivity() {
                                             R.drawable.ic_done_white_48dp)!!))
                             UserManager.setToken(loginModel.authToken!!)
                             btnLogin.postDelayed({
-                                startActivity(Intent(this, MainActivity::class.java))
+                                if (intent.data != null) {
+                                    val deepLinkDelegate = DeepLinkDelegate(AppDeepLinkModuleLoader())
+                                    deepLinkDelegate.dispatchFrom(this)
+                                } else {
+                                    startActivity(Intent(this, MainActivity::class.java))
+                                }
                                 finish()
                             }, 200)
                         }

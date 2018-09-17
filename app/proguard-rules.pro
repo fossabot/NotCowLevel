@@ -161,3 +161,9 @@
      <init>(...);
 }
 
+
+# Airbnb DeepLinkDispatch
+-keep @interface com.airbnb.deeplinkdispatch.DeepLink
+-keepclasseswithmembers class * {
+    @com.airbnb.deeplinkdispatch.DeepLink <methods>;
+}

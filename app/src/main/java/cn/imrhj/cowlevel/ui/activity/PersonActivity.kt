@@ -9,6 +9,8 @@ import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_FEED
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_USER
+import cn.imrhj.cowlevel.deeplink.AppDeepLink
+import cn.imrhj.cowlevel.deeplink.WebDeepLink
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.UserModel
@@ -34,10 +36,10 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_person.*
 
+@AppDeepLink("/people/{url_slug}")
+@WebDeepLink("/people/{url_slug}")
 class PersonActivity : BaseActivity() {
     private val DEFAULT_COVER = "https://pic1.cdncl.net/user/hexer/common_pic/534334eabc451d1c5a017020be6e4a76.jpg"
-
-    private var mName = ""
     private var mAvatar = ""
     private val mAdapter = PersonAdapter(ArrayList())
     private var mIsAnimateRunning = false
@@ -52,9 +54,12 @@ class PersonActivity : BaseActivity() {
     }
 
     override fun initData() {
-        mName = intent.getStringExtra("name")
-        mAvatar = intent.getStringExtra("avatar")
-        mUrlSlug = intent.getStringExtra("url_slug")
+        if (isFromDeepLink()) {
+            mUrlSlug = intent.extras?.getString("url_slug", "") ?: ""
+        } else {
+            mAvatar = intent.getStringExtra("avatar")
+            mUrlSlug = intent.getStringExtra("url_slug")
+        }
 
         val personObservable = RetrofitManager.getInstance().getUser(mUrlSlug)
         val personTimelineObservable = getFeedObservable(mUrlSlug)
@@ -101,13 +106,8 @@ class PersonActivity : BaseActivity() {
                 }
             }
         }
+        initViewAfter()
 
-        Glide.with(this)
-                .load(cdnImageForDPSquare(mAvatar, 80))
-                .thumbnail(Glide.with(this)
-                        .load(cdnImageForDPSquare(mAvatar, 48)))
-                .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))
-                .into(avatar)
         imageview.layoutParams.height = (ScreenSizeUtil.getScreenWidth() * 0.625f).toInt()
         recycler.layoutManager = LinearLayoutManager(recycler.context)
         val divider = DividerItemDecoration(recycler.context, LinearLayoutManager.VERTICAL)
@@ -134,6 +134,15 @@ class PersonActivity : BaseActivity() {
 
         })
         recycler.adapter = mAdapter
+    }
+
+    override fun initViewAfter() {
+        Glide.with(this)
+                .load(cdnImageForDPSquare(mAvatar, 80))
+                .thumbnail(Glide.with(this)
+                        .load(cdnImageForDPSquare(mAvatar, 48)))
+                .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))
+                .into(avatar)
     }
 
     private fun loadNextPage() {
@@ -170,11 +179,19 @@ class PersonActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        finishAfterTransition()
+        if (isFromDeepLink()) {
+            super.onBackPressed()
+        } else {
+            finishAfterTransition()
+        }
     }
 
     private fun processHeaderResult(user: UserModel) {
         val cover = if (StringUtils.isNotBlank(user.cover)) user.cover else DEFAULT_COVER
+        if (isFromDeepLink()) {
+            mAvatar = user.avatar ?: ""
+            initViewAfter()
+        }
         Glide.with(this)
                 .load(cdnImageForSize(cover, ScreenSizeUtil.getScreenWidth(), dp2px(250)))
                 .into(imageview)

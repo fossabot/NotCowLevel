@@ -19,6 +19,7 @@ import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
 import cn.imrhj.cowlevel.network.model.NewContent
 import cn.imrhj.cowlevel.network.model.home.BannerModel
 import cn.imrhj.cowlevel.ui.activity.ElementActivity
+import cn.imrhj.cowlevel.ui.activity.GameActivity
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import cn.imrhj.cowlevel.utils.cdnImageForDPSize
@@ -99,8 +100,8 @@ class HomeHeaderHolder() {
         val parent = renderParent(helper)
         posts.forEach {
             renderOneTag(parent, R.layout.item_home_header_post, it.title, it.newContent,
-                    cdnImageForDPSize(it.pic, 160, 80)) {
-                //                SchemeUtils.startActivity(ElementActivity::class.java)
+                    cdnImageForDPSize(it.pic, 160, 80)) { _ ->
+                GameActivity.startGameActivity(it.urlSlug ?: "", it.pic, it.title)
             }
         }
         helper.setText(R.id.title, "我关注的游戏")

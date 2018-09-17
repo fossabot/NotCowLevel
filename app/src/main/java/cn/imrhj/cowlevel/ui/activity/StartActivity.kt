@@ -14,7 +14,7 @@ class StartActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (StringUtils.isNotBlank(UserManager.getUserModel().token)) {
+        if (UserManager.isLogin()) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             startActivity(Intent(this, LoginActivity::class.java))

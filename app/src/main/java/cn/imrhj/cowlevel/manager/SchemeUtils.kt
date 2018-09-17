@@ -9,6 +9,8 @@ import android.util.Pair
 import android.view.View
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.deeplink.AppDeepLinkModuleLoader
+import cn.imrhj.cowlevel.ui.activity.DeepLinkDelegate
 import cn.imrhj.cowlevel.ui.activity.WebviewActivity
 import cn.imrhj.cowlevel.utils.ConvertUtils
 import cn.imrhj.cowlevel.utils.ResourcesUtils
@@ -18,10 +20,17 @@ import cn.imrhj.cowlevel.utils.ResourcesUtils
  */
 class SchemeUtils {
     companion object {
+        private val mDeepLinkDelegate = DeepLinkDelegate(AppDeepLinkModuleLoader())
         fun openLink(url: String) {
-            val intent = Intent(App.app.getLastActivity(), WebviewActivity::class.java)
-            intent.putExtra("url", url)
-            App.app.getLastActivity().startActivity(intent)
+            if (mDeepLinkDelegate.supportsUri(url)) {
+                val intent = Intent()
+                intent.data = Uri.parse(url)
+                mDeepLinkDelegate.dispatchFrom(App.app.getLastActivity(), intent)
+            } else {
+                val intent = Intent(App.app.getLastActivity(), WebviewActivity::class.java)
+                intent.putExtra("url", url)
+                App.app.getLastActivity().startActivity(intent)
+            }
         }
 
         fun openWithChromeTabs(url: String) {

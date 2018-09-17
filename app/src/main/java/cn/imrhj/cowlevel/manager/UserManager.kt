@@ -24,6 +24,10 @@ class UserManager {
             return Inner.mUserModel
         }
 
+        fun isLogin(): Boolean {
+            return StringUtils.isNotBlank(Inner.mUserModel.token)
+        }
+
         private fun saveUserModel() {
             SecurityUtils.putValue(Inner.KEY, Inner.mUserModel.toJsonString())
         }
