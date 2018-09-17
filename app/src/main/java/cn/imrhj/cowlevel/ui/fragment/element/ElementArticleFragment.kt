@@ -11,8 +11,10 @@ import cn.imrhj.cowlevel.network.model.common.ListCountApiModel
 import cn.imrhj.cowlevel.network.model.element.ArticleModel
 import cn.imrhj.cowlevel.ui.activity.PersonActivity
 import cn.imrhj.cowlevel.ui.base.ApiRecyclerFragment
-import cn.imrhj.cowlevel.utils.cdnImageForDPSize
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil
+import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
+import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndDPHeight
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
@@ -21,6 +23,24 @@ import io.reactivex.Observable
 
 class ElementArticleFragment : ApiRecyclerFragment<ArticleModel, ListCountApiModel<ArticleModel>>() {
     var mId: Int = -1
+
+    override fun enablePreloadImage(): Boolean {
+        return true
+    }
+
+    override fun preloadImageWidth(): Int {
+        return ScreenSizeUtil.getScreenWidth()
+    }
+
+    override fun preloadImageHeight(): Int {
+        return dp2px(180)
+    }
+
+    override fun getImageUrl(item: ArticleModel?): String {
+        return item?.pic ?: ""
+    }
+
+
     override fun getApiObservable(nextCursor: Int): Observable<ListCountApiModel<ArticleModel>> {
         return RetrofitManager.getInstance().elementArticle(mId, nextCursor)
     }
@@ -42,15 +62,13 @@ class ElementArticleFragment : ApiRecyclerFragment<ArticleModel, ListCountApiMod
                 .apply(RequestOptions().circleCrop().placeholder(R.drawable.round_place_holder))
                 .into(avatar)
         val picImageView = helper.getView<ImageView>(R.id.pic)
-        picImageView.post {
-            Glide.with(this)
-                    .load(cdnImageForDPSize(item.pic, picImageView.width, picImageView.height))
-                    .thumbnail(Glide.with(this).load(R.mipmap.anim_loading)
-                            .apply(RequestOptions().centerInside()))
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .apply(RequestOptions().centerCrop())
-                    .into(picImageView)
-        }
+        Glide.with(this)
+                .load(cdnImageForFullWidthAndDPHeight(item.pic, 180))
+                .thumbnail(Glide.with(this).load(R.mipmap.anim_loading)
+                        .apply(RequestOptions().centerInside()))
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .apply(RequestOptions().centerCrop())
+                .into(picImageView)
         helper.setText(R.id.name, item.user?.name)
                 .setText(R.id.subtitle, "发布了文章")
                 .setText(R.id.suffix, item.publishTimeBefore)

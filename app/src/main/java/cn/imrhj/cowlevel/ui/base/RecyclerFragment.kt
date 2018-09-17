@@ -10,6 +10,12 @@ import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.ui.view.SmoothLinearLayoutManager
 import cn.imrhj.cowlevel.ui.view.recycler.LinearDividerItemDecoration
 import cn.imrhj.cowlevel.utils.CollectionUtils
+import cn.imrhj.cowlevel.utils.cdnImageForSize
+import com.bumptech.glide.Glide
+import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
@@ -72,6 +78,24 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
 
         })
         mRefresh?.isRefreshing = true
+        if (enablePreloadImage()) {
+            val sizeProvider = FixedPreloadSizeProvider<String>(preloadImageWidth(), preloadImageHeight())
+            val modelProvider = object : ListPreloader.PreloadModelProvider<String> {
+                override fun getPreloadItems(position: Int): MutableList<String> {
+                    return mutableListOf(if (mAdapter?.data?.size ?: 0 > position)
+                        getImageUrl(mAdapter?.data?.get(position)) else "")
+                }
+
+                override fun getPreloadRequestBuilder(item: String): RequestBuilder<*>? {
+                    return if (item.isBlank()) null else Glide.with(this@RecyclerFragment)
+                            .load(cdnImageForSize(item, preloadImageWidth(), preloadImageHeight()))
+                }
+            }
+            val preLoader = RecyclerViewPreloader<String>(Glide.with(this), modelProvider,
+                    sizeProvider, 5)
+            mRecycler?.addOnScrollListener(preLoader)
+
+        }
     }
 
     open fun showDivider(): Boolean {
@@ -82,13 +106,33 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         reload()
     }
 
-    fun getData(): List<T>? {
-        return mAdapter?.data
+    open fun preloadImageWidth(): Int {
+        return 0
     }
 
-    fun getRecyclerView(): RecyclerView? {
-        return mRecycler
+    open fun preloadImageHeight(): Int {
+        return 0
     }
+
+    open fun enablePreloadImage(): Boolean {
+        return false
+    }
+
+    open fun getImageUrl(item: T?): String {
+        return ""
+    }
+
+    open fun getMaxPreload(): Int {
+        return 5
+    }
+
+//    fun getData(): List<T>? {
+//        return mAdapter?.data
+//    }
+//
+//    fun getRecyclerView(): RecyclerView? {
+//        return mRecycler
+//    }
 
     override fun layoutId(): Int {
         return R.layout.fragment_recycler

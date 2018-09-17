@@ -1,6 +1,5 @@
 package cn.imrhj.cowlevel.ui.fragment.element
 
-import android.view.View
 import android.widget.ImageView
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.extensions.getLastOrEmpty
@@ -11,10 +10,6 @@ import cn.imrhj.cowlevel.ui.base.ApiRecyclerFragment
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil.dp2px
 import cn.imrhj.cowlevel.utils.cdnImageForDPSize
 import com.bumptech.glide.Glide
-import com.bumptech.glide.ListPreloader
-import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
-import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.chad.library.adapter.base.BaseViewHolder
 import io.reactivex.Observable
 
@@ -24,23 +19,20 @@ class ElementGameFragment : ApiRecyclerFragment<SimpleGameModel, PostListCountAp
         return false
     }
 
-    override fun initView(baseView: View?) {
-        super.initView(baseView)
-        val sizeProvider = FixedPreloadSizeProvider<String>(dp2px(120), dp2px(60))
-        val modelProvider = object : ListPreloader.PreloadModelProvider<String> {
-            override fun getPreloadItems(position: Int): MutableList<String> {
-                return mutableListOf(if (getData()?.size ?: 0 > position)
-                    getData()?.get(position)?.pic ?: "" else "")
-            }
+    override fun enablePreloadImage(): Boolean {
+        return true
+    }
 
-            override fun getPreloadRequestBuilder(item: String): RequestBuilder<*>? {
-                return if (item.isBlank()) null else Glide.with(this@ElementGameFragment)
-                        .load(cdnImageForDPSize(item, 120, 60))
-            }
-        }
-        val preLoader = RecyclerViewPreloader<String>(Glide.with(this), modelProvider,
-                sizeProvider, 5)
-        getRecyclerView()?.addOnScrollListener(preLoader)
+    override fun preloadImageWidth(): Int {
+        return dp2px(120)
+    }
+
+    override fun preloadImageHeight(): Int {
+        return dp2px(60)
+    }
+
+    override fun getImageUrl(item: SimpleGameModel?): String {
+        return item?.pic ?: ""
     }
 
     override fun getApiObservable(nextCursor: Int): Observable<PostListCountApiModel<SimpleGameModel>> {
