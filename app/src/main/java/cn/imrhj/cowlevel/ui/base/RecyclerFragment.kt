@@ -126,14 +126,6 @@ abstract class RecyclerFragment<T> : LazyLoadFragment() {
         return 5
     }
 
-//    fun getData(): List<T>? {
-//        return mAdapter?.data
-//    }
-//
-//    fun getRecyclerView(): RecyclerView? {
-//        return mRecycler
-//    }
-
     override fun layoutId(): Int {
         return R.layout.fragment_recycler
     }
