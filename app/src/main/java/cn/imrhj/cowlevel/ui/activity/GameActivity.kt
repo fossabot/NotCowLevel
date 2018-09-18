@@ -1,15 +1,21 @@
 package cn.imrhj.cowlevel.ui.activity
 
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
+import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.ui.activity.GameActivity.Companion.KEY_URL_SLUG
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndDPHeight
 import com.bumptech.glide.Glide
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_game.*
 
@@ -49,8 +55,17 @@ class GameActivity : BaseActivity() {
         }
     }
 
-//    override fun initView() {
-//    }
+    override fun initView() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar?.setNavigationOnClickListener { this.onBackPressed() }
+        recycler.layoutManager = LinearLayoutManager(recycler.context)
+        val divider = DividerItemDecoration(recycler.context, LinearLayoutManager.VERTICAL)
+        divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
+        recycler.addItemDecoration(divider)
+    }
 
     fun initTopView(cover: String?, title: String?) {
         Glide.with(this)
@@ -64,7 +79,10 @@ class GameActivity : BaseActivity() {
                 .subscribe(getObserver({
 
                 }, {}))
-
     }
 
+    inner class GameAdapter(data: MutableList<BaseModel>) : BaseQuickAdapter<BaseModel, BaseViewHolder>(data) {
+        override fun convert(helper: BaseViewHolder?, item: BaseModel?) {
+        }
+    }
 }
