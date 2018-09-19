@@ -25,6 +25,6 @@
     <color name="colorTextSub">#697597</color>
 
     <color name="colorPriceBlue">#50E3C2</color>
-
+    <color name="colorTimeBlue">#42e0ff</color>
     <color name="colorScoreYellow">#fff280</color>
 </resources>

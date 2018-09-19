@@ -5,17 +5,21 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
+import cn.imrhj.cowlevel.extensions.addNullableData
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.ui.activity.GameActivity.Companion.KEY_URL_SLUG
+import cn.imrhj.cowlevel.ui.adapter.provider.GameHeaderProvider
 import cn.imrhj.cowlevel.ui.base.BaseActivity
+import cn.imrhj.cowlevel.ui.view.recycler.TextLoadMoreView
 import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndDPHeight
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.MultipleItemRvAdapter
 import com.elvishew.xlog.XLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_game.*
@@ -42,6 +46,9 @@ class GameActivity : BaseActivity() {
     private var mUrlSlug = ""
     private var mTitle = ""
     private var mCover = ""
+    private val mAdapter by lazy { GameAdapter() }
+
+
     override fun layoutId(): Int? {
         return R.layout.activity_game
     }
@@ -67,27 +74,45 @@ class GameActivity : BaseActivity() {
         val divider = DividerItemDecoration(recycler.context, LinearLayoutManager.VERTICAL)
         divider.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.background_divider, null)!!)
         recycler.addItemDecoration(divider)
+        mAdapter.openLoadAnimation()
+        mAdapter.setOnLoadMoreListener(this::loadNextPage, recycler)
+        mAdapter.setLoadMoreView(TextLoadMoreView())
+        recycler.adapter = mAdapter
     }
 
-    fun initTopView(cover: String?, title: String?) {
+    private fun initTopView(cover: String?, title: String?) {
         Glide.with(this)
                 .load(cdnImageForFullWidthAndDPHeight(cover, 280))
                 .into(imageview)
     }
 
-    fun getGameInfo() {
+    private fun getGameInfo() {
         HtmlParseManager.getGame(mUrlSlug)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver({
                     initTopView(it.game?.cover, it.game?.chineseTitle)
+                    mAdapter.addNullableData(it.game)
 
                 }, {
                     XLog.t().b().st(3).e("class = GameActivity getGameInfo: $it")
                 }))
     }
 
-    inner class GameAdapter(data: MutableList<BaseModel>) : BaseQuickAdapter<BaseModel, BaseViewHolder>(data) {
-        override fun convert(helper: BaseViewHolder?, item: BaseModel?) {
+    private fun loadNextPage() {
+
+    }
+
+    inner class GameAdapter(data: MutableList<BaseModel>? = null) : MultipleItemRvAdapter<BaseModel, BaseViewHolder>(data) {
+        init {
+            finishInitialize()
+        }
+
+        override fun getViewType(t: BaseModel?): Int {
+            return t?.getType()?.ordinal ?: ItemTypeEnum.TYPE_UNKNOWN.ordinal
+        }
+
+        override fun registerItemProvider() {
+            mProviderDelegate.registerProvider(GameHeaderProvider())
         }
     }
 }

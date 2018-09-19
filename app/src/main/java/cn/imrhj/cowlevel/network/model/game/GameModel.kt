@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.network.model.game
 
+import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.common.*
 import cn.imrhj.cowlevel.network.model.element.GamePriceModel
@@ -102,4 +103,8 @@ data class GameModel(
         @SerializedName("user") val user: SimpleUserModel? = null,
         @SerializedName("is_developer") val isDeveloper: Int? = null,
         @SerializedName("series_games") val seriesGames: List<SeriesGamesModel?>? = null
-) : BaseModel()
+) : BaseModel() {
+    override fun getType(): ItemTypeEnum {
+        return ItemTypeEnum.TYPE_GAME_HEADER
+    }
+}

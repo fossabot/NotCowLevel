@@ -73,7 +73,6 @@ class HomeFeedFragment : RecyclerFragment<BaseModel>() {
                         } else if (it is FeedHomeModel) {
                             val list: MutableList<BaseModel> = ArrayList()
                             if (it.banners?.list?.size ?: 0 > 0) {
-                                XLog.d("class = HomeFeedFragment loadServer: ${it.banners}")
                                 list.add(it.banners!!)
                             }
                             if (it.followedPostNews?.list?.size ?: 0 > 0) {

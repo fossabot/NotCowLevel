@@ -12,6 +12,8 @@ import android.widget.TextView
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.StringUtils
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import okhttp3.Request
 
 /**
@@ -52,4 +54,13 @@ fun String.parseHtml(): Spanned {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         Html.fromHtml(this, 0) else
         Html.fromHtml(this)
+}
+
+/**
+ * 添加非空检查的添加函数
+ */
+fun <T> BaseQuickAdapter<T, BaseViewHolder>.addNullableData(data: T) {
+    if (data != null) {
+        addData(data)
+    }
 }

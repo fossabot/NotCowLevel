@@ -19,6 +19,7 @@ import cn.imrhj.cowlevel.ui.adapter.holder.FeedHolder
 import cn.imrhj.cowlevel.ui.adapter.holder.UserHolder
 import cn.imrhj.cowlevel.ui.animate.listener.callEndAnimatorListener
 import cn.imrhj.cowlevel.ui.base.BaseActivity
+import cn.imrhj.cowlevel.ui.view.recycler.TextLoadMoreView
 import cn.imrhj.cowlevel.utils.ScreenSizeUtil
 import cn.imrhj.cowlevel.utils.StringUtils
 import cn.imrhj.cowlevel.utils.cdnImageForDPSquare
@@ -28,7 +29,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.SLIDEIN_BOTTOM
 import com.chad.library.adapter.base.BaseViewHolder
-import com.chad.library.adapter.base.loadmore.LoadMoreView
 import com.chad.library.adapter.base.util.MultiTypeDelegate
 import com.elvishew.xlog.XLog
 import io.reactivex.Observable
@@ -115,24 +115,7 @@ class PersonActivity : BaseActivity() {
         recycler.addItemDecoration(divider)
         mAdapter.openLoadAnimation(SLIDEIN_BOTTOM)
         mAdapter.setOnLoadMoreListener(this::loadNextPage, recycler)
-        mAdapter.setLoadMoreView(object : LoadMoreView() {
-            override fun getLayoutId(): Int {
-                return R.layout.recycler_load_more
-            }
-
-            override fun getLoadingViewId(): Int {
-                return R.id.load_more_loading_view
-            }
-
-            override fun getLoadEndViewId(): Int {
-                return R.id.load_more_load_fail_view
-            }
-
-            override fun getLoadFailViewId(): Int {
-                return R.id.load_more_load_end_view
-            }
-
-        })
+        mAdapter.setLoadMoreView(TextLoadMoreView())
         recycler.adapter = mAdapter
     }
 

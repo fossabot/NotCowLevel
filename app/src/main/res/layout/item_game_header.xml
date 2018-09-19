@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="茶杯头"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/view_division"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_division"
+        android:layout_width="1px"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:background="@color/colorWhite1"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_played"
+        app:layout_constraintEnd_toStartOf="@+id/tv_score_number"
+        app:layout_constraintTop_toTopOf="@+id/static_1" />
+
+    <TextView
+        android:id="@+id/static_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="奶牛关评分"
+        android:textColor="@color/colorWhite3"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_score_number"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_score_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="9.6"
+        android:textColor="@color/colorScoreYellow"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toStartOf="@+id/static_2"
+        app:layout_constraintTop_toBottomOf="@+id/static_1" />
+
+    <TextView
+        android:id="@+id/static_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/ 10"
+        android:textColor="@color/colorWhite3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_score_number"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="51.1h"
+        android:textColor="@color/colorTimeBlue"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_score_number"
+        app:layout_constraintTop_toBottomOf="@+id/tv_score_number" />
+
+    <TextView
+        android:id="@+id/tv_want_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="14人想玩"
+        android:textColor="@color/colorWhite5"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_score_number"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+    <TextView
+        android:id="@+id/tv_played"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="255人玩过"
+        android:textColor="@color/colorWhite5"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_score_number"
+        app:layout_constraintTop_toBottomOf="@+id/tv_want_play" />
+
+    <TextView
+        android:id="@+id/static_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="发行日期："
+        android:textColor="@color/colorWhite5"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_release_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:text="2018年9月25日"
+        android:textColor="@color/colorTextSub"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/static_3"
+        app:layout_constraintEnd_toStartOf="@+id/view_division"
+        app:layout_constraintStart_toEndOf="@+id/static_3"
+        app:layout_constraintTop_toTopOf="@+id/static_3" />
+
+    <TextView
+        android:id="@+id/static_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="平台："
+        android:textColor="@color/colorWhite5"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/static_3" />
+
+    <TextView
+        android:id="@+id/tv_platform"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:text="Windows / PS4"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/static_5"
+        app:layout_constraintEnd_toStartOf="@+id/view_division"
+        app:layout_constraintStart_toEndOf="@+id/static_4"
+        app:layout_constraintTop_toTopOf="@+id/static_4" />
+
+    <TextView
+        android:id="@+id/static_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="语言："
+        android:textColor="@color/colorWhite5"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/static_4" />
+
+    <TextView
+        android:id="@+id/tv_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="中文"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/static_5"
+        app:layout_constraintStart_toEndOf="@+id/static_5"
+        app:layout_constraintTop_toTopOf="@+id/static_5" />
+
+    <TextView
+        android:id="@+id/static_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="人数与网络："
+        android:textColor="@color/colorWhite5"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/static_5" />
+
+    <TextView
+        android:id="@+id/tv_number_network"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:text=" 单人 / 共有/分屏 / 本地联机"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/static_6"
+        app:layout_constraintEnd_toStartOf="@+id/view_division"
+        app:layout_constraintStart_toEndOf="@+id/static_6"
+        app:layout_constraintTop_toTopOf="@+id/static_6" />
+
+    <HorizontalScrollView
+        android:id="@+id/hsv_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@+id/tv_number_network"
+        tools:layout_editor_absoluteX="12dp" />
+
+</android.support.constraint.ConstraintLayout>

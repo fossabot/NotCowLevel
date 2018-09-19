@@ -35,7 +35,7 @@ class ApiLogInterceptor : Interceptor {
                 val bos = ByteArrayOutputStream()
                 bos.write(body.bytes())
                 val bodyString = bos.toString(Charsets.UTF_8.name())
-                if (bodyString.length < 200) {
+                if (bodyString.length < 2000) {
                     XLog.b().json(bodyString)
                 }
                 val contentType = response.header("Content-Type")
