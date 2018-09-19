@@ -46,7 +46,7 @@ val parseElementJSString: (String) -> ElementHomeModel? = {
 
 val parseGameJSString: (String) -> GameHomeModel? = {
     val gameHomeModel = GameHomeModel()
-    gameHomeModel.myPostInterest = getJsonModel(Regex("var my_post_interest = (.+})").find(it))
+    gameHomeModel.myPostInterest = getJsonModel(Regex("var my_post_interest = (.+)").find(it))
     gameHomeModel.proUsers = getJsonListModel(Regex("var pro_users = (.+])").find(it))
     gameHomeModel.game = getJsonModel(Regex("var game = (.+);").find(it))
     gameHomeModel.commentList = getJsonListModel(Regex("var comment_list = (.+);").find(it))

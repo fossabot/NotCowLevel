@@ -16,6 +16,7 @@ import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndDPHeight
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.elvishew.xlog.XLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_game.*
 
@@ -53,6 +54,7 @@ class GameActivity : BaseActivity() {
             mTitle = intent.getStringExtra(KEY_TITLE)
             mCover = intent.getStringExtra(KEY_COVER)
         }
+        getGameInfo()
     }
 
     override fun initView() {
@@ -75,10 +77,13 @@ class GameActivity : BaseActivity() {
 
     fun getGameInfo() {
         HtmlParseManager.getGame(mUrlSlug)
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver({
+                    initTopView(it.game?.cover, it.game?.chineseTitle)
 
-                }, {}))
+                }, {
+                    XLog.t().b().st(3).e("class = GameActivity getGameInfo: $it")
+                }))
     }
 
     inner class GameAdapter(data: MutableList<BaseModel>) : BaseQuickAdapter<BaseModel, BaseViewHolder>(data) {
