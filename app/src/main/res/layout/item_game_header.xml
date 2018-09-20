@@ -200,7 +200,8 @@
         android:layout_marginTop="12dp"
         android:orientation="horizontal"
         android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@+id/tv_number_network"
-        tools:layout_editor_absoluteX="12dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_number_network" />
 
 </android.support.constraint.ConstraintLayout>
