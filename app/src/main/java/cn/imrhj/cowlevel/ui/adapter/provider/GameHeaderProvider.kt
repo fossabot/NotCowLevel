@@ -15,6 +15,10 @@ class GameHeaderProvider : BaseItemProvider<GameModel, BaseViewHolder>() {
         return ItemTypeEnum.TYPE_GAME_HEADER.ordinal
     }
 
-    override fun convert(helper: BaseViewHolder?, data: GameModel?, position: Int) {
+    override fun convert(helper: BaseViewHolder, data: GameModel, position: Int) {
+        helper.setText(R.id.tv_title, data.title)
+                .setText(R.id.tv_score_number, "")
+                .setText(R.id.tv_time, "${data.playTimeAvg ?: 0}h")
+                .setText(R.id.tv_want_play, "${data.hasPlayed}")
     }
 }
