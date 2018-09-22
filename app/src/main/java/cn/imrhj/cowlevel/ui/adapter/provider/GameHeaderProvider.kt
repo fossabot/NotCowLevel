@@ -17,8 +17,17 @@ class GameHeaderProvider : BaseItemProvider<GameModel, BaseViewHolder>() {
 
     override fun convert(helper: BaseViewHolder, data: GameModel, position: Int) {
         helper.setText(R.id.tv_title, data.title)
-                .setText(R.id.tv_score_number, "")
+                .setText(R.id.tv_score_number, data.totalStarAvg)
                 .setText(R.id.tv_time, "${data.playTimeAvg ?: 0}h")
-                .setText(R.id.tv_want_play, "${data.hasPlayed}")
+                .setText(R.id.tv_want_play, "${data.wishCount} 人想玩")
+                .setText(R.id.tv_played, "${data.playedCount} 人玩过")
+                .setText(R.id.tv_release_date, "${data.gamePublishDateShow}")
+                .setText(R.id.tv_platform, data.platformSupportList?.map { it?.name }
+                        ?.reduce { acc, s -> "$acc / $s" })
+                .setText(R.id.tv_language, data.language?.map { it?.name }
+                        ?.reduce { acc, s -> "$acc / $s" })
+                .setText(R.id.tv_number_network, data.playType?.map { it?.name }
+                        ?.reduce { acc, s -> "$acc / $s" })
+                .setText(R.id.tv_desc, data.summary)
     }
 }
