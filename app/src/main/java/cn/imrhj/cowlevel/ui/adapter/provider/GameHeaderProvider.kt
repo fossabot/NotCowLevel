@@ -22,11 +22,11 @@ class GameHeaderProvider : BaseItemProvider<GameModel, BaseViewHolder>() {
                 .setText(R.id.tv_want_play, "${data.wishCount} 人想玩")
                 .setText(R.id.tv_played, "${data.playedCount} 人玩过")
                 .setText(R.id.tv_release_date, "${data.gamePublishDateShow}")
-                .setText(R.id.tv_platform, data.platformSupportList?.map { it?.name }
+                .setText(R.id.tv_platform, data.platformSupportList?.asSequence()?.map { it?.name }
                         ?.reduce { acc, s -> "$acc / $s" })
-                .setText(R.id.tv_language, data.language?.map { it?.name }
+                .setText(R.id.tv_language, data.language?.asSequence()?.map { it?.name }
                         ?.reduce { acc, s -> "$acc / $s" })
-                .setText(R.id.tv_number_network, data.playType?.map { it?.name }
+                .setText(R.id.tv_number_network, data.playType?.asSequence()?.map { it?.name }
                         ?.reduce { acc, s -> "$acc / $s" })
                 .setText(R.id.tv_desc, data.summary)
     }
