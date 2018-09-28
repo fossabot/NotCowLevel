@@ -1,8 +1,10 @@
 package cn.imrhj.cowlevel.ui.fragment.element
 
+import android.view.ViewGroup
 import android.widget.ImageView
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.extensions.getLastOrEmpty
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.common.PostListCountApiModel
 import cn.imrhj.cowlevel.network.model.element.SimpleGameModel
@@ -67,5 +69,8 @@ class ElementGameFragment : ApiRecyclerFragment<SimpleGameModel, PostListCountAp
                 .setText(R.id.tv_off, price?.data?.priceOff)
                 .setGone(R.id.tv_price, price?.data?.cnyPrice != null)
                 .setGone(R.id.tv_off, price?.data?.priceOff?.length ?: 0 > 0)
+        helper.getView<ViewGroup>(R.id.cl_game_row).setOnClickListener {
+            SchemeUtils.openCow("game/${item.urlSlug}")
+        }
     }
 }

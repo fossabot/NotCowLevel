@@ -33,6 +33,13 @@ class SchemeUtils {
             }
         }
 
+        /**
+         * 跳转到内部定义的地址
+         */
+        fun openCow(target: String) {
+            openLink("cow://level/$target")
+        }
+
         fun openWithChromeTabs(url: String) {
             openWithChromeTabs(Uri.parse(url))
         }

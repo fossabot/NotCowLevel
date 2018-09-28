@@ -17,7 +17,7 @@ class SimpleGameTagView(context: Context, tag: TagModel) : FrameLayout(context) 
         val view = LayoutInflater.from(context).inflate(R.layout.item_game_tag, this, false)
         val textView = view.findViewById<TextView>(R.id.tv_tag)
         textView.text = mTag.name
-        view.setOnClickListener { SchemeUtils.openLink("cow://level/element/${mTag.id}") }
+        view.setOnClickListener { SchemeUtils.openCow("element/${mTag.id}") }
         addView(view)
     }
 }
