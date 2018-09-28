@@ -64,3 +64,10 @@ fun <T> BaseQuickAdapter<T, BaseViewHolder>.addNullableData(data: T) {
         addData(data)
     }
 }
+
+inline fun <S, T : S> Iterable<T>.reduceNullable(operation: (acc: S, T) -> S): S? {
+    if (this.count() <= 0) {
+        return null
+    }
+    return this.reduce(operation)
+}
