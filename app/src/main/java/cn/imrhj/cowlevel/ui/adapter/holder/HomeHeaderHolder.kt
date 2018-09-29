@@ -14,6 +14,7 @@ import android.widget.TextView
 import cn.bingoogolapple.bgabanner.BGABanner
 import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.model.FollowedPostNewModel
 import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
 import cn.imrhj.cowlevel.network.model.NewContent
@@ -136,6 +137,9 @@ class HomeHeaderHolder() {
         bannerView.setData(banners.map { it.smallPic }, null)
         bannerView.setDelegate { _, _, _, position ->
             XLog.d("class = HomeHeaderHolder renderBanner: ${banners[position].url}")
+            if (banners[position].url?.isNotBlank() == true) {
+                SchemeUtils.openLink(banners[position].url!!)
+            }
         }
         bannerView.setAutoPlayAble(banners.size > 1)
     }
