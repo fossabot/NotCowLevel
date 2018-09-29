@@ -1,8 +1,10 @@
 package cn.imrhj.cowlevel.ui.base
 
 import cn.imrhj.cowlevel.App
+import com.elvishew.xlog.XLog
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import kotlin.math.log
 
 interface BasePageInterface {
     fun <T> getObserver(onNext: (t: T) -> Unit): Observer<T> {
@@ -49,10 +51,9 @@ interface BasePageInterface {
     fun shouldCallOnDestroy(): Boolean
 
     fun onComplete() {
-
     }
 
     fun onError(e: Throwable) {
-
+        XLog.e(":$e")
     }
 }

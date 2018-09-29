@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GameHomeModel(
         var game: GameModel? = null,
-        var imageList: List<FeatureImageModel>? = null,
+        var imageList: FeatureImageListModel? = null,
         var gameContributors: List<SimpleUserModel>? = null,
         var proUsers: List<ProUserModel>? = null,
         var myPostInterest: PostInterestModel? = null,

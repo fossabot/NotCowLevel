@@ -45,4 +45,5 @@
 
     <string name="test">test</string>
     <string name="title_activity_login2">Sign in</string>
+    <string name="see_more_image">查看更 多图片</string>
 </resources>

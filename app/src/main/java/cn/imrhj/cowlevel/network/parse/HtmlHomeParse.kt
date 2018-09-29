@@ -3,7 +3,9 @@ package cn.imrhj.cowlevel.network.parse
 import cn.imrhj.cowlevel.network.model.FollowedPostNewModel
 import cn.imrhj.cowlevel.network.model.FollowedTagNewModel
 import cn.imrhj.cowlevel.network.model.element.ElementHomeModel
+import cn.imrhj.cowlevel.network.model.game.FeatureImageListModel
 import cn.imrhj.cowlevel.network.model.game.GameHomeModel
+import cn.imrhj.cowlevel.network.model.game.GameModel
 import cn.imrhj.cowlevel.network.model.home.BannerModel
 import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.model.list.BannerListModel
@@ -48,10 +50,11 @@ val parseGameJSString: (String) -> GameHomeModel? = {
     val gameHomeModel = GameHomeModel()
     gameHomeModel.myPostInterest = getJsonModel(Regex("var my_post_interest = (.+)").find(it))
     gameHomeModel.proUsers = getJsonListModel(Regex("var pro_users = (.+])").find(it))
-    gameHomeModel.game = getJsonModel(Regex("var game = (.+);").find(it))
+    val game = getJsonModel<GameModel>(Regex("var game = (.+);").find(it))
+    gameHomeModel.game = game
     gameHomeModel.commentList = getJsonListModel(Regex("var comment_list = (.+);").find(it))
     gameHomeModel.videos = getJsonListModel(Regex(" {5}videos:(.+]),").find((it)))
-    gameHomeModel.imageList = getJsonListModel(Regex(" {5}feature_images:(.+),").find(it))
+    gameHomeModel.imageList = FeatureImageListModel(getJsonListModel(Regex(" {5}feature_images:(.+),").find(it)), game?.photoCount)
     gameHomeModel.relatedGames = getJsonListModel(Regex(" {5}related_games:(.+),").find(it))
     gameHomeModel.relatedQuestions = getJsonListModel(Regex(" {5}related_questions:(.+),").find(it))
     gameHomeModel.articles = getJsonListModel(Regex(" {5}articles:(.+),").find(it))

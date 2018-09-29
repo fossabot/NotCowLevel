@@ -1,6 +1,5 @@
-package cn.imrhj.cowlevel.ui.adapter.provider
+package cn.imrhj.cowlevel.ui.adapter.provider.game
 
-import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.consts.ItemTypeEnum

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
     android:clickable="true"
-    android:id="@+id/container"
     android:elevation="5dp"
     android:focusable="true"
     android:foreground="@drawable/card_foreground"
@@ -90,7 +90,7 @@
         layout="@layout/nav_voter_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp" />
 
 </LinearLayout>

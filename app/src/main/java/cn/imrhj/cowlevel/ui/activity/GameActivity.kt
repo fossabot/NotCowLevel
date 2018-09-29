@@ -13,7 +13,8 @@ import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.ui.activity.GameActivity.Companion.KEY_URL_SLUG
-import cn.imrhj.cowlevel.ui.adapter.provider.GameHeaderProvider
+import cn.imrhj.cowlevel.ui.adapter.provider.game.GameHeaderProvider
+import cn.imrhj.cowlevel.ui.adapter.provider.game.GameImageProvider
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.view.recycler.TextLoadMoreView
 import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndDPHeight
@@ -92,6 +93,7 @@ class GameActivity : BaseActivity() {
                 .subscribe(getObserver({
                     initTopView(it.game?.cover, it.game?.chineseTitle)
                     mAdapter.addNullableData(it.game)
+                    mAdapter.addNullableData(it.imageList)
 
                 }, {
                     XLog.t().b().st(3).e("class = GameActivity getGameInfo: $it")
@@ -113,6 +115,7 @@ class GameActivity : BaseActivity() {
 
         override fun registerItemProvider() {
             mProviderDelegate.registerProvider(GameHeaderProvider())
+            mProviderDelegate.registerProvider(GameImageProvider())
         }
     }
 }

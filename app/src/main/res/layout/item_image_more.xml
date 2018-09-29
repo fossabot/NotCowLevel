@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_more"
+    android:layout_width="wrap_content"
+    android:layout_height="170dp"
+    android:background="@color/colorWhite03"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/card_foreground"
+    android:gravity="center"
+    android:minWidth="80dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/see_more_image"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+</LinearLayout>
