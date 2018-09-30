@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
 import cn.imrhj.cowlevel.R
+import cn.imrhj.cowlevel.extensions.bindLifecycle
+import cn.imrhj.cowlevel.extensions.bindLifecycleOnMainThread
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.ui.adapter.FragmentAdapter
 import cn.imrhj.cowlevel.ui.base.BaseActivity
@@ -50,7 +52,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun initData() {
         RetrofitManager.getInstance().checkNotify()
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .bindLifecycleOnMainThread(this)
                 .subscribe({}, {
                     XLog.b().t().e("initData: $it")
                 })

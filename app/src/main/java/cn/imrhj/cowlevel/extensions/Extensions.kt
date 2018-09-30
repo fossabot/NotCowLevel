@@ -20,6 +20,7 @@ import com.uber.autodispose.AutoDispose
 import com.uber.autodispose.ObservableSubscribeProxy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import okhttp3.Request
 
 /**
@@ -76,6 +77,11 @@ inline fun <S, T : S> Iterable<T>.reduceNullable(operation: (acc: S, T) -> S): S
         return null
     }
     return this.reduce(operation)
+}
+
+fun <T> Observable<T>.bindLifecycleOnMainThread(lifecycle: LifecycleOwner): ObservableSubscribeProxy<T> {
+    return this.observeOn(AndroidSchedulers.mainThread())
+            .`as`(AutoDispose.autoDisposable<T>(AndroidLifecycleScopeProvider.from(lifecycle)))
 }
 
 fun <T> Observable<T>.bindLifecycle(lifecycle: LifecycleOwner): ObservableSubscribeProxy<T> {

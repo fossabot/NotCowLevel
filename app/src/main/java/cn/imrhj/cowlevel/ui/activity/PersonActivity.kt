@@ -13,6 +13,7 @@ import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_USER
 import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
 import cn.imrhj.cowlevel.extensions.bindLifecycle
+import cn.imrhj.cowlevel.extensions.bindLifecycleOnMainThread
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.UserModel
@@ -142,8 +143,7 @@ class PersonActivity : BaseActivity() {
 
     private fun loadFeed(nextCursor: Int) {
         getFeedObservable(mUrlSlug, nextCursor)
-                .observeOn(AndroidSchedulers.mainThread())
-                .bindLifecycle(this)
+                .bindLifecycleOnMainThread(this)
                 .subscribe({
                     mAdapter.addData(it)
                 }, {

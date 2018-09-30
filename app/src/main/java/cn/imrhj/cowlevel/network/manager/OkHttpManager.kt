@@ -33,7 +33,7 @@ object OkHttpManager {
         return Observable.create<Response> {
             try {
                 val response = mClient.newCall(Request.Builder().url(url).build()).execute()
-                it.onNext(response )
+                it.onNext(response)
                 it.onComplete()
             } catch (e: Exception) {
                 it.onError(e)

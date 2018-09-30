@@ -10,6 +10,7 @@ import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
 import cn.imrhj.cowlevel.extensions.addNullableData
 import cn.imrhj.cowlevel.extensions.bindLifecycle
+import cn.imrhj.cowlevel.extensions.bindLifecycleOnMainThread
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.BaseModel
@@ -96,8 +97,7 @@ class GameActivity : BaseActivity() {
 
     private fun getGameInfo() {
         HtmlParseManager.getGame(mUrlSlug)
-                .observeOn(AndroidSchedulers.mainThread())
-                .bindLifecycle(this)
+                .bindLifecycleOnMainThread(this)
                 .subscribe({
                     initTopView(it.game?.cover, it.game?.chineseTitle)
                 }, {
