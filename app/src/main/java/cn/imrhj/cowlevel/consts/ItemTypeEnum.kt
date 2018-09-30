@@ -9,7 +9,9 @@ enum class ItemTypeEnum {
     TYPE_ELEMENT_RELATED,
     TYPE_BANNER,
     TYPE_GAME_HEADER,
-    TYPE_GAME_IMAGE;
+    TYPE_GAME_IMAGE,
+    TYPE_URLS
+    ;
 
     companion object {
         fun valueOf(ordinal: Int): ItemTypeEnum {

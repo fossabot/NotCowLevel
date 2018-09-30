@@ -60,7 +60,8 @@ class LinearDividerItemDecoration(context: Context, orientation: Int, @DrawableR
         mDivider = drawable
     }
 
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (parent.layoutManager == null) {
             return
         }
@@ -119,7 +120,7 @@ class LinearDividerItemDecoration(context: Context, orientation: Int, @DrawableR
         for (i in 0 until childCount) {
             if ((mShowLastLine || (i < childCount - 1 && i > 0)) || (mShowFirstLine && i == 0)) {
                 val child = parent.getChildAt(i)
-                parent.layoutManager.getDecoratedBoundsWithMargins(child, mBounds)
+                parent.layoutManager?.getDecoratedBoundsWithMargins(child, mBounds)
                 val right = mBounds.right + Math.round(child.translationX)
                 val left = right - mDivider.intrinsicWidth
                 mDivider.setBounds(left, top, right, bottom)
@@ -130,8 +131,8 @@ class LinearDividerItemDecoration(context: Context, orientation: Int, @DrawableR
     }
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView,
-                                state: RecyclerView.State?) {
-        var count = parent.adapter.itemCount - 1
+                                state: RecyclerView.State) {
+        var count = (parent.adapter?.itemCount ?: 0) - 1
         count += if (mShowLastLine) 1 else 0
         count += if (mShowFirstLine) 1 else 0
         val position = parent.getChildAdapterPosition(view)

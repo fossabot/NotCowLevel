@@ -9,12 +9,16 @@ import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
 import cn.imrhj.cowlevel.extensions.addNullableData
+import cn.imrhj.cowlevel.extensions.bindLifecycle
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
 import cn.imrhj.cowlevel.network.model.BaseModel
+import cn.imrhj.cowlevel.network.model.common.UrlListModel
+import cn.imrhj.cowlevel.network.model.game.GameHomeModel
 import cn.imrhj.cowlevel.ui.activity.GameActivity.Companion.KEY_URL_SLUG
 import cn.imrhj.cowlevel.ui.adapter.provider.game.GameHeaderProvider
 import cn.imrhj.cowlevel.ui.adapter.provider.game.GameImageProvider
+import cn.imrhj.cowlevel.ui.adapter.provider.game.GameStoreProvider
 import cn.imrhj.cowlevel.ui.base.BaseActivity
 import cn.imrhj.cowlevel.ui.view.recycler.TextLoadMoreView
 import cn.imrhj.cowlevel.utils.cdnImageForFullWidthAndDPHeight
@@ -22,6 +26,9 @@ import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.MultipleItemRvAdapter
 import com.elvishew.xlog.XLog
+import com.uber.autodispose.AutoDispose
+import com.uber.autodispose.AutoDispose.autoDisposable
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_game.*
 
@@ -90,14 +97,23 @@ class GameActivity : BaseActivity() {
     private fun getGameInfo() {
         HtmlParseManager.getGame(mUrlSlug)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver({
+                .bindLifecycle(this)
+                .subscribe({
                     initTopView(it.game?.cover, it.game?.chineseTitle)
-                    mAdapter.addNullableData(it.game)
-                    mAdapter.addNullableData(it.imageList)
-
                 }, {
-                    XLog.t().b().st(3).e("class = GameActivity getGameInfo: $it")
-                }))
+                    XLog.b().st(3).e("GameActivity getGameInfo:$it")
+
+                })
+//                .subscribe(getObserver({
+//                    initTopView(it.game?.cover, it.game?.chineseTitle)
+////                    mAdapter.addNullableData(it.game)
+////                    mAdapter.addNullableData(it.imageList)
+////                    if (it.game?.urls?.size ?: 0 > 0) {
+////                        mAdapter.addNullableData(UrlListModel(it.game?.urls!!))
+////                    }
+//                }, {
+//                    XLog.t().b().st(3).e("class = GameActivity getGameInfo: $it")
+//                }))
     }
 
     private fun loadNextPage() {
@@ -116,6 +132,8 @@ class GameActivity : BaseActivity() {
         override fun registerItemProvider() {
             mProviderDelegate.registerProvider(GameHeaderProvider())
             mProviderDelegate.registerProvider(GameImageProvider())
+            mProviderDelegate.registerProvider(GameStoreProvider())
+
         }
     }
 }

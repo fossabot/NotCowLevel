@@ -1,6 +1,7 @@
 package cn.imrhj.cowlevel.ui.base
 
 import android.support.annotation.LayoutRes
+import cn.imrhj.cowlevel.extensions.bindLifecycle
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import io.reactivex.Observable
@@ -17,7 +18,8 @@ abstract class ApiRecyclerFragment<T, S> : RecyclerFragment<T>() {
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
         getApiObservable(nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver<S> { this.onNext(it, isResetData, nextCursor) })
+                .bindLifecycle(this)
+                .subscribe { this.onNext(it, isResetData, nextCursor) }
     }
 
     override fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder> {

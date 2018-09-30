@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.extensions
 
+import android.arch.lifecycle.LifecycleOwner
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.ColorRes
@@ -10,10 +11,15 @@ import android.text.Spanned
 import android.view.View
 import android.widget.TextView
 import cn.imrhj.cowlevel.App
+import cn.imrhj.cowlevel.network.model.game.GameHomeModel
 import cn.imrhj.cowlevel.ui.base.BaseFragment
 import cn.imrhj.cowlevel.utils.StringUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.uber.autodispose.AutoDispose
+import com.uber.autodispose.ObservableSubscribeProxy
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import io.reactivex.Observable
 import okhttp3.Request
 
 /**
@@ -70,4 +76,8 @@ inline fun <S, T : S> Iterable<T>.reduceNullable(operation: (acc: S, T) -> S): S
         return null
     }
     return this.reduce(operation)
+}
+
+fun <T> Observable<T>.bindLifecycle(lifecycle: LifecycleOwner): ObservableSubscribeProxy<T> {
+    return this.`as`(AutoDispose.autoDisposable<T>(AndroidLifecycleScopeProvider.from(lifecycle)))
 }

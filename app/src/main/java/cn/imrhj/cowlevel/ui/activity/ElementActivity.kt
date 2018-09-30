@@ -9,6 +9,7 @@ import android.view.View
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
+import cn.imrhj.cowlevel.extensions.bindLifecycle
 import cn.imrhj.cowlevel.extensions.parseHtml
 import cn.imrhj.cowlevel.manager.SchemeUtils
 import cn.imrhj.cowlevel.network.manager.HtmlParseManager
@@ -162,6 +163,7 @@ class ElementActivity : BaseActivity(), AAH_FabulousFragment.Callbacks {
         }
         HtmlParseManager.getElement(mId)
                 .observeOn(AndroidSchedulers.mainThread())
+                .bindLifecycle(this)
                 .subscribe({
                     processHeaderData(it)
                 }, {

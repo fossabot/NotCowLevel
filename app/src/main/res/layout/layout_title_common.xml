@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:ellipsize="end"
     android:lines="1"
-    android:text="今日"
     android:textColor="@color/white"
     android:textSize="20sp"
     android:textStyle="bold" />

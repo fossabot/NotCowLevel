@@ -10,6 +10,7 @@ import cn.imrhj.cowlevel.network.model.home.FeedHomeModel
 import cn.imrhj.cowlevel.network.parse.parseElementJSString
 import cn.imrhj.cowlevel.network.parse.parseGameJSString
 import cn.imrhj.cowlevel.network.parse.parseHomeJSString
+import com.elvishew.xlog.XLog
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -28,10 +29,12 @@ object HtmlParseManager {
                     if (index > result.size) {
                         throw Exception("数据源错误!")
                     }
-                    result[result.size - index].groups[1]?.value
+                    result[if (reverse) result.size - index else index].groups[1]?.value
                 }
                 .flatMap { OkHttpManager.getServerData(it) }
                 .doOnError {
+                    XLog.b().st(3).e("HtmlParseManager getJSData doOnError :$it")
+                    XLog.e("doOnError:$it")
                     if (it is AuthException) {
                         Observable.just(1)
                                 .subscribeOn(AndroidSchedulers.mainThread())

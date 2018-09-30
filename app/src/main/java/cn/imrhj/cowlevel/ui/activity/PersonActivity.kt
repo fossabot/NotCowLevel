@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.ui.activity
 
+import android.support.design.widget.AppBarLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_FEED
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_USER
 import cn.imrhj.cowlevel.deeplink.AppDeepLink
 import cn.imrhj.cowlevel.deeplink.WebDeepLink
+import cn.imrhj.cowlevel.extensions.bindLifecycle
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.network.model.UserModel
@@ -92,7 +94,7 @@ class PersonActivity : BaseActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar?.setNavigationOnClickListener { this.onBackPressed() }
-        appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange - cardAvatar.measuredWidth / 2) {
                 // 折叠
                 if (cardAvatar.visibility == View.VISIBLE && !mIsAnimateRunning) {
@@ -105,7 +107,8 @@ class PersonActivity : BaseActivity() {
                     startAvatarAnimate(true)
                 }
             }
-        }
+        })
+
         initViewAfter()
 
         imageview.layoutParams.height = HEADER_COVER_HEIGHT
@@ -140,7 +143,8 @@ class PersonActivity : BaseActivity() {
     private fun loadFeed(nextCursor: Int) {
         getFeedObservable(mUrlSlug, nextCursor)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver({
+                .bindLifecycle(this)
+                .subscribe({
                     mAdapter.addData(it)
                 }, {
                     //todo show error
@@ -157,7 +161,7 @@ class PersonActivity : BaseActivity() {
                         }
                         mIsShowNext = false
                     }
-                }))
+                })
 
     }
 

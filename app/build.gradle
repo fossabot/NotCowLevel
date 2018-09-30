@@ -79,6 +79,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+    implementation "com.uber.autodispose:autodispose-ktx:${versions.autodispose}"
+    implementation "com.uber.autodispose:autodispose-android-archcomponents-ktx:${versions.autodispose}"
+
     implementation "com.github.bumptech.glide:glide:${versions.glide}"
     implementation "com.github.bumptech.glide:okhttp3-integration:${versions.glide}"
     implementation("com.github.bumptech.glide:recyclerview-integration:4.7.1") {
@@ -93,8 +97,8 @@ dependencies {
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'cn.bingoogolapple:bga-banner:2.2.4'
 
-    implementation 'com.airbnb:deeplinkdispatch:3.1.1'
-    kapt 'com.airbnb:deeplinkdispatch-processor:3.1.1'
+    implementation "com.airbnb:deeplinkdispatch:${versions.deeplink}"
+    kapt "com.airbnb:deeplinkdispatch-processor:${versions.deeplink}"
 
     debugImplementation "com.readystatesoftware.chuck:library:${versions.chunk}"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:${versions.chunk}"

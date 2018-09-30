@@ -6,11 +6,13 @@ buildscript {
             'compileSdk'    : 28,
             'targetSdk'     : 28,
             'buildTools'    : '28.0.2',     //版本修改时需要同时修改 travis 构建脚本
-            'supportLibrary': '27.1.1',
+            'supportLibrary': '28.0.0',
             'glide'         : '4.8.0',
             'retrofit'      : '2.4.0',
             'okhttp'        : '3.11.0',
-            'chunk'         : '1.1.0'
+            'chunk'         : '1.1.0',
+            'autodispose'   : '1.0.0-RC2',
+            'deeplink'      : '3.1.1'
     ]
 
     repositories {

@@ -20,6 +20,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.StartActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,22 +32,29 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".ui.activity.MainActivity" />
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TranslucentStatus" />
         <activity
             android:name=".ui.activity.WebviewActivity"
-            android:hardwareAccelerated="true" />
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.PersonActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transition.ShareImage.TranslucentStatus" />
         <activity
             android:name=".ui.activity.ElementActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transition.ShareImage" />
         <activity
             android:name=".ui.activity.GameActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TranslucentStatus" />
         <activity
             android:name=".ui.activity.DeepLinkActivity"
@@ -67,13 +75,6 @@
                     android:host="level"
                     android:scheme="cow" />
             </intent-filter>
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.VIEW" />-->
-
-            <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--<category android:name="android.intent.category.BROWSABLE" />-->
-
-            <!--</intent-filter>-->
         </activity>
     </application>
 

@@ -34,6 +34,7 @@ interface BasePageInterface {
             }
 
             override fun onError(e: Throwable) {
+                XLog.e("emmmmmmmm:${e}")
                 App.app.getCompositeDisposable(this@BasePageInterface).remove(mDisposable)
                 if (onError != null) {
                     onError(e)
