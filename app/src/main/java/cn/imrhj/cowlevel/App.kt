@@ -28,7 +28,6 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     private lateinit var mLastResumeActivity: WeakReference<Activity>
-    private val mDisposeableMap by lazy { HashMap<Any, CompositeDisposable>() }
 
     override fun onCreate() {
         super.onCreate()
@@ -86,23 +85,4 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
     }
-
-    private fun addCompositeDisposable(key: Any, value: CompositeDisposable) {
-        mDisposeableMap.put(key, value)
-    }
-
-    fun removeCompositeDisposable(key: Any) {
-        val d = mDisposeableMap.remove(key)
-        d?.dispose()
-    }
-
-    fun getCompositeDisposable(key: Any): CompositeDisposable {
-        var d = mDisposeableMap[key]
-        if (d == null) {
-            d = CompositeDisposable()
-            addCompositeDisposable(key, d)
-        }
-        return d
-    }
-
 }

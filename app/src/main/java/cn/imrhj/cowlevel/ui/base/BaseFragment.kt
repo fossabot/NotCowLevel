@@ -12,8 +12,7 @@ import io.reactivex.Observer
  * BaseFragment
  * Created by rhj on 2017/11/28.
  */
-abstract class BaseFragment : Fragment(), BasePageInterface {
-    private var mShouldCallDestroy = false
+abstract class BaseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(layoutId(), null)
@@ -34,21 +33,5 @@ abstract class BaseFragment : Fragment(), BasePageInterface {
      */
     abstract fun onConfigFragment(bundle: Bundle)
 
-    override fun onDestroy() {
-        if (shouldCallOnDestroy()) {
-            onDestroyCallback()
-        }
-        super.onDestroy()
-    }
-
-    override fun shouldCallOnDestroy(): Boolean {
-        return mShouldCallDestroy
-    }
-
-    override fun <T> getObserver(onNext: (t: T) -> Unit, onError: ((e: Throwable) -> Unit)?,
-                                 onComplete: (() -> Unit)?): Observer<T> {
-        mShouldCallDestroy = true
-        return super.getObserver(onNext, onError, onComplete)
-    }
 }
 

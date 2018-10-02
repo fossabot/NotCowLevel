@@ -67,8 +67,8 @@ class PersonActivity : BaseActivity() {
         val personObservable = RetrofitManager.getInstance().getUser(mUrlSlug)
         val personTimelineObservable = getFeedObservable(mUrlSlug)
         Observable.merge(personObservable, personTimelineObservable)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver<BaseModel>({
+                .bindLifecycleOnMainThread(this)
+                .subscribe({
                     if (it is UserModel) {
                         processHeaderResult(it)
                     } else {
@@ -76,7 +76,7 @@ class PersonActivity : BaseActivity() {
                     }
                 }, {
                     XLog.t().b().st(3).e("class = PersonActivity initData: $it")
-                }))
+                })
     }
 
     private fun getFeedObservable(urlSlug: String, nextCursor: Int = 0): Observable<FeedModel> {
@@ -232,9 +232,4 @@ class PersonActivity : BaseActivity() {
             }
         }
     }
-
-    override fun shouldCallOnDestroy(): Boolean {
-        return true
-    }
-
 }

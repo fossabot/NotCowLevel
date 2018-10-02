@@ -16,7 +16,7 @@ interface BasePageInterface {
         return object : Observer<T> {
             private lateinit var mDisposable: Disposable
             override fun onComplete() {
-                App.app.getCompositeDisposable(this@BasePageInterface).remove(mDisposable)
+//                App.app.getCompositeDisposable(this@BasePageInterface).remove(mDisposable)
                 if (onComplete != null) {
                     onComplete()
                 } else {
@@ -25,7 +25,7 @@ interface BasePageInterface {
             }
 
             override fun onSubscribe(d: Disposable) {
-                App.app.getCompositeDisposable(this@BasePageInterface).add(d)
+//                App.app.getCompositeDisposable(this@BasePageInterface).add(d)
                 mDisposable = d
             }
 
@@ -35,7 +35,7 @@ interface BasePageInterface {
 
             override fun onError(e: Throwable) {
                 XLog.e("emmmmmmmm:${e}")
-                App.app.getCompositeDisposable(this@BasePageInterface).remove(mDisposable)
+//                App.app.getCompositeDisposable(this@BasePageInterface).remove(mDisposable)
                 if (onError != null) {
                     onError(e)
                 } else {
@@ -46,7 +46,6 @@ interface BasePageInterface {
     }
 
     fun onDestroyCallback() {
-        App.app.removeCompositeDisposable(this)
     }
 
     fun shouldCallOnDestroy(): Boolean

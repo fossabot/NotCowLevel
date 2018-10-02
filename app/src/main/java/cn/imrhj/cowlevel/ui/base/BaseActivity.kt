@@ -10,8 +10,7 @@ import io.reactivex.Observer
 /**
  * Created by rhj on 11/12/2017.
  */
-abstract class BaseActivity : AppCompatActivity(), BasePageInterface {
-    private var mShouldCallDestroy = false
+abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val id = layoutId()
@@ -59,23 +58,6 @@ abstract class BaseActivity : AppCompatActivity(), BasePageInterface {
             }
 
         }
-    }
-
-    override fun onDestroy() {
-        if (shouldCallOnDestroy()) {
-            onDestroyCallback()
-        }
-        super.onDestroy()
-    }
-
-    override fun shouldCallOnDestroy(): Boolean {
-        return mShouldCallDestroy
-    }
-
-    override fun <T> getObserver(onNext: (t: T) -> Unit, onError: ((e: Throwable) -> Unit)?,
-                                 onComplete: (() -> Unit)?): Observer<T> {
-        mShouldCallDestroy = true
-        return super.getObserver(onNext, onError, onComplete)
     }
 
     fun isFromDeepLink(): Boolean {
