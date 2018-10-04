@@ -1,5 +1,6 @@
 package cn.imrhj.cowlevel.ui.fragment
 
+import cn.imrhj.cowlevel.extensions.bindLifecycleOnMainThread
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
 import cn.imrhj.cowlevel.network.model.BaseModel
 import cn.imrhj.cowlevel.ui.adapter.FeedAdapter
@@ -18,11 +19,11 @@ class HotFeedFragment : RecyclerFragment<BaseModel>() {
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
         RetrofitManager.getInstance().hotFeeds(nextCursor)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver {
+                .bindLifecycleOnMainThread(this)
+                .subscribe {
                     updateList(it.list, isResetData)
                     setHasMore(it.has_more == 1)
                     setNextCursor(nextCursor + 1)
-                })
+                }
     }
 }

@@ -104,16 +104,6 @@ class GameActivity : BaseActivity() {
                     XLog.b().st(3).e("GameActivity getGameInfo:$it")
 
                 })
-//                .subscribe(getObserver({
-//                    initTopView(it.game?.cover, it.game?.chineseTitle)
-////                    mAdapter.addNullableData(it.game)
-////                    mAdapter.addNullableData(it.imageList)
-////                    if (it.game?.urls?.size ?: 0 > 0) {
-////                        mAdapter.addNullableData(UrlListModel(it.game?.urls!!))
-////                    }
-//                }, {
-//                    XLog.t().b().st(3).e("class = GameActivity getGameInfo: $it")
-//                }))
     }
 
     private fun loadNextPage() {

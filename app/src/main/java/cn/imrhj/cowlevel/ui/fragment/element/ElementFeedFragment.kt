@@ -13,6 +13,7 @@ import cn.imrhj.cowlevel.App
 import cn.imrhj.cowlevel.R
 import cn.imrhj.cowlevel.consts.ItemTypeEnum
 import cn.imrhj.cowlevel.consts.ItemTypeEnum.TYPE_ELEMENT_RELATED
+import cn.imrhj.cowlevel.extensions.bindLifecycleOnMainThread
 import cn.imrhj.cowlevel.extensions.getColor
 import cn.imrhj.cowlevel.extensions.parseHtml
 import cn.imrhj.cowlevel.network.manager.RetrofitManager
@@ -141,8 +142,8 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
 
     override fun loadServer(isResetData: Boolean, nextCursor: Int) {
         RetrofitManager.getInstance().elementFeed(mId, nextCursor)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver {
+                .bindLifecycleOnMainThread(this)
+                .subscribe {
                     if (isResetData && mRelatedModel != null) {
                         val list = ArrayList<BaseModel>((it.list?.size ?: 0) + 1)
                         list.add(mRelatedModel!!)
@@ -155,7 +156,7 @@ class ElementFeedFragment : RecyclerFragment<BaseModel>() {
                     }
                     setHasMore(it.has_more == 1)
                     setNextCursor(nextCursor + 1)
-                })
+                }
     }
 
 }
