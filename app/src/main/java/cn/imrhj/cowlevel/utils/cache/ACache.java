@@ -32,15 +32,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Created by rhj on 14/12/2017.
+ * ACache缓存类
+ *
+ * @author rhj
  */
-
 public class ACache {
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
-    private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
-    private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
-    private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
+    private static final int MAX_SIZE = 1000 * 1000 * 50;
+    private static final int MAX_COUNT = Integer.MAX_VALUE;
+    private static Map<String, ACache> mInstanceMap = new HashMap<>();
     private ACacheManager mCache;
 
     public static ACache get(Context ctx) {
@@ -56,15 +57,15 @@ public class ACache {
         return get(cacheDir, MAX_SIZE, MAX_COUNT);
     }
 
-    public static ACache get(Context ctx, long max_zise, int max_count) {
+    public static ACache get(Context ctx, long maxSize, int maxCount) {
         File f = new File(ctx.getCacheDir(), "ACache");
-        return get(f, max_zise, max_count);
+        return get(f, maxSize, maxCount);
     }
 
-    public static ACache get(File cacheDir, long max_zise, int max_count) {
+    public static ACache get(File cacheDir, long maxSize, int maxCount) {
         ACache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
         if (manager == null) {
-            manager = new ACache(cacheDir, max_zise, max_count);
+            manager = new ACache(cacheDir, maxSize, maxCount);
             mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), manager);
         }
         return manager;
@@ -74,12 +75,12 @@ public class ACache {
         return "_" + android.os.Process.myPid();
     }
 
-    private ACache(File cacheDir, long max_size, int max_count) {
+    private ACache(File cacheDir, long maxSize, int maxCount) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {
             throw new RuntimeException("can't make dirs in "
                     + cacheDir.getAbsolutePath());
         }
-        mCache = new ACacheManager(cacheDir, max_size, max_count);
+        mCache = new ACacheManager(cacheDir, maxSize, maxCount);
     }
 
     // =======================================
@@ -132,8 +133,9 @@ public class ACache {
      */
     public String getAsString(String key) {
         File file = mCache.get(key);
-        if (!file.exists())
+        if (!file.exists()) {
             return null;
+        }
         boolean removeFile = false;
         BufferedReader in = null;
         try {
@@ -160,8 +162,9 @@ public class ACache {
                     e.printStackTrace();
                 }
             }
-            if (removeFile)
+            if (removeFile) {
                 remove(key);
+            }
         }
     }
 
@@ -302,8 +305,9 @@ public class ACache {
         boolean removeFile = false;
         try {
             File file = mCache.get(key);
-            if (!file.exists())
+            if (!file.exists()) {
                 return null;
+            }
             RAFile = new RandomAccessFile(file, "r");
             byte[] byteArray = new byte[(int) RAFile.length()];
             RAFile.read(byteArray);
@@ -324,8 +328,9 @@ public class ACache {
                     e.printStackTrace();
                 }
             }
-            if (removeFile)
+            if (removeFile) {
                 remove(key);
+            }
         }
     }
 
@@ -387,21 +392,22 @@ public class ACache {
             try {
                 bais = new ByteArrayInputStream(data);
                 ois = new ObjectInputStream(bais);
-                Object reObject = ois.readObject();
-                return reObject;
+                return ois.readObject();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             } finally {
                 try {
-                    if (bais != null)
+                    if (bais != null) {
                         bais.close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 try {
-                    if (ois != null)
+                    if (ois != null) {
                         ois.close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -422,7 +428,7 @@ public class ACache {
      * @param value 保存的bitmap数据
      */
     public void put(String key, Bitmap value) {
-        put(key, Utils.Bitmap2Bytes(value));
+        put(key, Utils.bitmap2Bytes(value));
     }
 
     /**
@@ -433,7 +439,7 @@ public class ACache {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(String key, Bitmap value, int saveTime) {
-        put(key, Utils.Bitmap2Bytes(value), saveTime);
+        put(key, Utils.bitmap2Bytes(value), saveTime);
     }
 
     /**
@@ -446,7 +452,7 @@ public class ACache {
         if (getAsBinary(key) == null) {
             return null;
         }
-        return Utils.Bytes2Bimap(getAsBinary(key));
+        return Utils.bytes2Bitmap(getAsBinary(key));
     }
 
     // =======================================
@@ -484,7 +490,7 @@ public class ACache {
         if (getAsBinary(key) == null) {
             return null;
         }
-        return Utils.bitmap2Drawable(Utils.Bytes2Bimap(getAsBinary(key)));
+        return Utils.bitmap2Drawable(Utils.bytes2Bitmap(getAsBinary(key)));
     }
 
     /**
@@ -495,8 +501,9 @@ public class ACache {
      */
     public File file(String key) {
         File f = mCache.newFile(key);
-        if (f.exists())
+        if (f.exists()) {
             return f;
+        }
         return null;
     }
 
@@ -522,6 +529,7 @@ public class ACache {
      * @version 1.0
      * @title 缓存管理器
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public class ACacheManager {
         private final AtomicLong cacheSize;
         private final AtomicInteger cacheCount;
@@ -618,8 +626,6 @@ public class ACache {
 
         /**
          * 移除旧的文件
-         *
-         * @return
          */
         private long removeNext() {
             if (lastUsageDates.isEmpty()) {
@@ -642,6 +648,10 @@ public class ACache {
                         }
                     }
                 }
+            }
+
+            if (mostLongUsedFile == null) {
+                return 0;
             }
 
             long fileSize = calculateSize(mostLongUsedFile);
@@ -750,8 +760,9 @@ public class ACache {
 
         private static byte[] copyOfRange(byte[] original, int from, int to) {
             int newLength = to - from;
-            if (newLength < 0)
+            if (newLength < 0) {
                 throw new IllegalArgumentException(from + " > " + to);
+            }
             byte[] copy = new byte[newLength];
             System.arraycopy(original, from, copy, 0,
                     Math.min(original.length - from, newLength));
@@ -761,17 +772,14 @@ public class ACache {
         private static final char mSeparator = ' ';
 
         private static String createDateInfo(int second) {
-            String currentTime = System.currentTimeMillis() + "";
+            StringBuilder currentTime = new StringBuilder(System.currentTimeMillis() + "");
             while (currentTime.length() < 13) {
-                currentTime = "0" + currentTime;
+                currentTime.insert(0, "0");
             }
             return currentTime + "-" + second + mSeparator;
         }
 
-        /*
-         * Bitmap → byte[]
-         */
-        private static byte[] Bitmap2Bytes(Bitmap bm) {
+        private static byte[] bitmap2Bytes(Bitmap bm) {
             if (bm == null) {
                 return null;
             }
@@ -780,17 +788,17 @@ public class ACache {
             return baos.toByteArray();
         }
 
-        /*
+        /**
          * byte[] → Bitmap
          */
-        private static Bitmap Bytes2Bimap(byte[] b) {
+        private static Bitmap bytes2Bitmap(byte[] b) {
             if (b.length == 0) {
                 return null;
             }
             return BitmapFactory.decodeByteArray(b, 0, b.length);
         }
 
-        /*
+        /**
          * Drawable → Bitmap
          */
         private static Bitmap drawable2Bitmap(Drawable drawable) {
@@ -813,7 +821,7 @@ public class ACache {
             return bitmap;
         }
 
-        /*
+        /**
          * Bitmap → Drawable
          */
         @SuppressWarnings("deprecation")
