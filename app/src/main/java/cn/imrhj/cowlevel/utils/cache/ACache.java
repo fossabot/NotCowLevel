@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author rhj
  */
+@SuppressWarnings("AlibabaClassNamingShouldBeCamel")
 public class ACache {
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
